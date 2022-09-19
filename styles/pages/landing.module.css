@@ -1,0 +1,28 @@
+.container {
+  /* background-image: url("../../public/img/bg2.png"); */
+  min-height: 90vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 10vh 0 0 20vw;
+  width: 80vw;
+  background-color: rgb(238, 239, 245);
+  /* background-color: #e7ebf0; */
+}
+.container h1 {
+  color: rgb(206, 203, 220);
+  font-size: 60px;
+  font-weight: bolder;
+  margin-top: 20vh;
+}
+.container h1:hover {
+  color: rgb(255, 255, 255);
+}
+.innerContainer {
+  width: 100%;
+  display: flex;
+  /* justify-content: center; */
+  align-items: stretch;
+  flex-direction: column;
+  min-height: 90vh;
+}

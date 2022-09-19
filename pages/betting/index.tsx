@@ -1,0 +1,109 @@
+import {
+  CircularProgress,
+  IconButton,
+  Pagination,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import style from "../../styles/pages/user.module.css";
+import { LibraryAdd, Refresh } from "@mui/icons-material";
+import AddMatchDialog from "../../components/dialogs/addMatchDialog";
+import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setMatches } from "../../redux/redux-toolkit/matchesSlice";
+import { convertStatus, convertTimestamp } from "../../utils/convertion";
+import MatchesTable from "../../components/atoms/matchesTable";
+
+const Matches = () => {
+  const dispatch = useDispatch();
+  const { contract } = useSelector((state: RootState) => state.contract);
+  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+  const getAllMatches = async () => {
+    const res = await contract.getAllMatches();
+    const matches = res.map((item: any) => {
+      return {
+        date: convertTimestamp(Number(item.date)),
+        matchId: Number(item.matchId),
+        team1: item.team1,
+        team2: item.team2,
+        statusCode: Number(item.statusCode),
+        won: Number(item.won),
+        statusString: convertStatus(Number(item.statusCode)),
+      };
+    });
+    dispatch(setMatches(matches));
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    if (contract) {
+      getAllMatches();
+    }
+  }, [contract]); //eslint-disable-line
+
+  const refreshPage = () => {
+    setLoading(true);
+    getAllMatches();
+  };
+  return (
+    <>
+      {loading ? (
+        <div className={style.loadingBox}>
+          <CircularProgress color="success" />
+        </div>
+      ) : (
+        <div style={{ padding: "50px" }}>
+          <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
+            <div className={style.titleBox}>
+              <Typography variant="h5" textAlign="center"></Typography>
+              <Typography variant="h5" textAlign="center">
+                IPL Matches
+              </Typography>
+              <Typography variant="h5" textAlign="center">
+                <Tooltip title="Add Match" placement="top">
+                  <IconButton onClick={() => setOpen(true)}>
+                    <LibraryAdd />
+                  </IconButton>
+                </Tooltip>
+              </Typography>
+            </div>
+          </Paper>
+          <div style={{ height: "100%", maxHeight: "64vh", overflow: "auto" }}>
+            <MatchesTable />
+          </div>
+          <Paper
+            sx={{
+              margin: "1px 0",
+              padding: "10px 20px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>&nbsp;&nbsp;</div>
+            <Pagination count={1} page={page} onChange={handleChange} />
+            <Tooltip title="Refresh" placement="top">
+              <IconButton onClick={refreshPage}>
+                <Refresh />
+              </IconButton>
+            </Tooltip>
+          </Paper>
+          <AddMatchDialog
+            open={open}
+            handleClose={() => setOpen(false)}
+            refreshPage={getAllMatches}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Matches;

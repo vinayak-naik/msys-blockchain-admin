@@ -1,0 +1,25 @@
+.formBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  width: 30vw;
+}
+.inputBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+}
+.errorBox {
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.menuItem {
+  text-transform: capitalize;
+}

@@ -1,0 +1,124 @@
+.container {
+  padding: 2vw;
+  display: flex;
+  gap: 1vw;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.matchDetails {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  /* justify-content: space-between; */
+}
+.innerContainer {
+  display: flex;
+  gap: 1vw;
+  justify-content: space-between;
+}
+.teamContainer {
+  display: flex;
+  gap: 1vw;
+  flex-direction: column;
+  flex: 1;
+}
+.teamsContainer {
+  display: flex;
+  gap: 20px;
+}
+.titleBoxNormal {
+  padding: 1vw;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  color: rgb(67, 64, 64);
+  font-size: 20px;
+  text-transform: capitalize;
+}
+.titleBoxWon {
+  padding: 1vw;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  text-transform: capitalize;
+  background-color: green;
+  color: white;
+}
+.titleBoxDefeat {
+  padding: 1vw;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  text-transform: capitalize;
+  background-color: red;
+  color: white;
+}
+.progressContainer {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
+}
+.teamDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+.textBox {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  flex-direction: column;
+}
+.textContainer {
+  display: flex;
+}
+.textHead {
+  font-weight: bold;
+  color: rgb(86, 83, 83);
+  padding-right: 10px;
+  font-size: 14px;
+}
+.text {
+  color: rgb(57, 57, 73);
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.statusButton {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: rgb(23, 117, 194);
+  font-size: 14px;
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 8px;
+  margin-top: -5px;
+  cursor: pointer;
+}
+.statusButton:hover {
+  background-color: rgba(0, 0, 0, 0.077);
+}
+.participantsLink {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  color: rgb(81, 81, 81);
+  cursor: pointer;
+}
+
+.lotteryNamePaper {
+  padding: 10px;
+  text-align: center;
+  color: rgb(63, 62, 68);
+}
+.loadingBox {
+  height: 90vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

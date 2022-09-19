@@ -1,0 +1,18 @@
+.container {
+  padding: 100px;
+  height: 100%;
+  width: 100%;
+}
+.innerContainer {
+  /* background-image: url("../../public/img/graph.gif"); */
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* margin: 10vh 0 0 20vw; */
+  width: 100%;
+  /* background-color: #e7ebf0; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

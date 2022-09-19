@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  align-items: center;
+  /* background-color: rgb(255, 255, 255); */
+  background-color: rgb(31, 50, 71);
+  width: 20vw;
+  /* border: 1px solid rgb(123, 255, 0); */
+  box-shadow: 1px 1px 2px 0 rgba(84, 85, 86, 0.586);
+  height: 90vh;
+  margin-top: 10vh;
+  flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+.item {
+  width: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  border-bottom: 0.1px solid rgba(255, 255, 255, 0.362);
+}
+.item:hover {
+  background-color: rgba(57, 88, 122, 0.696);
+}
+.childItem {
+  height: 40px;
+  width: 100%;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 0.1px solid rgba(255, 255, 255, 0.107);
+}
+.accordionSummary p {
+  /* justify-content: center; */
+  margin-left: 5vw;
+}
