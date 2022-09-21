@@ -92,7 +92,7 @@ const Match = () => {
       getMatch();
       getAllParticipants();
     }
-  }, [contract, query?.matchId, match]); //eslint-disable-line
+  }, [contract, query?.matchId]); //eslint-disable-line
 
   const refreshPage = () => {
     setTimeout(() => {
