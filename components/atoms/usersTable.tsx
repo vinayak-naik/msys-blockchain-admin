@@ -94,7 +94,7 @@ export default function UsersTable(props: any) {
                 <TableCell sx={sx.tableCell}>{item.email}</TableCell>
                 <TableCell sx={sx.tableCell}>
                   {item.disabled ? (
-                    <Tooltip title="Enable User" placement="top">
+                    <Tooltip title="Disabled" placement="top">
                       <IconButton
                         disabled={loading}
                         onClick={() => enableUser(item.walletAddress)}
@@ -104,7 +104,7 @@ export default function UsersTable(props: any) {
                       </IconButton>
                     </Tooltip>
                   ) : (
-                    <Tooltip title="Disable User" placement="top">
+                    <Tooltip title="Active" placement="top">
                       <IconButton
                         disabled={loading}
                         onClick={() => disableUser(item.walletAddress)}

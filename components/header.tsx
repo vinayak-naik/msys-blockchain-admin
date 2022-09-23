@@ -21,7 +21,8 @@ const HeaderComponent = () => {
   const [walletAddr, setWalletAddr] = useState("");
   const [showAddress, setShowAddress] = useState(false);
 
-  const contractAddress = "0xe7f309b8cd388d1723b6ACe24E7b8000A3099283";
+  const contractAddress = "0xF6aaFbeEE20ef13e31085177d19140EBDC07B732";
+  // const contractAddress = "0xe7f309b8cd388d1723b6ACe24E7b8000A3099283";  //Old
 
   const setSign = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
