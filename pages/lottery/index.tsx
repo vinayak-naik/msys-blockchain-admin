@@ -1,5 +1,4 @@
 import {
-  CircularProgress,
   IconButton,
   Pagination,
   Paper,
@@ -16,6 +15,7 @@ import { Refresh } from "@mui/icons-material";
 import { convertStatus, convertTimestamp } from "../../utils/convertion";
 import { setLotteries } from "../../redux/redux-toolkit/lotteriesSlice";
 import LotteriesTable from "../../components/atoms/lotteriesTable";
+import { LotteryLoadingComponent } from "../../molecules/pages/lotteryDetails.atom";
 
 const Lotteries = () => {
   const dispatch = useDispatch();
@@ -55,53 +55,47 @@ const Lotteries = () => {
     getAllLotteries();
   };
   return (
-    <>
-      {loading ? (
-        <div className={style.loadingBox}>
-          <CircularProgress color="success" />
-        </div>
-      ) : (
-        <div style={{ padding: "50px" }}>
-          <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
-            <div className={style.titleBox}>
-              <Typography></Typography>
-              <Typography variant="h5" textAlign="center">
-                Lotteries
-              </Typography>
-              <Tooltip title="Add Lottery" placement="top">
-                <IconButton onClick={() => setOpen(true)}>
-                  <LibraryAddIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          </Paper>
-          <div style={{ maxHeight: "64vh", overflow: "auto" }}>
-            <LotteriesTable />
-          </div>
-          <Paper
-            sx={{
-              margin: "1px 0",
-              padding: "10px 20px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>&nbsp;&nbsp;</div>
-            <Pagination count={1} page={page} onChange={handleChange} />
-            <Tooltip title="Refresh" placement="top">
-              <IconButton onClick={refreshPage}>
-                <Refresh />
+    <LotteryLoadingComponent loading={loading}>
+      <div style={{ padding: "50px" }}>
+        <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
+          <div className={style.titleBox}>
+            <Typography></Typography>
+            <Typography variant="h5" textAlign="center">
+              Lotteries
+            </Typography>
+            <Tooltip title="Add Lottery" placement="top">
+              <IconButton onClick={() => setOpen(true)}>
+                <LibraryAddIcon />
               </IconButton>
             </Tooltip>
-          </Paper>
-          <AddLotteryDialog
-            open={open}
-            handleClose={() => setOpen(false)}
-            refreshPage={getAllLotteries}
-          />
+          </div>
+        </Paper>
+        <div style={{ maxHeight: "64vh", overflow: "auto" }}>
+          <LotteriesTable />
         </div>
-      )}
-    </>
+        <Paper
+          sx={{
+            margin: "1px 0",
+            padding: "10px 20px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div>&nbsp;&nbsp;</div>
+          <Pagination count={1} page={page} onChange={handleChange} />
+          <Tooltip title="Refresh" placement="top">
+            <IconButton onClick={refreshPage}>
+              <Refresh />
+            </IconButton>
+          </Tooltip>
+        </Paper>
+        <AddLotteryDialog
+          open={open}
+          handleClose={() => setOpen(false)}
+          refreshPage={getAllLotteries}
+        />
+      </div>
+    </LotteryLoadingComponent>
   );
 };
 

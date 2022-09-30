@@ -18,10 +18,18 @@
   justify-content: center;
   flex: 1;
   padding: 5px;
+  flex-direction: column;
 }
 .preview {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.canvasContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }

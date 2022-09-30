@@ -19,7 +19,7 @@ const sx = {
   },
 };
 
-export default function UsersTable(props: any) {
+const UsersTable = (props: any) => {
   const { refreshPage } = props;
   const { users } = useSelector((state: RootState) => state.users);
   const { contract, signer } = useSelector(
@@ -63,6 +63,7 @@ export default function UsersTable(props: any) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>Sl. No.</TableCell>
               <TableCell>Wallet Address</TableCell>
               <TableCell sx={sx.tableCell}>Name</TableCell>
               <TableCell sx={sx.tableCell}>Email</TableCell>
@@ -70,11 +71,14 @@ export default function UsersTable(props: any) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((item: any) => (
+            {users.map((item: any, index: number) => (
               <TableRow
                 key={item.walletAddress}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
                 <TableCell component="th" scope="row">
                   {item.walletAddress}&nbsp;
                   <Tooltip title="Copy" placement="top">
@@ -122,4 +126,6 @@ export default function UsersTable(props: any) {
       </TableContainer>
     </div>
   );
-}
+};
+
+export default UsersTable;

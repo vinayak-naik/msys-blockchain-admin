@@ -1,0 +1,42 @@
+[
+    {
+      "color": "White",
+      "code": "FF0000"
+    },
+    {
+      "color": "Silver",
+      "code": "00FFFF"
+    },
+    {
+      "color": "Grey",
+      "code": "0000FF"
+    },
+    {
+      "color": "Black",
+      "code": "00008B"
+    },
+    {
+      "color": "Orange",
+      "code": "ADD8E6"
+    },
+    {
+      "color": "Brown",
+      "code": "800080"
+    },
+    {
+      "color": "Maroon",
+      "code": "FFFF00"
+    },
+    {
+      "color": "Green",
+      "code": "00FF00"
+    },
+    {
+      "color": "Olive",
+      "code": "FF00FF"
+    },
+    {
+      "color": "Aquamarine",
+      "code": "FFC0CB"
+    }
+  ]

@@ -41,7 +41,6 @@ const MatchResultDialog = (props: any) => {
   };
 
   const onSubmit = async (values: any) => {
-    console.log(values);
     setLoading(true);
     await contract.connect(signer).announceResult(matchId, values.teamWon);
     checkEvents();

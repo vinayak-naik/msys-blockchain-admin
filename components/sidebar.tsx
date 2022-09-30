@@ -73,7 +73,7 @@ const Sidebar = () => {
         // { name: "Add NFT", route: "/NFT/addNFT" },
         // { name: "All NFTs", route: "/NFT" },
       ],
-      route: "/NFT",
+      route: "/nft",
     },
     {
       name: "Articles",

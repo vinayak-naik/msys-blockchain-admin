@@ -30,11 +30,7 @@ const Users = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  // const getAllUsers1 = async () => {
-  //   const users = await contract.getAllUsers();
-  //   setAllUsers(users);
-  //   console.log(users);
-  // };
+
   const getAllUsers = async () => {
     const res = await contract.getAllUsers();
     const users = res.map((item: any) => {
@@ -58,7 +54,6 @@ const Users = () => {
   }, [contract]); //eslint-disable-line
 
   const refreshPage = () => {
-    console.log("getAllUsers()");
     getAllUsers();
   };
 

@@ -9,6 +9,9 @@ export const contractSlice = createSlice({
     setContract: (state: any, action: PayloadAction<any>) => {
       state.contract = action.payload;
     },
+    setNftContract: (state: any, action: PayloadAction<any>) => {
+      state.nftContract = action.payload;
+    },
     setSigner: (state: any, action: PayloadAction<any>) => {
       state.signer = action.payload;
     },
@@ -16,6 +19,6 @@ export const contractSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setContract, setSigner } = contractSlice.actions;
+export const { setContract, setNftContract, setSigner } = contractSlice.actions;
 
 export default contractSlice.reducer;

@@ -4,9 +4,14 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import { useSelector, useDispatch } from "react-redux";
-import { setContract, setSigner } from "../redux/redux-toolkit/contractSlice";
+import {
+  setContract,
+  setNftContract,
+  setSigner,
+} from "../redux/redux-toolkit/contractSlice";
 import { RootState } from "../redux/store";
 import ABI from "../public/abi.json";
+import nftABI from "../public/nftAbi.json";
 import { compressAddress } from "../utils/convertion";
 import { IconButton } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
@@ -22,7 +27,7 @@ const HeaderComponent = () => {
   const [showAddress, setShowAddress] = useState(false);
 
   const contractAddress = "0xF6aaFbeEE20ef13e31085177d19140EBDC07B732";
-  // const contractAddress = "0xe7f309b8cd388d1723b6ACe24E7b8000A3099283";  //Old
+  const nftContractAddress = "0xfd31A98a3724d09A8A1b6C7AaBb174ACE30F4618";
 
   const setSign = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -30,7 +35,13 @@ const HeaderComponent = () => {
     const sign = provider.getSigner();
     dispatch(setSigner(sign));
     const contract = new ethers.Contract(contractAddress, ABI, provider);
+    const nftContract = new ethers.Contract(
+      nftContractAddress,
+      nftABI,
+      provider
+    );
     dispatch(setContract(contract));
+    dispatch(setNftContract(nftContract));
   };
 
   useEffect(() => {

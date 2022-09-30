@@ -23,7 +23,6 @@ export default function MatchesTable() {
   const { push } = useRouter();
   const { matches } = useSelector((state: RootState) => state.matches);
 
-  console.log(matches);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

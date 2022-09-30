@@ -4,6 +4,7 @@ import contractReducer from "./redux-toolkit/contractSlice";
 import matchesReducer from "./redux-toolkit/matchesSlice";
 import lotteriesReducer from "./redux-toolkit/lotteriesSlice";
 import usersReducer from "./redux-toolkit/userSlice";
+import nftsReducer from "./redux-toolkit/nftSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     matches: matchesReducer,
     lotteries: lotteriesReducer,
     users: usersReducer,
+    nfts: nftsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

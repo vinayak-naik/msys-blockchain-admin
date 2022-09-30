@@ -26,9 +26,7 @@ const AddArticleDialog = (props: any) => {
     description: Yup.string().required("Please enter description"),
   });
 
-  const onSubmit = async (values: any) => {
-    console.log(values);
-  };
+  const onSubmit = async () => {};
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>
