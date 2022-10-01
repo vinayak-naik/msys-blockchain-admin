@@ -11,7 +11,9 @@ export const uploadImageToPinata = async (formData: any) => {
       pinata_api_key: PINATA_API_KEY,
       pinata_secret_api_key: PINATA_SECRET_API_KEY,
     },
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .catch(() => {});
 };
 
 export const uploadJsonToPinata = async (formData: any) => {

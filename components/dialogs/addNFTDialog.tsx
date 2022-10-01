@@ -30,6 +30,7 @@ const AddNFTDialog = (props: any) => {
     (state: RootState) => state.contract
   );
   const [imgSrc, setImgSrc] = useState("");
+  const [uploadImageMessage, setUploadImageMessage] = useState<any>({});
   const [crop, setCrop] = useState<Crop>();
   const [croppedImage, setCroppedImage] = useState<any>();
   const [activeStep, setActiveStep] = useState(0);
@@ -40,6 +41,7 @@ const AddNFTDialog = (props: any) => {
     setLoading(false);
     setFormValues({});
     setActiveStep(0);
+    setUploadImageMessage("");
     handleClose();
   };
 
@@ -64,10 +66,29 @@ const AddNFTDialog = (props: any) => {
     };
     uploadJsonToPinata(JSON.stringify(metadata)).then((jsonData) => {
       const { name, price, forSale } = formValues;
-      nftContract
-        .connect(signer)
-        .safeMint(name, price, forSale, jsonData.IpfsHash)
-        .then(() => checkEvents());
+      if (jsonData?.IpfsHash) {
+        setUploadImageMessage({
+          uploadSuccess: true,
+          message: "Metadata uploaded to IPFS successfully",
+        });
+        nftContract
+          .connect(signer)
+          .safeMint(name, price, forSale, jsonData.IpfsHash)
+          .then(() => checkEvents())
+          .catch(() => {
+            setUploadImageMessage({
+              uploadSuccess: false,
+              message: "Error while Minting NFT",
+            });
+            setLoading(false);
+          });
+      } else {
+        setUploadImageMessage({
+          uploadSuccess: false,
+          message: "Error while uploading metadata to IPFS",
+        });
+        setLoading(false);
+      }
     });
   };
 
@@ -80,13 +101,36 @@ const AddNFTDialog = (props: any) => {
         const formData = new FormData();
         formData.append("file", blob);
         uploadImageToPinata(formData).then((imageData) => {
-          setFormValues({
-            ...formValues,
-            image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
-          });
-          setLoading(false);
-          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          if (imageData?.IpfsHash) {
+            console.log(imageData);
+            setFormValues({
+              ...formValues,
+              image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
+            });
+            setLoading(false);
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setUploadImageMessage({
+              uploadSuccess: true,
+              message: "Image uploaded to IPFS successfully",
+            });
+            setTimeout(() => {
+              setUploadImageMessage({
+                uploadSuccess: true,
+                message: "",
+              });
+            }, 4000);
+          } else {
+            setUploadImageMessage({
+              uploadSuccess: false,
+              message: "Error while uploading image to IPFS",
+            });
+            setLoading(false);
+          }
         });
+        // .catch((e) => {
+        //   console.log(e);
+        //   setUploadImageMessage("Error while uploading to IPFS");
+        // });
       },
       "image/png",
       1
@@ -103,6 +147,7 @@ const AddNFTDialog = (props: any) => {
   };
 
   const handleBack = () => {
+    setUploadImageMessage("");
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
@@ -116,59 +161,6 @@ const AddNFTDialog = (props: any) => {
       reader.readAsDataURL(e.target.files[0]);
     }
   }
-
-  // const NftFileInput = ({ onSelectFile }: any) => {
-  //   return (
-  //     <div className={style.fileInputBox}>
-  //       <input type="file" accept="image/*" onChange={onSelectFile} />
-  //     </div>
-  //   );
-  // };
-  // const NftDialogBackButton = (props: any) => {
-  //   const { activeStep, handleBack } = props;
-  //   return (
-  //     <Button
-  //       color="inherit"
-  //       disabled={activeStep === 0}
-  //       onClick={handleBack}
-  //       sx={{ mr: 1 }}
-  //     >
-  //       Back
-  //     </Button>
-  //   );
-  // };
-  // const NftDialogMintButton = (props: any) => {
-  //   const { loading, formValues, uploadJsonToIpfs } = props;
-  //   return (
-  //     <Button
-  //       onClick={uploadJsonToIpfs}
-  //       disabled={!formValues.name || loading}
-  //       variant="contained"
-  //       endIcon={
-  //         loading ? <CircularProgress size={16} color="inherit" /> : null
-  //       }
-  //     >
-  //       {loading ? "Minting nft" : "mint nft"}
-  //     </Button>
-  //   );
-  // };
-  // const NftDialogNextButton = (props: any) => {
-  //   const { loading, activeStep, croppedImage, imgSrc } = props;
-  //   return (
-  //     <Button
-  //       variant="outlined"
-  //       disabled={
-  //         !imgSrc || loading || (activeStep === 1 ? !croppedImage?.crop : false)
-  //       }
-  //       onClick={handleNext}
-  //       endIcon={
-  //         loading ? <CircularProgress size={16} color="inherit" /> : null
-  //       }
-  //     >
-  //       {loading ? "uploading" : "next"}
-  //     </Button>
-  //   );
-  // };
 
   return (
     <Dialog open={open} onClose={closeDialog} fullWidth maxWidth="md">
@@ -233,6 +225,17 @@ const AddNFTDialog = (props: any) => {
             </Box>
           </React.Fragment>
         </Box>
+        {uploadImageMessage.message && (
+          <div
+            className={`${style.upldMessage} ${
+              uploadImageMessage.uploadSuccess
+                ? style.successMessage
+                : style.errorMessage
+            }`}
+          >
+            {uploadImageMessage.message}
+          </div>
+        )}
       </DialogTitle>
     </Dialog>
   );

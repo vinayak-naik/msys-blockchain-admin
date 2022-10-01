@@ -41,13 +41,9 @@ const CropImage = (props: any) => {
   const [scale, setScale] = useState<any>(1);
   const [rotate, setRotate] = useState(0);
 
-  // const PINATA_FILE_URL = `${process.env.NEXT_PUBLIC_PINATA_FILE_URL}`;
-  // const PINATA_API_KEY = `${process.env.NEXT_PUBLIC_PINATA_API_KEY}`;
-  // const PINATA_SECRET_API_KEY = `${process.env.NEXT_PUBLIC_PINATA_SECRET_API_KEY}`;
-
   useEffect(() => {
     setCroppedImage({ canvas: previewCanvasRef.current, crop: completedCrop });
-  }, [completedCrop]);
+  }, [completedCrop]); //eslint-disable-line
 
   function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
     const { width, height } = e.currentTarget;
@@ -183,27 +179,36 @@ const CropImage = (props: any) => {
                   onLoad={onImageLoad}
                 />
               </ReactCrop>
-              <Slider
-                size="small"
-                value={scale}
-                onChange={(e, val) => setScale(Number(val))}
-                aria-label="Small"
-                valueLabelDisplay="auto"
-                min={0.1}
-                max={1.9}
-                step={0.05}
-                sx={{ mt: 3 }}
-              />
-              <Slider
-                size="small"
-                value={rotate}
-                onChange={(e, val) => setRotate(Number(val))}
-                aria-label="Small"
-                valueLabelDisplay="auto"
-                min={-90}
-                max={90}
-                sx={{ mt: 1 }}
-              />
+              <div
+                className={style.sliderContainer}
+                style={{ marginTop: "15px" }}
+              >
+                <Slider
+                  size="small"
+                  value={scale}
+                  onChange={(e, val) => setScale(Number(val))}
+                  aria-label="Small"
+                  valueLabelDisplay="auto"
+                  min={0.1}
+                  max={1.9}
+                  step={0.05}
+                  sx={{ flex: "1" }}
+                />
+                <div className={style.sliderLabel}>Zoom</div>
+              </div>
+              <div className={style.sliderContainer}>
+                <Slider
+                  size="small"
+                  value={rotate}
+                  onChange={(e, val) => setRotate(Number(val))}
+                  aria-label="Small"
+                  valueLabelDisplay="auto"
+                  min={0}
+                  max={360}
+                  sx={{ flex: "1" }}
+                />
+                <div className={style.sliderLabel}>Rotate</div>
+              </div>
             </div>
           </div>
         )}
