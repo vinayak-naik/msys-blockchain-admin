@@ -20,13 +20,28 @@ const NFTs = () => {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false); //eslint-disable-line
+  const [totalPages, setTotalPages] = useState(1);
+  const count = 2;
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const getAllNFTs = async () => {
-    const res = await nftContract.getAllNfts();
-    const nfts = res.map((item: any) => {
+    const length = await nftContract.getAllNfts();
+    const pageNo = Math.ceil(Number(length.length) / count);
+    setTotalPages(pageNo);
+    const from = (page - 1) * count;
+    const to = from + count;
+    const usersArr = [];
+
+    for (let i = from; i < to; i++) {
+      if (i < length.length) {
+        const res = await nftContract.NFTs(i);
+        usersArr.push(res);
+      }
+    }
+    const nfts = usersArr.map((item: any) => {
       return {
         name: item.name,
         price: Number(item.price),
@@ -46,6 +61,11 @@ const NFTs = () => {
       getAllNFTs();
     }
   }, [nftContract]); //eslint-disable-line
+  useEffect(() => {
+    if (nftContract) {
+      getAllNFTs();
+    }
+  }, [nftContract, page]); //eslint-disable-line
 
   return (
     <div style={{ padding: "50px" }}>
@@ -72,7 +92,7 @@ const NFTs = () => {
         }}
       >
         <div></div>
-        <Pagination count={1} page={page} onChange={handleChange} />
+        <Pagination count={totalPages} page={page} onChange={handleChange} />
         <Tooltip title="Refresh" placement="top">
           <IconButton onClick={getAllNFTs}>
             <Refresh />

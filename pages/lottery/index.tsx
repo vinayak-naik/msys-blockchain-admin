@@ -23,13 +23,28 @@ const Lotteries = () => {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const count = 2;
 
   const getAllLotteries = async () => {
-    const res = await contract.getAllLotteries();
-    const lotteries = res.map((item: any) => {
+    const length = await contract.getAllLotteries();
+    const pageNo = Math.ceil(Number(length.length) / count);
+    setTotalPages(pageNo);
+    const from = (page - 1) * count;
+    const to = from + count;
+    const lotteriesArr = [];
+
+    for (let i = from; i < to; i++) {
+      if (i < length.length) {
+        const res = await contract.lotteries(i);
+        lotteriesArr.push(res);
+      }
+    }
+    const lotteries = lotteriesArr.map((item: any) => {
       return {
         date: convertTimestamp(Number(item.date)),
         lotteryId: Number(item.lotteryId),
@@ -49,6 +64,11 @@ const Lotteries = () => {
       getAllLotteries();
     }
   }, [contract]); //eslint-disable-line
+  useEffect(() => {
+    if (contract) {
+      getAllLotteries();
+    }
+  }, [contract, page]); //eslint-disable-line
 
   const refreshPage = () => {
     setLoading(true);
@@ -56,7 +76,7 @@ const Lotteries = () => {
   };
   return (
     <LotteryLoadingComponent loading={loading}>
-      <div style={{ padding: "50px" }}>
+      <div style={{ padding: "30px 30px 0" }}>
         <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
           <div className={style.titleBox}>
             <Typography></Typography>
@@ -70,9 +90,7 @@ const Lotteries = () => {
             </Tooltip>
           </div>
         </Paper>
-        <div style={{ maxHeight: "64vh", overflow: "auto" }}>
-          <LotteriesTable />
-        </div>
+        <LotteriesTable />
         <Paper
           sx={{
             margin: "1px 0",
@@ -82,7 +100,7 @@ const Lotteries = () => {
           }}
         >
           <div>&nbsp;&nbsp;</div>
-          <Pagination count={1} page={page} onChange={handleChange} />
+          <Pagination count={totalPages} page={page} onChange={handleChange} />
           <Tooltip title="Refresh" placement="top">
             <IconButton onClick={refreshPage}>
               <Refresh />

@@ -79,7 +79,7 @@ const UsersTable = (props: any) => {
                 <TableCell component="th" scope="row">
                   {index + 1}
                 </TableCell>
-                <TableCell component="th" scope="row">
+                <TableCell sx={sx.tableCell} component="th" scope="row">
                   {item.walletAddress}&nbsp;
                   <Tooltip title="Copy" placement="top">
                     <IconButton

@@ -21,13 +21,27 @@ const Matches = () => {
   const { contract } = useSelector((state: RootState) => state.contract);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const count = 7;
   const getAllMatches = async () => {
-    const res = await contract.getAllMatches();
-    const matches = res.map((item: any) => {
+    const length = await contract.getTotalMatches();
+    const pageNo = Math.ceil(Number(length) / count);
+    setTotalPages(pageNo);
+    const from = (page - 1) * count;
+    const to = from + count;
+    const matchesArr = [];
+
+    for (let i = from; i < to; i++) {
+      if (i < length) {
+        const res = await contract.matches(i);
+        matchesArr.push(res);
+      }
+    }
+    const matches = matchesArr.map((item: any) => {
       return {
         date: convertTimestamp(Number(item.date)),
         matchId: Number(item.matchId),
@@ -48,6 +62,11 @@ const Matches = () => {
       getAllMatches();
     }
   }, [contract]); //eslint-disable-line
+  useEffect(() => {
+    if (contract) {
+      getAllMatches();
+    }
+  }, [contract, page]); //eslint-disable-line
 
   const refreshPage = () => {
     setLoading(true);
@@ -60,7 +79,7 @@ const Matches = () => {
           <CircularProgress color="success" />
         </div>
       ) : (
-        <div style={{ padding: "50px" }}>
+        <div style={{ padding: "30px 30px 0" }}>
           <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
             <div className={style.titleBox}>
               <Typography variant="h5" textAlign="center"></Typography>
@@ -76,19 +95,21 @@ const Matches = () => {
               </Typography>
             </div>
           </Paper>
-          <div style={{ height: "100%", maxHeight: "64vh", overflow: "auto" }}>
-            <MatchesTable />
-          </div>
+          <MatchesTable />
           <Paper
             sx={{
-              margin: "1px 0",
+              margin: "0.1px 0",
               padding: "10px 20px",
               display: "flex",
               justifyContent: "space-between",
             }}
           >
             <div>&nbsp;&nbsp;</div>
-            <Pagination count={1} page={page} onChange={handleChange} />
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChange}
+            />
             <Tooltip title="Refresh" placement="top">
               <IconButton onClick={refreshPage}>
                 <Refresh />

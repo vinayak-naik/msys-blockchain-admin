@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import style from "../../styles/pages/user.module.css";
 import GroupAddOutlinedIcon from "@mui/icons-material/GroupAddOutlined";
 import AddArticleDialog from "../../components/dialogs/addArticleDialog";
+import PrivatePage from "../../components/atoms/uploadImageTest";
 const Users = () => {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
@@ -33,6 +34,7 @@ const Users = () => {
         }}
       >
         <Pagination count={1} page={page} onChange={handleChange} />
+        <PrivatePage />
       </Paper>
       <AddArticleDialog open={open} handleClose={() => setOpen(false)} />
     </div>

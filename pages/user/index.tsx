@@ -27,13 +27,28 @@ const Users = () => {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
+  const count = 2;
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const getAllUsers = async () => {
-    const res = await contract.getAllUsers();
-    const users = res.map((item: any) => {
+    const length = await contract.getAllUsers();
+    const pageNo = Math.ceil(Number(length.length) / count);
+    setTotalPages(pageNo);
+    const from = (page - 1) * count;
+    const to = from + count;
+    const usersArr = [];
+
+    for (let i = from; i < to; i++) {
+      if (i < length.length) {
+        const res = await contract.users(i);
+        usersArr.push(res);
+      }
+    }
+    const users = usersArr.map((item: any) => {
       return {
         id: Number(item.id),
         name: item.name,
@@ -52,6 +67,11 @@ const Users = () => {
       getAllUsers();
     }
   }, [contract]); //eslint-disable-line
+  useEffect(() => {
+    if (contract) {
+      getAllUsers();
+    }
+  }, [contract, page]); //eslint-disable-line
 
   const refreshPage = () => {
     getAllUsers();
@@ -64,7 +84,7 @@ const Users = () => {
           <CircularProgress color="success" />
         </div>
       ) : (
-        <div style={{ padding: "40px 50px 0" }}>
+        <div style={{ padding: "30px 30px 0" }}>
           <Paper sx={{ marginBottom: "2px", padding: "10px" }}>
             <div className={style.titleBox}>
               <Typography variant="h5" textAlign="center"></Typography>
@@ -80,9 +100,7 @@ const Users = () => {
               </Typography>
             </div>
           </Paper>
-          <div style={{ maxHeight: "64vh", overflow: "auto" }}>
-            <UsersTable refreshPage={refreshPage} />
-          </div>
+          <UsersTable refreshPage={refreshPage} />
           <Paper
             sx={{
               margin: "0.5px 0",
@@ -92,7 +110,11 @@ const Users = () => {
             }}
           >
             <div></div>
-            <Pagination count={1} page={page} onChange={handleChange} />
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChange}
+            />
             <Tooltip title="Refresh" placement="top">
               <IconButton onClick={getAllUsers}>
                 <Refresh />

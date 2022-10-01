@@ -25,5 +25,7 @@ export const uploadJsonToPinata = async (formData: any) => {
       pinata_secret_api_key: PINATA_SECRET_API_KEY,
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json());
+  })
+    .then((response) => response.json())
+    .catch(() => {});
 };
