@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 const sx = {
   tableCell: {
     textTransform: "capitalize",
+    padding: "12px",
   },
 };
 

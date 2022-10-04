@@ -16,6 +16,7 @@ const sx = {
   tableCell: {
     textTransform: "capitalize",
     cursor: "pointer",
+    padding: "12px",
   },
 };
 

@@ -1,93 +1,136 @@
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { ErrorMessage, Form, Formik } from "formik";
-import React from "react";
-import TextError from "../reusable/textError";
-import style from "../../styles/components/dialog/dialog.module.css";
-import * as Yup from "yup";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../../redux/store";
+import { Button, Dialog, DialogTitle } from "@mui/material";
+import Image from "next/image";
+import React, { useState } from "react";
+import style from "../../styles/components/dialog/addArticleDialog.module.css";
+import { addArticle, uploadArticleImage } from "../../utils/api/next.api";
+import AddArticleForm from "../atoms/addArticleForm";
 
 const AddArticleDialog = (props: any) => {
   const { open, handleClose } = props;
+  const [paragraph, setParagraph] = useState<any>([]);
+  const [title, setTitle] = useState("");
+  const [uploaded, setUploaded] = useState<any>();
 
-  const initialValues = {
-    title: "",
-    description: "",
+  const uploadImageHandler = () => {
+    const filtered = paragraph.filter((item: any) => item.imageData);
+    if (filtered.length === 0) {
+      return setUploaded({});
+    }
+    const uploadedImages: any = {};
+    paragraph.forEach((item: any, index: number) => {
+      if (item.imageData) {
+        item.imageData.toBlob((blob: any) => {
+          const formData = new FormData();
+          formData.append("file", blob);
+          uploadArticleImage(formData).then((imageData) => {
+            console.log(imageData.url);
+            uploadedImages[index] = imageData.url;
+          });
+        });
+        setTimeout(() => {
+          if (Object.keys(uploadedImages).length === filtered.length) {
+            setUploaded(uploadedImages);
+          } else {
+            console.log("failed to upload");
+          }
+        }, 4000);
+      }
+    });
   };
 
-  const validationSchema = Yup.object({
-    title: Yup.string().required("Please enter user's wallet address"),
-    description: Yup.string().required("Please enter description"),
-  });
+  const submitArticle = () => {
+    let obj: any = {
+      title: "",
+      body: [],
+    };
+    paragraph.map((item: any, index: number) => {
+      obj.title = title;
+      obj.body.push({
+        header: item.header,
+        description: item.description,
+        height: item.height,
+        width: item.width,
+        url: uploaded[index] ? uploaded[index] : "",
+      });
+    });
+    addArticle(JSON.stringify(obj));
+  };
 
-  const onSubmit = async () => {};
+  const closeDialog = () => {
+    setUploaded({});
+    setParagraph([]);
+    setTitle("");
+    handleClose();
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={closeDialog} fullWidth maxWidth="md">
       <DialogTitle>
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-        >
-          {(formik) => {
-            return (
-              <Form method="post" style={{ width: "30vw" }}>
-                <div className={style.inputBox}>
-                  <Typography variant="h4">Add Article</Typography>
-                </div>
-                <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="title"
-                    label="Title"
-                    variant="outlined"
-                    {...formik.getFieldProps("title")}
-                  />
-                  <div className={style.errorBox}>
-                    <ErrorMessage component={TextError} name="title" />
+        <div className={style.dialogHead}>Add Article</div>
+        <div className={style.container}>
+          <div className={style.containerLeftBox}>
+            <AddArticleForm
+              setParagraph={(values: any) =>
+                setParagraph([...paragraph, values])
+              }
+              setTitle={(e: any) => setTitle(e)}
+              title={title}
+            />
+          </div>
+          <div className={style.containerRightBox}>
+            <div className={style.previewTitle}>{title}</div>
+            {paragraph &&
+              paragraph.map((item: any, index: number) => {
+                if (item.imageData) {
+                  var dataURL = item.imageData.toDataURL();
+                }
+                return (
+                  <div key={index}>
+                    {item.header && (
+                      <div className={style.previewHead}>{item.header}</div>
+                    )}
+                    {item.imageData && (
+                      <Image
+                        alt="img"
+                        src={dataURL}
+                        height={item.height ? item.height / 5 : "100px"}
+                        width={item.width ? item.width / 5 : "100px"}
+                      />
+                    )}
+                    {item.description && (
+                      <div
+                        style={{ fontSize: "12px" }}
+                        className={style.previewDescription}
+                      >
+                        {item.description}
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="file"
-                    // onChange={(event) => {
-                    //   setFieldValue(event.currentTarget.files[0]);
-                    // }}
-                  />
-                  <div className={style.errorBox}>
-                    {/* <TextError>test</TextError> */}
-                  </div>
-                </div>
-                <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="description"
-                    label="Enter article Description"
-                    variant="outlined"
-                    {...formik.getFieldProps("description")}
-                  />
-                  <div className={style.errorBox}>
-                    <ErrorMessage component={TextError} name="description" />
-                  </div>
-                </div>
-                <div className={style.inputButtonBox}>
-                  <Button type="submit" variant="contained" color="success">
-                    Submit
-                  </Button>
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
+                );
+              })}
+          </div>
+        </div>
+        <div className={style.dialogAction}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <Button
+            onClick={uploadImageHandler}
+            variant="contained"
+            disabled={!paragraph[0]}
+            color="success"
+          >
+            Upload Images
+          </Button>
+          <Button
+            onClick={submitArticle}
+            variant="contained"
+            disabled={!uploaded}
+            color="success"
+          >
+            Submit Article
+          </Button>
+        </div>
       </DialogTitle>
     </Dialog>
   );

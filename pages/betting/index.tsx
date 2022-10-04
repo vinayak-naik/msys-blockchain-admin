@@ -26,7 +26,7 @@ const Matches = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  const count = 7;
+  const count = 8;
   const getAllMatches = async () => {
     const length = await contract.getTotalMatches();
     const pageNo = Math.ceil(Number(length) / count);
@@ -98,7 +98,7 @@ const Matches = () => {
           <MatchesTable />
           <Paper
             sx={{
-              margin: "0.1px 0",
+              margin: "1px 0",
               padding: "10px 20px",
               display: "flex",
               justifyContent: "space-between",

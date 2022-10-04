@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 const sx = {
   tableCell: {
     textTransform: "capitalize",
+    padding: "12px",
   },
 };
 

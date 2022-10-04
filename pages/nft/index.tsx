@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import style from "../../styles/pages/user.module.css";
-import AddNFTDialog from "../../components/dialogs/addNFTDialog";
+import AddNFTDialog from "../../components/dialogs/addNftDialog";
 import { LibraryAdd, Refresh } from "@mui/icons-material";
 import NftsTable from "../../components/atoms/nftsTable";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,7 +68,7 @@ const NFTs = () => {
   }, [nftContract, page]); //eslint-disable-line
 
   return (
-    <div style={{ padding: "50px" }}>
+    <div style={{ padding: "30px 30px 0" }}>
       <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
         <div className={style.titleBox}>
           <Typography variant="h5" textAlign="center"></Typography>
