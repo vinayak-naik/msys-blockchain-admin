@@ -3,9 +3,11 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import style from "../../styles/components/dialog/addArticleDialog.module.css";
 import * as Yup from "yup";
-import AddArticleImageDialog from "../dialogs/addArticleImageDialog";
+import AddGuideImageDialog from "../dialogs/addArticleImageDialog";
+// import { useSelector } from "react-redux";
+// import { RootState } from "../../redux/store";
 
-const AddArticleForm = (props: any) => {
+const AddGuideForm = (props: any) => {
   const { setParagraph, title, setTitle } = props;
   const [imageData, setImageData] = useState<any>("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -42,7 +44,7 @@ const AddArticleForm = (props: any) => {
           return (
             <Form method="post">
               <div className={style.inputTitle}>
-                <Typography variant="h6">Article Title</Typography>
+                <Typography variant="h6">Guide Title</Typography>
               </div>
               <div className={style.inputBox}>
                 <TextField
@@ -73,7 +75,7 @@ const AddArticleForm = (props: any) => {
                   fullWidth
                   type="text"
                   id="description"
-                  label="Enter Article Description"
+                  label="Enter Guide Description"
                   variant="outlined"
                   {...formik.getFieldProps("description")}
                 />
@@ -116,7 +118,7 @@ const AddArticleForm = (props: any) => {
           );
         }}
       </Formik>
-      <AddArticleImageDialog
+      <AddGuideImageDialog
         open={openDialog}
         handleClose={() => setOpenDialog(false)}
         setImageData={(e: any) => setImageData(e)}
@@ -125,4 +127,4 @@ const AddArticleForm = (props: any) => {
   );
 };
 
-export default AddArticleForm;
+export default AddGuideForm;

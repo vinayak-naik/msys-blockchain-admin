@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export default function articleImages(req: any, res: any) {
+export default function guideImages(req: any, res: any) {
   const filePath = path.resolve(
     ".",
     `public/guide/images/${req.query.imageName}`

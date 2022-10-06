@@ -36,3 +36,31 @@ export const getArticle = async (fileName: string) => {
     .then((response) => response.json())
     .catch(() => {});
 };
+export const getGuides = async () => {
+  return fetch("http://localhost:3000/api/guide/json/getList")
+    .then((response) => response.json())
+    .catch(() => {});
+};
+export const getGuide = async (fileName: string) => {
+  return fetch(`http://localhost:3000/api/guide/json/${fileName}`)
+    .then((response) => response.json())
+    .catch(() => {});
+};
+export const uploadGuideImage = async (formData: any) => {
+  return fetch("http://localhost:3000/api/guide/image/upload", {
+    method: "POST",
+    body: formData,
+    headers: {},
+  })
+    .then((response) => response.json())
+    .catch(() => {});
+};
+export const addGuide = async (formData: any) => {
+  return fetch("http://localhost:3000/api/guide/json/add", {
+    method: "POST",
+    body: formData,
+    headers: {},
+  })
+    .then((response) => response.json())
+    .catch(() => {});
+};

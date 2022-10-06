@@ -25,7 +25,7 @@ handler.post(async (req: any, res: any) => {
   let filename = req.file.filename;
   res.status(200).send({
     result: filename,
-    url: url + "/api/guide/" + req.file.filename,
+    url: url + "/api/guide/image/" + req.file.filename,
   });
 });
 
