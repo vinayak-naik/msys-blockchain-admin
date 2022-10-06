@@ -190,6 +190,7 @@ const AddNFTDialog = (props: any) => {
                   crop={crop}
                   setCrop={(e: any) => setCrop(e)}
                   setCroppedImage={(e: any) => setCroppedImage(e)}
+                  aspect={1}
                 />
               ) : activeStep === 2 ? (
                 <AddNftForm

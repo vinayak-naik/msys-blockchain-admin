@@ -34,7 +34,7 @@ function centerAspectCrop(
 }
 
 const CropImage = (props: any) => {
-  const { imgSrc, crop, setCrop, setCroppedImage } = props;
+  const { imgSrc, crop, setCrop, setCroppedImage, aspect } = props;
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
@@ -166,7 +166,7 @@ const CropImage = (props: any) => {
                 crop={crop}
                 onChange={(_, percentCrop) => setCrop(percentCrop)}
                 onComplete={(c) => setCompletedCrop(c)}
-                aspect={1}
+                aspect={aspect}
               >
                 <img
                   ref={imgRef}

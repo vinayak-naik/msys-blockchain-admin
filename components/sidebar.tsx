@@ -1,5 +1,5 @@
 import { Accordion, AccordionSummary, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import style from "../styles/components/sidebar.module.css";
 import { useRouter } from "next/router";
 
@@ -27,7 +27,7 @@ const sx = {
 
 const Sidebar = () => {
   const { push } = useRouter();
-  const [param, setParam] = useState("");
+  // const [param, setParam] = useState("");
 
   const navItems = [
     {
@@ -60,10 +60,10 @@ const Sidebar = () => {
     },
   ];
   const clickHandler = (route: string) => {
-    setParam(route);
-    if (param !== route) {
-      push(`${route}`);
-    }
+    // setParam(route);
+    // if (param !== route) {
+    // }
+    push(`${route}`);
   };
   return (
     <div className={style.container}>

@@ -5,6 +5,8 @@ import matchesReducer from "./redux-toolkit/matchesSlice";
 import lotteriesReducer from "./redux-toolkit/lotteriesSlice";
 import usersReducer from "./redux-toolkit/userSlice";
 import nftsReducer from "./redux-toolkit/nftSlice";
+import articlesReducer from "./redux-toolkit/articleSlice";
+import guidesReducer from "./redux-toolkit/guideSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +16,8 @@ export const store = configureStore({
     lotteries: lotteriesReducer,
     users: usersReducer,
     nfts: nftsReducer,
+    articles: articlesReducer,
+    guides: guidesReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

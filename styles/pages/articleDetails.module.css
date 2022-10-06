@@ -1,0 +1,25 @@
+.container {
+  padding: 20px 40px 0;
+}
+.title {
+  font-size: 26px;
+  font-weight: bold;
+  padding: 10px 15px;
+}
+.head {
+  font-size: 22px;
+  font-weight: bold;
+  color: rgb(110, 110, 110);
+  padding: 5px 10px;
+}
+.imageBox {
+  padding: 0 10px;
+}
+.description {
+  font-size: 16px;
+  padding: 5px 10px;
+}
+.bodyContainer {
+  height: 72vh;
+  overflow: auto;
+}

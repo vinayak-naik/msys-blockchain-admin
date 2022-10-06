@@ -28,7 +28,7 @@ const Lotteries = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  const count = 2;
+  const count = 8;
 
   const getAllLotteries = async () => {
     const length = await contract.getAllLotteries();

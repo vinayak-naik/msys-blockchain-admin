@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogTitle } from "@mui/material";
+import { Button, CircularProgress, Dialog, DialogTitle } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 import style from "../../styles/components/dialog/addArticleDialog.module.css";
@@ -6,14 +6,24 @@ import { addArticle, uploadArticleImage } from "../../utils/api/next.api";
 import AddArticleForm from "../atoms/addArticleForm";
 
 const AddArticleDialog = (props: any) => {
-  const { open, handleClose } = props;
+  const { open, handleClose, refresh } = props;
   const [paragraph, setParagraph] = useState<any>([]);
   const [title, setTitle] = useState("");
   const [uploaded, setUploaded] = useState<any>();
+  const [loading, setLoading] = useState(false);
+
+  const closeDialog = () => {
+    setUploaded({});
+    setParagraph([]);
+    setTitle("");
+    handleClose();
+  };
 
   const uploadImageHandler = () => {
+    setLoading(true);
     const filtered = paragraph.filter((item: any) => item.imageData);
     if (filtered.length === 0) {
+      setLoading(false);
       return setUploaded({});
     }
     const uploadedImages: any = {};
@@ -30,6 +40,7 @@ const AddArticleDialog = (props: any) => {
         setTimeout(() => {
           if (Object.keys(uploadedImages).length === filtered.length) {
             setUploaded(uploadedImages);
+            setLoading(false);
           } else {
             console.log("failed to upload");
           }
@@ -38,7 +49,7 @@ const AddArticleDialog = (props: any) => {
     });
   };
 
-  const submitArticle = () => {
+  const submitArticle = async () => {
     let obj: any = {
       title: "",
       body: [],
@@ -53,14 +64,9 @@ const AddArticleDialog = (props: any) => {
         url: uploaded[index] ? uploaded[index] : "",
       });
     });
-    addArticle(JSON.stringify(obj));
-  };
-
-  const closeDialog = () => {
-    setUploaded({});
-    setParagraph([]);
-    setTitle("");
-    handleClose();
+    await addArticle(JSON.stringify(obj));
+    closeDialog();
+    refresh();
   };
 
   return (
@@ -93,8 +99,8 @@ const AddArticleDialog = (props: any) => {
                       <Image
                         alt="img"
                         src={dataURL}
-                        height={item.height ? item.height / 5 : "100px"}
-                        width={item.width ? item.width / 5 : "100px"}
+                        height={item.height ? item.height / 2 : "100px"}
+                        width={item.width ? item.width / 2 : "100px"}
                       />
                     )}
                     {item.description && (
@@ -117,15 +123,18 @@ const AddArticleDialog = (props: any) => {
           <Button
             onClick={uploadImageHandler}
             variant="contained"
-            disabled={!paragraph[0]}
+            disabled={!paragraph[0] || loading}
             color="success"
+            endIcon={
+              loading ? <CircularProgress size={16} color="inherit" /> : null
+            }
           >
-            Upload Images
+            {loading ? "Uploading Images" : "Upload Images"}
           </Button>
           <Button
             onClick={submitArticle}
             variant="contained"
-            disabled={!uploaded}
+            disabled={!uploaded || !title}
             color="success"
           >
             Submit Article

@@ -21,7 +21,7 @@ const NFTs = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false); //eslint-disable-line
   const [totalPages, setTotalPages] = useState(1);
-  const count = 2;
+  const count = 8;
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
