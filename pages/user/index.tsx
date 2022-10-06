@@ -28,7 +28,7 @@ const Users = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
-  const count = 8;
+  const count = 7;
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
