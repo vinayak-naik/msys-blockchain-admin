@@ -1,5 +1,10 @@
+const vercelHost = "https://msys-blockchain-admin.vercel.app/api";
+// const localHost = "http://localhost:3000/api";
+
+const host = vercelHost;
+
 export const uploadNftImageToNext = async (formData: any) => {
-  return fetch("http://localhost:3000/api/nft/upload", {
+  return fetch(`${host}/nft/upload`, {
     method: "POST",
     body: formData,
     headers: {},
@@ -9,7 +14,7 @@ export const uploadNftImageToNext = async (formData: any) => {
 };
 
 export const uploadArticleImage = async (formData: any) => {
-  return fetch("http://localhost:3000/api/article/image/upload", {
+  return fetch(`${host}/article/image/upload`, {
     method: "POST",
     body: formData,
     headers: {},
@@ -18,7 +23,7 @@ export const uploadArticleImage = async (formData: any) => {
     .catch(() => {});
 };
 export const addArticle = async (formData: any) => {
-  return fetch("http://localhost:3000/api/article/json/add", {
+  return fetch(`${host}/article/json/add`, {
     method: "POST",
     body: formData,
     headers: {},
@@ -27,27 +32,27 @@ export const addArticle = async (formData: any) => {
     .catch(() => {});
 };
 export const getArticles = async () => {
-  return fetch("http://localhost:3000/api/article/json/getList")
+  return fetch(`${host}/article/json/getList`)
     .then((response) => response.json())
     .catch(() => {});
 };
 export const getArticle = async (fileName: string) => {
-  return fetch(`http://localhost:3000/api/article/json/${fileName}`)
+  return fetch(`${host}/article/json/${fileName}`)
     .then((response) => response.json())
     .catch(() => {});
 };
 export const getGuides = async () => {
-  return fetch("http://localhost:3000/api/guide/json/getList")
+  return fetch(`${host}/guide/json/getList`)
     .then((response) => response.json())
     .catch(() => {});
 };
 export const getGuide = async (fileName: string) => {
-  return fetch(`http://localhost:3000/api/guide/json/${fileName}`)
+  return fetch(`${host}/guide/json/${fileName}`)
     .then((response) => response.json())
     .catch(() => {});
 };
 export const uploadGuideImage = async (formData: any) => {
-  return fetch("http://localhost:3000/api/guide/image/upload", {
+  return fetch(`${host}/guide/image/upload`, {
     method: "POST",
     body: formData,
     headers: {},
@@ -56,7 +61,7 @@ export const uploadGuideImage = async (formData: any) => {
     .catch(() => {});
 };
 export const addGuide = async (formData: any) => {
-  return fetch("http://localhost:3000/api/guide/json/add", {
+  return fetch(`${host}/guide/json/add`, {
     method: "POST",
     body: formData,
     headers: {},
