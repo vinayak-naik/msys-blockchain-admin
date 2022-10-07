@@ -27,7 +27,7 @@ const HeaderComponent = () => {
   const [showAddress, setShowAddress] = useState(false);
 
   // const contractAddress = "0xF6aaFbeEE20ef13e31085177d19140EBDC07B732";
-  const contractAddress = "0x65688Ac4F19d1a6155CdAb28221F8127A6D0DCd0";
+  const contractAddress = "0x4Ab29801C0F0857eEC1643Cc8FBE2987cC98B0f3";
   const nftContractAddress = "0xfd31A98a3724d09A8A1b6C7AaBb174ACE30F4618";
 
   const setSign = async () => {
