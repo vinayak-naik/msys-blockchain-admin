@@ -4,12 +4,13 @@ import { Bar } from "react-chartjs-2";
 // defaults.global.tooltips.enabled = false;
 // defaults.global.legend.position = "bottom";
 
-const BarChart = () => {
+const BarChart = (props: any) => {
+  const { bettingAmountArray, lotteryAmountArray } = props;
   return (
     <div>
       <Bar
         data={{
-          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8],
           datasets: [
             // {
             //   label: "# of votes",
@@ -34,6 +35,7 @@ const BarChart = () => {
             // },
             {
               label: "Betting",
+              // data: bettingAmountArray,
               data: [47, 52, 67, 58, 9, 50, 27, 38],
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgba(255, 99, 132, 1)",
@@ -41,6 +43,7 @@ const BarChart = () => {
             },
             {
               label: "Lottery",
+              // data: lotteryAmountArray,
               data: [27, 32, 27, 18, 9, 70, 21, 58],
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",
@@ -48,8 +51,8 @@ const BarChart = () => {
             },
           ],
         }}
-        height={280}
-        width={500}
+        height={300}
+        width={560}
         options={{
           maintainAspectRatio: false,
           scales: {

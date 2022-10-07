@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle } from "@mui/material";
 import React, { useState } from "react";
 import CropImage from "./cropImageDialog";
-import AddNftForm from "../atoms/addNftForm";
+import AddNftForm from "../forms/addNftForm";
 
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";

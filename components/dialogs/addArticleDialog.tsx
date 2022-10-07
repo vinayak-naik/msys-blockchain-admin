@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import style from "../../styles/components/dialog/addArticleDialog.module.css";
 import { addArticle, uploadArticleImage } from "../../utils/api/next.api";
-import AddArticleForm from "../atoms/addArticleForm";
+import AddArticleForm from "../forms/addArticleForm";
 
 const AddArticleDialog = (props: any) => {
   const { open, handleClose, refresh } = props;

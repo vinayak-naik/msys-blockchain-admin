@@ -68,7 +68,7 @@ const UsersTable = (props: any) => {
               <TableCell>Wallet Address</TableCell>
               <TableCell sx={sx.tableCell}>Name</TableCell>
               <TableCell sx={sx.tableCell}>Email</TableCell>
-              <TableCell sx={sx.tableCell}></TableCell>
+              <TableCell sx={sx.tableCell}>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

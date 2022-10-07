@@ -13,7 +13,7 @@ import { GroupAddOutlined, Refresh } from "@mui/icons-material";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setUsers } from "../../redux/redux-toolkit/userSlice";
-import UsersTable from "../../components/atoms/usersTable";
+import UsersTable from "../../components/tables/usersTable";
 
 // interface changeUserStatusIF{
 //   status:boolean;
@@ -35,15 +35,15 @@ const Users = () => {
   };
 
   const getAllUsers = async () => {
-    const length = await contract.getAllUsers();
-    const pageNo = Math.ceil(Number(length.length) / count);
+    const length = await contract.getUsersLength();
+    const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;
     const to = from + count;
     const usersArr = [];
 
     for (let i = from; i < to; i++) {
-      if (i < length.length) {
+      if (i < Number(length)) {
         const res = await contract.users(i);
         usersArr.push(res);
       }

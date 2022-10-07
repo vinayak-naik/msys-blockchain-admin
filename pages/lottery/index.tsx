@@ -14,7 +14,7 @@ import { RootState } from "../../redux/store";
 import { Refresh } from "@mui/icons-material";
 import { convertStatus, convertTimestamp } from "../../utils/convertion";
 import { setLotteries } from "../../redux/redux-toolkit/lotteriesSlice";
-import LotteriesTable from "../../components/atoms/lotteriesTable";
+import LotteriesTable from "../../components/tables/lotteriesTable";
 import { LotteryLoadingComponent } from "../../molecules/pages/lotteryDetails.atom";
 
 const Lotteries = () => {
@@ -31,15 +31,15 @@ const Lotteries = () => {
   const count = 8;
 
   const getAllLotteries = async () => {
-    const length = await contract.getAllLotteries();
-    const pageNo = Math.ceil(Number(length.length) / count);
+    const length = await contract.getLotteriesLength();
+    const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;
     const to = from + count;
     const lotteriesArr = [];
 
     for (let i = from; i < to; i++) {
-      if (i < length.length) {
+      if (i < Number(length)) {
         const res = await contract.lotteries(i);
         lotteriesArr.push(res);
       }

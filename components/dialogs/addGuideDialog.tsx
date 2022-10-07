@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import style from "../../styles/components/dialog/addArticleDialog.module.css";
 import { addGuide, uploadGuideImage } from "../../utils/api/next.api";
-import AddGuideForm from "../atoms/addGuideForm";
+import AddGuideForm from "../forms/addGuideForm";
 
 const AddGuideDialog = (props: any) => {
   const { open, handleClose, refresh } = props;

@@ -14,7 +14,7 @@ import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setMatches } from "../../redux/redux-toolkit/matchesSlice";
 import { convertStatus, convertTimestamp } from "../../utils/convertion";
-import MatchesTable from "../../components/atoms/matchesTable";
+import MatchesTable from "../../components/tables/matchesTable";
 
 const Matches = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Matches = () => {
   };
   const count = 8;
   const getAllMatches = async () => {
-    const length = await contract.getTotalMatches();
+    const length = await contract.getMatchesLength();
     const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;

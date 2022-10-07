@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import style from "../../styles/pages/user.module.css";
 import AddNFTDialog from "../../components/dialogs/addNftDialog";
 import { LibraryAdd, Refresh } from "@mui/icons-material";
-import NftsTable from "../../components/atoms/nftsTable";
+import NftsTable from "../../components/tables/nftsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setNfts } from "../../redux/redux-toolkit/nftSlice";
@@ -28,15 +28,15 @@ const NFTs = () => {
   };
 
   const getAllNFTs = async () => {
-    const length = await nftContract.getAllNfts();
-    const pageNo = Math.ceil(Number(length.length) / count);
+    const length = await nftContract.countAllNfts();
+    const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;
     const to = from + count;
     const usersArr = [];
 
     for (let i = from; i < to; i++) {
-      if (i < length.length) {
+      if (i < Number(length)) {
         const res = await nftContract.NFTs(i);
         usersArr.push(res);
       }

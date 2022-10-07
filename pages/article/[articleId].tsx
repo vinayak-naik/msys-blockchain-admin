@@ -53,7 +53,7 @@ const Article = () => {
           <div className={style.title}>{article.title}</div>
         </Paper>
 
-        <Paper sx={{ mt: 1, pt: 2, pb: 2 }}>
+        <Paper sx={{ marginTop: "1px", pt: 2, pb: 2 }}>
           <div className={style.bodyContainer}>
             {article.body &&
               article.body.map((item: any, index: number) => {

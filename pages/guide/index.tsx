@@ -10,7 +10,7 @@ import style from "../../styles/pages/user.module.css";
 import AddGuideDialog from "../../components/dialogs/addGuideDialog";
 import { LibraryAdd } from "@mui/icons-material";
 import { getGuides } from "../../utils/api/next.api";
-import GuidesTable from "../../components/atoms/guidesTable";
+import GuidesTable from "../../components/tables/guidesTable";
 import { setGuides } from "../../redux/redux-toolkit/guideSlice";
 import { useDispatch } from "react-redux";
 import { convertTimestamp } from "../../utils/convertion";

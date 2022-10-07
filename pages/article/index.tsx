@@ -10,7 +10,7 @@ import style from "../../styles/pages/user.module.css";
 import AddArticleDialog from "../../components/dialogs/addArticleDialog";
 import { LibraryAdd } from "@mui/icons-material";
 import { getArticles } from "../../utils/api/next.api";
-import ArticlesTable from "../../components/atoms/articlesTable";
+import ArticlesTable from "../../components/tables/articlesTable";
 import { setArticles } from "../../redux/redux-toolkit/articleSlice";
 import { useDispatch } from "react-redux";
 import { convertTimestamp } from "../../utils/convertion";

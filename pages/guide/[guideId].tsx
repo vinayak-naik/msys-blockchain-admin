@@ -53,7 +53,7 @@ const Guide = () => {
           <div className={style.title}>{guide.title}</div>
         </Paper>
 
-        <Paper sx={{ mt: 1, pt: 2, pb: 2 }}>
+        <Paper sx={{ marginTop: "1px", pt: 2, pb: 2 }}>
           <div className={style.bodyContainer}>
             {guide.body &&
               guide.body.map((item: any, index: number) => {
