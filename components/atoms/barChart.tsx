@@ -5,7 +5,8 @@ import { Bar } from "react-chartjs-2";
 // defaults.global.legend.position = "bottom";
 
 const BarChart = (props: any) => {
-  const { bettingAmountArray, lotteryAmountArray } = props;
+  // const { bettingAmountArray, lotteryAmountArray } = props;
+  const p = props; //eslint-disable-line
   return (
     <div>
       <Bar
