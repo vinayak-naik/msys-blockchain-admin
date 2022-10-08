@@ -23,3 +23,17 @@
   height: 74vh;
   overflow: auto;
 }
+.link {
+  color: rgb(11, 120, 183);
+  font-size: 16px;
+}
+.linkText {
+  font-size: 16px;
+}
+.linkContainer {
+  margin: 10px;
+}
+.step {
+  font-weight: bold;
+  color: rgb(114, 114, 114);
+}

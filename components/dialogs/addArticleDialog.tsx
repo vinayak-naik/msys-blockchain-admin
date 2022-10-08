@@ -33,7 +33,6 @@ const AddArticleDialog = (props: any) => {
           const formData = new FormData();
           formData.append("file", blob);
           uploadArticleImage(formData).then((imageData) => {
-            console.log(imageData.url);
             uploadedImages[index] = imageData.url;
           });
         });
@@ -59,6 +58,7 @@ const AddArticleDialog = (props: any) => {
       obj.body.push({
         header: item.header,
         description: item.description,
+        link: item.link,
         height: item.height,
         width: item.width,
         url: uploaded[index] ? uploaded[index] : "",
@@ -95,6 +95,20 @@ const AddArticleDialog = (props: any) => {
                     {item.header && (
                       <div className={style.previewHead}>{item.header}</div>
                     )}
+                    {item.link && (
+                      <div>
+                        <span className={style.previewLinkText}>
+                          Goto&nbsp;
+                        </span>
+                        <a
+                          className={style.previewLink}
+                          target="blank"
+                          href={item.link}
+                        >
+                          {item.link}
+                        </a>
+                      </div>
+                    )}
                     {item.imageData && (
                       <Image
                         alt="img"
@@ -123,7 +137,7 @@ const AddArticleDialog = (props: any) => {
           <Button
             onClick={uploadImageHandler}
             variant="contained"
-            disabled={!paragraph[0] || loading}
+            disabled={!paragraph[0] || loading || !title}
             color="success"
             endIcon={
               loading ? <CircularProgress size={16} color="inherit" /> : null

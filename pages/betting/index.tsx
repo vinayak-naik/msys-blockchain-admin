@@ -29,8 +29,8 @@ const Matches = () => {
   const count = 8;
   const getAllMatches = async () => {
     const length = await contract.getMatchesLength();
-    const pageNo = Math.ceil(Number(length) / count);
-    setTotalPages(pageNo);
+    const pageCount = Math.ceil(Number(length) / count);
+    setTotalPages(pageCount);
     const from = (page - 1) * count;
     const to = from + count;
     const matchesArr = [];

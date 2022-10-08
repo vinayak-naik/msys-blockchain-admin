@@ -27,7 +27,7 @@
   margin: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgb(162, 162, 162);
+  border: 1px solid rgb(203, 203, 203);
   border-radius: 8px;
   padding: 10px;
   gap: 10px;
@@ -43,7 +43,7 @@
   margin: 20px;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgb(167, 167, 167);
+  border: 1px solid rgb(203, 203, 203);
   border-radius: 8px;
   padding: 10px;
   gap: 10px;
@@ -94,7 +94,7 @@
 .nftPrice {
   display: flex;
   flex-direction: column;
-  border: 1px solid rgb(165, 165, 165);
+  border: 1px solid rgb(203, 203, 203);
   border-radius: 8px;
   padding: 20px;
   gap: 20px;
@@ -110,7 +110,7 @@
 }
 .ownerContainer {
   display: flex;
-  border: 1px solid rgb(141, 141, 141);
+  border: 1px solid rgb(203, 203, 203);
   border-radius: 8px;
   padding: 10px;
   gap: 10px;

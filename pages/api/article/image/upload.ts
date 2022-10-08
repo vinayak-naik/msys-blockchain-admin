@@ -12,7 +12,10 @@ let storage = multer.diskStorage({
     cb(null, "public/article/images");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "." + "png");
+    cb(
+      null,
+      Date.now() + `${Math.floor(Math.random() * 998 + 1)}` + "." + "png"
+    );
   },
 });
 let upload = multer({

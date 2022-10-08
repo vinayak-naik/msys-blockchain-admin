@@ -13,13 +13,14 @@ import NftsTable from "../../components/tables/nftsTable";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { setNfts } from "../../redux/redux-toolkit/nftSlice";
+import { PageLoadingComponent } from "../../components/reusable/pageLoading";
 
 const NFTs = () => {
   const { nftContract } = useSelector((state: RootState) => state.contract);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false); //eslint-disable-line
+  const [loading, setLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const count = 8;
 
@@ -65,47 +66,49 @@ const NFTs = () => {
     if (nftContract) {
       getAllNFTs();
     }
-  }, [nftContract, page]); //eslint-disable-line
+  }, [page]); //eslint-disable-line
 
   return (
-    <div style={{ padding: "30px 30px 0" }}>
-      <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
-        <div className={style.titleBox}>
-          <Typography variant="h5" textAlign="center"></Typography>
-          <Typography variant="h5" textAlign="center">
-            NFTs
-          </Typography>
-          <Typography variant="h5" textAlign="center">
-            <IconButton onClick={() => setOpen(true)}>
-              <LibraryAdd />
+    <PageLoadingComponent loading={loading}>
+      <div style={{ padding: "30px 30px 0" }}>
+        <Paper sx={{ marginBottom: "0.5px", padding: "10px" }}>
+          <div className={style.titleBox}>
+            <Typography variant="h5" textAlign="center"></Typography>
+            <Typography variant="h5" textAlign="center">
+              NFTs
+            </Typography>
+            <Typography variant="h5" textAlign="center">
+              <IconButton onClick={() => setOpen(true)}>
+                <LibraryAdd />
+              </IconButton>
+            </Typography>
+          </div>
+        </Paper>
+        <NftsTable />
+        <Paper
+          sx={{
+            margin: "1px 0",
+            padding: "10px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div></div>
+          <Pagination count={totalPages} page={page} onChange={handleChange} />
+          <Tooltip title="Refresh" placement="top">
+            <IconButton onClick={getAllNFTs}>
+              <Refresh />
             </IconButton>
-          </Typography>
-        </div>
-      </Paper>
-      <NftsTable />
-      <Paper
-        sx={{
-          margin: "1px 0",
-          padding: "10px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <div></div>
-        <Pagination count={totalPages} page={page} onChange={handleChange} />
-        <Tooltip title="Refresh" placement="top">
-          <IconButton onClick={getAllNFTs}>
-            <Refresh />
-          </IconButton>
-        </Tooltip>
-      </Paper>
+          </Tooltip>
+        </Paper>
 
-      <AddNFTDialog
-        open={open}
-        handleClose={() => setOpen(false)}
-        refreshPage={getAllNFTs}
-      />
-    </div>
+        <AddNFTDialog
+          open={open}
+          handleClose={() => setOpen(false)}
+          refreshPage={getAllNFTs}
+        />
+      </div>
+    </PageLoadingComponent>
   );
 };
 

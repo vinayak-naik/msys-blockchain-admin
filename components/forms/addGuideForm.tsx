@@ -14,6 +14,8 @@ const AddGuideForm = (props: any) => {
 
   const initialValues = {
     header: "",
+    link: "",
+    step: "",
     description: "",
     height: "",
     width: "",
@@ -68,6 +70,26 @@ const AddGuideForm = (props: any) => {
                   label="header"
                   variant="outlined"
                   {...formik.getFieldProps("header")}
+                />
+              </div>
+              <div className={style.inputBox}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  id="link"
+                  label="External link"
+                  variant="outlined"
+                  {...formik.getFieldProps("link")}
+                />
+              </div>
+              <div className={style.inputBox}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  id="step"
+                  label="Step No."
+                  variant="outlined"
+                  {...formik.getFieldProps("step")}
                 />
               </div>
               <div className={style.inputBox}>

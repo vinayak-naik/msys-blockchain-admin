@@ -62,14 +62,26 @@ const Article = () => {
                     {item.header && (
                       <div className={style.head}>{item.header}</div>
                     )}
+                    {item.link && (
+                      <div className={style.linkContainer}>
+                        <span className={style.linkText}>Goto&nbsp;</span>
+                        <a
+                          className={style.link}
+                          target="blank"
+                          href={item.link}
+                        >
+                          {item.link}
+                        </a>
+                      </div>
+                    )}
                     {item.url && (
                       <div className={style.imageBox}>
                         <Image
                           alt="img"
                           loader={({ src }: any) => src}
                           src={item.url}
-                          height={item.height ? item.height : "700px"}
-                          width={item.width ? item.width : "700px"}
+                          height={item.height ? item.height : "400px"}
+                          width={item.width ? item.width : "400px"}
                         />
                       </div>
                     )}

@@ -6,41 +6,62 @@ import { RootState } from "../redux/store";
 import style from "../styles/pages/dashboard.module.css";
 
 const Dashboard = () => {
-  const { contract } = useSelector((state: RootState) => state.contract);
+  const { contract, nftContract } = useSelector(
+    (state: RootState) => state.contract
+  );
   const [page, setPage] = useState(1);
-  const [bettingPages, setBettingPages] = useState(1); //eslint-disable-line
-  const [lotteryPages, setLotteryPages] = useState(1); //eslint-disable-line
-  const [bettingAmountArray, setBettingAmountArray] = useState<any>([]);
-  const [lotteryAmountArray, setLotteryAmountArray] = useState<any>([]);
-  const [balance, setBalance] = useState(0);
+  const [info, setInfo] = useState<any>({});
 
-  const getBalanceOfSMRT = async () => {
-    const bal = await contract.getBalanceOfSM();
-    console.log(Number(bal));
-    setBalance(Number(bal));
-  };
+  const count = 10;
 
   const handleChange = (value: number) => {
     setPage(value);
   };
 
   const getBettingAmountArray = async () => {
+    const details: any = {};
+
     const bettingArr = await contract.getBettingAmountArray();
     const lotteryArr = await contract.getLotteryAmountArray();
-    setBettingPages(bettingArr.length);
-    setLotteryPages(lotteryArr.length);
-    const bettingArray = bettingArr.map((e: any) => Number(e) + 5);
-    const lotteryArray = lotteryArr.map((e: any) => Number(e) + 8);
-    setBettingAmountArray(bettingArray);
-    setLotteryAmountArray(lotteryArray);
+    const SC_bal = await contract.getBalanceOfSM();
+    const usersLength = await contract.getUsersLength();
+    const nftLength = await nftContract.countAllNfts();
+
+    details.totalMatches = bettingArr.length;
+    details.totalLotteries = lotteryArr.length;
+    details.totalNfts = Number(nftLength);
+    details.bettingPages = Math.ceil(bettingArr.length / count);
+    details.lotteryPages = Math.ceil(lotteryArr.length / count);
+    details.smBalance = Number(SC_bal);
+    const arr1: any = [];
+    bettingArr.forEach((e: any) => {
+      arr1.push(Number(e));
+    }, []);
+    details.bettingAmountArray = arr1;
+    const bettingTotalAmount = arr1.reduce((a: any, b: any) => a + b);
+    const bettingProfit = bettingTotalAmount / 100 - bettingArr.length * 1000;
+    details.bettingProfit = bettingProfit;
+
+    const arr2: any = [];
+    lotteryArr.forEach((e: any) => {
+      arr2.push(Number(e));
+    }, []);
+    details.lotteryAmountArray = arr2;
+    const lotteryTotalAmount = arr2.reduce((a: any, b: any) => a + b);
+    const lotteryProfit = lotteryTotalAmount / 100 - lotteryArr.length * 1000;
+    details.lotteryProfit = lotteryProfit;
+
+    details.SCProfit =
+      lotteryProfit + bettingProfit - Number(usersLength) * 5000;
+
+    setInfo(details);
   };
 
   useEffect(() => {
     if (contract) {
-      getBalanceOfSMRT();
       getBettingAmountArray();
     }
-  }, []); //eslint-disable-line
+  }, [contract]); //eslint-disable-line
 
   return (
     <div className={style.container}>
@@ -49,8 +70,8 @@ const Dashboard = () => {
           <Paper>
             <div className={style.chartName}>Participants</div>
             <BarChart
-              bettingAmountArray={bettingAmountArray}
-              lotteryAmountArray={lotteryAmountArray}
+              bettingAmountArray={info.bettingAmountArray}
+              lotteryAmountArray={info.lotteryAmountArray}
             />
           </Paper>
           <Paper
@@ -62,7 +83,7 @@ const Dashboard = () => {
             }}
           >
             <Pagination
-              count={bettingPages}
+              count={info.bettingPages}
               page={page}
               onChange={(e: any, val: number) => handleChange(val)}
             />
@@ -82,7 +103,7 @@ const Dashboard = () => {
             }}
           >
             <Pagination
-              count={bettingPages}
+              count={info.lotteryPages}
               page={page}
               onChange={(e: any, val: number) => handleChange(val)}
             />
@@ -94,7 +115,18 @@ const Dashboard = () => {
           <Paper>
             <div className={style.card}>
               <div className={style.cardHead}>Smart Contract</div>
-              <div className={style.cardBody}>Balance: {balance} MSCN</div>
+              <div className={style.cardBody}>
+                Balance: {info.smBalance} MSCN
+              </div>
+              <div className={style.cardBody}>
+                {info.SCProfit >= 0 ? (
+                  <span>Profit</span>
+                ) : (
+                  <span style={{ color: "red" }}>Loss</span>
+                )}
+                :&nbsp;
+                {Math.abs(info.SCProfit)} MSCN
+              </div>
             </div>
           </Paper>
         </div>
@@ -102,7 +134,18 @@ const Dashboard = () => {
           <Paper>
             <div className={style.card}>
               <div className={style.cardHead}>MSys Betting</div>
-              <div className={style.cardBody}>Profit: 0 MSCN</div>
+              <div className={style.cardBody}>
+                Total Matches: {info.totalMatches}
+              </div>
+              <div className={style.cardBody}>
+                {info.bettingProfit >= 0 ? (
+                  <span>Profit</span>
+                ) : (
+                  <span style={{ color: "red" }}>Loss</span>
+                )}
+                :&nbsp;
+                {Math.abs(info.bettingProfit)} MSCN
+              </div>
             </div>
           </Paper>
         </div>
@@ -110,7 +153,18 @@ const Dashboard = () => {
           <Paper>
             <div className={style.card}>
               <div className={style.cardHead}>MSys Lottery</div>
-              <div className={style.cardBody}>Profit: 0 MSCN</div>
+              <div className={style.cardBody}>
+                Total Lotteries: {info.totalLotteries}
+              </div>
+              <div className={style.cardBody}>
+                {info.lotteryProfit >= 0 ? (
+                  <span>Profit</span>
+                ) : (
+                  <span style={{ color: "red" }}>Loss</span>
+                )}
+                :&nbsp;
+                {Math.abs(info.lotteryProfit)} MSCN
+              </div>
             </div>
           </Paper>
         </div>
@@ -118,6 +172,7 @@ const Dashboard = () => {
           <Paper>
             <div className={style.card}>
               <div className={style.cardHead}>MSys NFT</div>
+              <div className={style.cardBody}>Total NFT: {info.totalNfts}</div>
               <div className={style.cardBody}>Profit: 0 MSCN</div>
             </div>
           </Paper>

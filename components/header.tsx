@@ -24,6 +24,7 @@ const HeaderComponent = () => {
   const { signer } = useSelector((state: RootState) => state.contract);
 
   const [walletAddr, setWalletAddr] = useState("");
+  const [shortWalletAddr, setShortWalletAddr] = useState("");
   const [showAddress, setShowAddress] = useState(false);
 
   // const contractAddress = "0xF6aaFbeEE20ef13e31085177d19140EBDC07B732"; old
@@ -57,8 +58,11 @@ const HeaderComponent = () => {
 
   const connectMeta = async () => {
     const addr = await signer.getAddress();
-    const shortAddress = compressAddress(addr);
-    setWalletAddr(shortAddress);
+    if (addr !== walletAddr) {
+      const shortAddress = compressAddress(addr);
+      setWalletAddr(addr);
+      setShortWalletAddr(shortAddress);
+    }
   };
 
   return (
@@ -79,8 +83,8 @@ const HeaderComponent = () => {
         </div>
         <div className={style.walletAddrBox}>
           {showAddress &&
-            (walletAddr ? (
-              <div className={style.walletAddr}>{walletAddr}</div>
+            (walletAddr === "0x45ff073F1EA0f6C3F1EF1c8Eb184fB1074884F96" ? (
+              <div className={style.walletAddr}>{shortWalletAddr}</div>
             ) : (
               <div className={style.status}>Not Connected</div>
             ))}
@@ -88,7 +92,10 @@ const HeaderComponent = () => {
 
         <button
           onClick={connectMeta}
-          onMouseOverCapture={() => setShowAddress(true)}
+          onMouseOverCapture={() => {
+            setShowAddress(true);
+            connectMeta();
+          }}
           onMouseOutCapture={() => setShowAddress(false)}
           className={style.connectButton}
         >

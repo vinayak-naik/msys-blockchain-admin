@@ -33,7 +33,6 @@ const AddGuideDialog = (props: any) => {
           const formData = new FormData();
           formData.append("file", blob);
           uploadGuideImage(formData).then((imageData) => {
-            console.log(imageData.url);
             uploadedImages[index] = imageData.url;
           });
         });
@@ -56,9 +55,12 @@ const AddGuideDialog = (props: any) => {
     };
     paragraph.map((item: any, index: number) => {
       obj.title = title;
+      alert(index);
       obj.body.push({
         header: item.header,
         description: item.description,
+        link: item.link,
+        step: item.step,
         height: item.height,
         width: item.width,
         url: uploaded[index] ? uploaded[index] : "",
@@ -95,6 +97,20 @@ const AddGuideDialog = (props: any) => {
                     {item.header && (
                       <div className={style.previewHead}>{item.header}</div>
                     )}
+                    {item.link && (
+                      <div>
+                        <span className={style.previewLinkText}>
+                          Goto&nbsp;
+                        </span>
+                        <a
+                          className={style.previewLink}
+                          target="blank"
+                          href={item.link}
+                        >
+                          {item.link}
+                        </a>
+                      </div>
+                    )}
                     {item.imageData && (
                       <Image
                         alt="img"
@@ -108,6 +124,11 @@ const AddGuideDialog = (props: any) => {
                         style={{ fontSize: "12px" }}
                         className={style.previewDescription}
                       >
+                        {item.step && (
+                          <span className={style.previewStep}>
+                            Step-{item.step}:&nbsp;
+                          </span>
+                        )}
                         {item.description}
                       </div>
                     )}
@@ -123,7 +144,7 @@ const AddGuideDialog = (props: any) => {
           <Button
             onClick={uploadImageHandler}
             variant="contained"
-            disabled={!paragraph[0] || loading}
+            disabled={!paragraph[0] || loading || !title}
             color="success"
             endIcon={
               loading ? <CircularProgress size={16} color="inherit" /> : null

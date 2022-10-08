@@ -1,7 +1,7 @@
 const vercelHost = "https://msys-blockchain-admin.vercel.app/api";
 const host = vercelHost;
 
-// const localHost = "http://localhost:3000/api";test
+// const localHost = "http://localhost:3000/api";
 // const host = localHost;
 
 export const uploadNftImageToNext = async (formData: any) => {

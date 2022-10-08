@@ -12,6 +12,7 @@ const AddArticleForm = (props: any) => {
 
   const initialValues = {
     header: "",
+    link: "",
     description: "",
     height: "",
     width: "",
@@ -72,8 +73,18 @@ const AddArticleForm = (props: any) => {
                 <TextField
                   fullWidth
                   type="text"
+                  id="link"
+                  label="External link"
+                  variant="outlined"
+                  {...formik.getFieldProps("link")}
+                />
+              </div>
+              <div className={style.inputBox}>
+                <TextField
+                  fullWidth
+                  type="text"
                   id="description"
-                  label="Enter Article Description"
+                  label="Article Description"
                   variant="outlined"
                   {...formik.getFieldProps("description")}
                 />
