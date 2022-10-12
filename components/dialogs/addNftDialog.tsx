@@ -21,7 +21,7 @@ import {
   NftDialogNextButton,
   NftFileInput,
 } from "../../molecules/components/addNftDialog.atoms";
-import { uploadNftImageToNext } from "../../utils/api/next.api";
+// import { uploadNftImageToNext } from "../../utils/api/next.api";
 
 const steps = ["Select Image", "Crop Image", "Add Details"];
 
@@ -74,7 +74,7 @@ const AddNFTDialog = (props: any) => {
         });
         nftContract
           .connect(signer)
-          .safeMint(name, price, forSale, jsonData.IpfsHash)
+          .safeMint(name, price, forSale, jsonData.IpfsHash, formValues.image)
           .then(() => checkEvents())
           .catch(() => {
             setUploadImageMessage({
@@ -103,12 +103,16 @@ const AddNFTDialog = (props: any) => {
         formData.append("file", blob);
         uploadImageToPinata(formData).then((imageData) => {
           if (imageData?.IpfsHash) {
-            uploadNftImageToNext(formData).then((res) => {
-              setFormValues({
-                ...formValues,
-                image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
-                altImage: res.url ? res.url : "",
-              });
+            // uploadNftImageToNext(formData).then((res) => {
+            //   setFormValues({
+            //     ...formValues,
+            //     image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
+            //     altImage: res.url ? res.url : "",
+            //   });
+            // });
+            setFormValues({
+              ...formValues,
+              image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
             });
 
             setLoading(false);

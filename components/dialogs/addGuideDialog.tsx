@@ -55,7 +55,6 @@ const AddGuideDialog = (props: any) => {
     };
     paragraph.map((item: any, index: number) => {
       obj.title = title;
-      alert(index);
       obj.body.push({
         header: item.header,
         description: item.description,

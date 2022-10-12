@@ -38,7 +38,7 @@ const NFTs = () => {
 
     for (let i = from; i < to; i++) {
       if (i < Number(length)) {
-        const res = await nftContract.NFTs(i);
+        const res = await nftContract.nfts(i);
         usersArr.push(res);
       }
     }

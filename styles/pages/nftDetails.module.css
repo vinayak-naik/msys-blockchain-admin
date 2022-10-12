@@ -159,3 +159,27 @@
   align-items: center;
   justify-content: center;
 }
+.openseaContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  /* justify-content: flex-end; */
+  align-items: center;
+  border: 1px solid rgb(203, 203, 203);
+  padding: 10px;
+}
+.openseaText {
+  color: rgb(116, 116, 116);
+}
+.imageBox {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  gap: 5px;
+}
+.imageBox {
+  font-size: large;
+  font-weight: bold;
+}

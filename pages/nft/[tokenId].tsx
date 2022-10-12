@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,6 +17,8 @@ import { setNft } from "../../redux/redux-toolkit/nftSlice";
 import { RootState } from "../../redux/store";
 import style from "../../styles/pages/nftDetails.module.css";
 import { compressAddress } from "../../utils/convertion";
+import opensea from "../../public/img/opensea.png";
+import rarible from "../../public/img/rarible.jpeg";
 
 const NftDetails = () => {
   const { query } = useRouter();
@@ -25,30 +28,52 @@ const NftDetails = () => {
   const [loading, setLoading] = useState(false);
 
   const getNft = async () => {
-    const res = await nftContract.NFTs(query.tokenId);
+    const res = await nftContract.nfts(query.tokenId);
+    console.log(res);
     const owner = await nftContract.ownerOf(query.tokenId);
     if (!res.tokenUri && !owner) return;
-    const promise = await fetch(
-      `https://gateway.pinata.cloud/ipfs/${res.tokenUri}`
-    );
-    const data = await promise.json();
-    const nft = {
-      tokenUri: res.tokenUri,
-      forSale: res.forSale,
-      hide: res.hide,
-      price: Number(res.price),
-      tokenId: Number(res.tokenId),
-      owner: compressAddress(owner || ""),
-      name: data.name,
-      image: data.image,
-      description: data.description,
-      creator: compressAddress(data.creator || ""),
-      createdAt: data.createdAt,
-      background_color: data.background_color,
-      attributes: data.attributes,
-    };
-    dispatch(setNft(nft));
-    setLoading(false);
+    try {
+      const promise = await fetch(
+        `https://gateway.pinata.cloud/ipfs/${res.tokenUri}`
+      );
+      const data = await promise.json();
+      const nft = {
+        tokenUri: res.tokenUri,
+        forSale: res.forSale,
+        hide: res.hide,
+        price: Number(res.price),
+        tokenId: Number(res.tokenId),
+        owner: compressAddress(owner || ""),
+        name: data.name,
+        image: data.image,
+        description: data.description,
+        creator: compressAddress(data.creator || ""),
+        createdAt: data.createdAt,
+        background_color: data.background_color,
+        attributes: data.attributes,
+      };
+      dispatch(setNft(nft));
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      const nft = {
+        tokenUri: res.tokenUri,
+        forSale: res.forSale,
+        hide: res.hide,
+        price: Number(res.price),
+        tokenId: Number(res.tokenId),
+        owner: compressAddress(owner || ""),
+        name: res.name,
+        image: res.imageUrl,
+        description: "",
+        creator: compressAddress(""),
+        createdAt: 0,
+        background_color: "",
+        attributes: [],
+      };
+      dispatch(setNft(nft));
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -71,6 +96,37 @@ const NftDetails = () => {
           <NftMetaData link={nft.tokenUri} />
           <OwnerContainer creator={nft.creator} currentOwner={nft.owner} />
           <NftPrice price={nft.price} forSale={nft.forSale} />
+          <div className={style.openseaContainer}>
+            <div className={style.openseaText}>Sell NFT</div>
+            <a
+              target="blank2"
+              href={`https://testnets.opensea.io/assets/mumbai/0x109d303837100a8b4ec861633138042edaa08a4f/${query.tokenId}`}
+              className={style.imageBox}
+            >
+              <Image
+                alt="img"
+                loader={({ src }: any) => src}
+                src={opensea}
+                height="50px"
+                width="50px"
+              />
+              <div className={style.label}>Opensea</div>
+            </a>
+            <a
+              target="blank"
+              href={`https://testnet.rarible.com/token/polygon/0x109d303837100a8b4ec861633138042edaa08a4f:${query.tokenId}?tab=overview`}
+              className={style.imageBox}
+            >
+              <Image
+                alt="img"
+                loader={({ src }: any) => src}
+                src={rarible}
+                height="50px"
+                width="50px"
+              />
+              <div className={style.label}>Rarible</div>
+            </a>
+          </div>
         </div>
       </div>
     </NftLoadingComponent>
