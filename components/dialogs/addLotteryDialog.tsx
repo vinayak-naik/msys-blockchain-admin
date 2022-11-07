@@ -69,7 +69,7 @@ const AddLotteryDialog = (props: any) => {
       setTimeError("Please select correct time");
       setLoading(false);
     }
-  };
+  }; //test
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>
