@@ -29,7 +29,7 @@ export default function GuideTable() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell sx={sx.tableCell}>Sl. No.</TableCell>
+            <TableCell sx={sx.tableCell}>S. No.</TableCell>
             <TableCell sx={sx.tableCell}>Date</TableCell>
             <TableCell sx={sx.tableCell}>Guide</TableCell>
             <TableCell sx={sx.tableCell}>Filename</TableCell>

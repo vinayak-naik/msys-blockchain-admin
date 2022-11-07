@@ -41,7 +41,7 @@ export default function NftsTable() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Sl. No.</TableCell>
+              <TableCell>S. No.</TableCell>
               <TableCell>Token Id</TableCell>
               <TableCell sx={sx.tableCell}>Name</TableCell>
               <TableCell sx={sx.tableCell}>Token Uri</TableCell>

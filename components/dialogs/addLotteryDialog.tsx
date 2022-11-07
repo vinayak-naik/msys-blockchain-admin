@@ -56,11 +56,15 @@ const AddLotteryDialog = (props: any) => {
     const timeStamp = Date.parse(`${datePickerValue}`) / 1000;
     const timeStampNow = Date.parse(`${new Date()}`) / 1000;
     if (timeStamp > timeStampNow) {
-      await contract
-        .connect(signer)
-        .addLottery(values.name, values.amount, Number(timeStamp));
-      checkEvents();
-      setTimeError("");
+      try {
+        await contract
+          .connect(signer)
+          .addLottery(values.name, values.amount, Number(timeStamp));
+        checkEvents();
+        setTimeError("");
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       setTimeError("Please select correct time");
       setLoading(false);

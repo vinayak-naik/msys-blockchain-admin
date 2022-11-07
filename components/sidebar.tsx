@@ -31,11 +31,11 @@ const Sidebar = () => {
 
   const navItems = [
     {
-      name: "dashboard",
-      route: "/",
+      name: "Dashboard",
+      route: "/dashboard",
     },
     {
-      name: "users",
+      name: "Users",
       route: "/user",
     },
     {

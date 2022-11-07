@@ -5,13 +5,13 @@ import { Bar } from "react-chartjs-2";
 // defaults.global.legend.position = "bottom";
 
 const BarChart = (props: any) => {
-  // const { bettingAmountArray, lotteryAmountArray } = props;
-  const p = props; //eslint-disable-line
+  const { array1, array2 } = props;
+  // const p = props; //eslint-disable-line
   return (
     <div>
       <Bar
         data={{
-          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+          labels: [0, 1, 2, 3, 4, 5],
           datasets: [
             // {
             //   label: "# of votes",
@@ -36,16 +36,16 @@ const BarChart = (props: any) => {
             // },
             {
               label: "Betting",
-              // data: bettingAmountArray,
-              data: [47, 52, 67, 58, 9, 50, 27, 38],
+              data: array1,
+              // data: [47, 52, 67, 58, 9, 50, 27, 38],
               backgroundColor: "rgba(255, 99, 132, 0.2)",
               borderColor: "rgba(255, 99, 132, 1)",
               borderWidth: 1,
             },
             {
               label: "Lottery",
-              // data: lotteryAmountArray,
-              data: [27, 32, 27, 18, 9, 70, 21, 58],
+              data: array2,
+              // data: [27, 32, 27, 18, 9, 70, 21, 58],
               backgroundColor: "rgba(54, 162, 235, 0.2)",
               borderColor: "rgba(54, 162, 235, 1)",
               borderWidth: 1,

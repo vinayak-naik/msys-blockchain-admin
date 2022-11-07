@@ -43,24 +43,33 @@ const AddMatchDialog = (props: any) => {
     team2: Yup.string().required("Please enter team name"),
   });
 
-  const checkEvents = () => {
-    contract.on("Transfer", () => {
-      refreshPage();
-      setLoading(false);
-      handleClose();
-    });
-  };
+  // const checkEvents = () => {
+  //   contract.on("Transfer", () => {
+  //     refreshPage();
+  //     setLoading(false);
+  //     handleClose();
+  //   });
+  // };
 
   const onSubmit = async (values: AddMatchFormIF) => {
     setLoading(true);
     const timeStamp = Date.parse(`${datePickerValue}`) / 1000;
     const timeStampNow = Date.parse(`${new Date()}`) / 1000;
     if (timeStamp > timeStampNow) {
-      await contract
-        .connect(signer)
-        .addMatch(values.team1, values.team2, Number(timeStamp));
-      setTimeError("");
-      checkEvents();
+      try {
+        const res = await contract
+          .connect(signer)
+          .addMatch(values.team1, values.team2, Number(timeStamp));
+        await res.wait();
+        refreshPage();
+        setLoading(false);
+        handleClose();
+        setTimeError("");
+      } catch (error) {
+        console.log("error:", error);
+        setLoading(false);
+        handleClose();
+      }
     } else {
       setTimeError("Please select correct time");
       setLoading(false);
