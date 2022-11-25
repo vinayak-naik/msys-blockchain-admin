@@ -84,12 +84,20 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (contract) {
+    if (contract && loading) {
+      ////////////////////////Paused///////////////////////////////
       setLoading(true);
       getParticipantsArray();
       getAmountArray();
     }
   }, [contract]); //eslint-disable-line
+
+  // const callSetMatchesApi = () => {
+  //   fetch("http://localhost:3000/api/betting/set-matches")
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data))
+  //     .catch((err) => console.log(err));
+  // };
 
   return (
     <PageLoadingComponent loading={loading}>
@@ -212,6 +220,7 @@ const Dashboard = () => {
             </Paper>
           </div>
         </div>
+        {/* <button onClick={callSetMatchesApi}>call-set-matches-api</button> */}
       </div>
     </PageLoadingComponent>
   );

@@ -30,7 +30,9 @@ export default function MatchesTable() {
         <TableHead>
           <TableRow>
             <TableCell sx={sx.tableCell}>Match Id</TableCell>
+            <TableCell sx={sx.tableCell}>Game</TableCell>
             <TableCell sx={sx.tableCell}>Date</TableCell>
+            <TableCell sx={sx.tableCell}>Time</TableCell>
             <TableCell sx={sx.tableCell}>Team A</TableCell>
             <TableCell sx={sx.tableCell}>Team B</TableCell>
             <TableCell sx={sx.tableCell}>Status</TableCell>
@@ -48,7 +50,9 @@ export default function MatchesTable() {
               <TableCell component="th" scope="row">
                 {item.matchId}
               </TableCell>
+              <TableCell sx={sx.tableCell}>{item.game}</TableCell>
               <TableCell sx={sx.tableCell}>{item.date}</TableCell>
+              <TableCell sx={sx.tableCell}>{item.time}</TableCell>
               <TableCell sx={sx.tableCell}>{item.team1}</TableCell>
               <TableCell sx={sx.tableCell}>{item.team2}</TableCell>
               <TableCell sx={sx.tableCell}>{item.statusString}</TableCell>

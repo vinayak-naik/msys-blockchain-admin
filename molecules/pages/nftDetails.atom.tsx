@@ -1,8 +1,12 @@
 import { AccountCircle, Launch } from "@mui/icons-material";
 import { Button, CircularProgress } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 import style from "../../styles/pages/nftDetails.module.css";
+import { compressAddress } from "../../utils/convertion";
 
 export const NftImage = ({ link }: any) => {
   return (
@@ -69,15 +73,43 @@ export const OwnerContainer = (props: any) => {
     </div>
   );
 };
-export const NftPrice = (props: any) => {
-  const { price, forSale } = props;
+export const NftSellButton = (props: any) => {
+  const { price, forSale, currentOwner, refreshPage } = props;
+  const { signer, nftContract } = useSelector(
+    (state: RootState) => state.contract
+  );
+  const { query } = useRouter();
+  const [walletAddress, setWalletAddress] = useState("");
+
+  const setAddress = async () => {
+    const addr = await signer.getAddress();
+    setWalletAddress(compressAddress(addr));
+  };
+  useEffect(() => {
+    if (signer) setAddress();
+  }, [signer]); // eslint-disable-line
+
+  const updateNftForSale = async () => {
+    const res = await nftContract
+      .connect(signer)
+      .updateNftForSale(query.tokenId, !forSale);
+    await res.wait();
+    refreshPage();
+  };
+
   return (
     <div className={style.nftPrice}>
       <div className={style.nftPriceHead}>Price:&nbsp;{price}&nbsp;MSCN</div>
       <div className={style.nftPriceBody}>
-        <Button variant="contained">
-          {forSale ? `Buy now for ${price} MSCN` : "Not for sale"}
-        </Button>
+        {walletAddress === currentOwner ? (
+          <Button variant="contained" onClick={updateNftForSale}>
+            {forSale ? `Remove from NFT listing` : "Add to NFT listing"}
+          </Button>
+        ) : (
+          <Button variant="contained">
+            {forSale ? `Buy NFT` : "Not for sale"}
+          </Button>
+        )}
       </div>
     </div>
   );

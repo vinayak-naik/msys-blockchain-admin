@@ -27,8 +27,8 @@ const HeaderComponent = () => {
   const [shortWalletAddr, setShortWalletAddr] = useState("");
   const [showAddress, setShowAddress] = useState(false);
 
-  const contractAddress = "0x4Ab29801C0F0857eEC1643Cc8FBE2987cC98B0f3";
-  const nftContractAddress = "0x109d303837100A8b4eC861633138042EdAA08A4F";
+  const contractAddress = `${process.env.NEXT_PUBLIC_ERC20_CONTRACT}`;
+  const nftContractAddress = `${process.env.NEXT_PUBLIC_NFT_CONTRACT}`;
 
   const setSign = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);

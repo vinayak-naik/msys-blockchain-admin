@@ -13,7 +13,11 @@ import AddMatchDialog from "../../components/dialogs/addMatchDialog";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { setMatches } from "../../redux/redux-toolkit/matchesSlice";
-import { convertStatus, convertTimestamp } from "../../utils/convertion";
+import {
+  convertStatus,
+  convertTimestampToDate,
+  convertTimestampToTime,
+} from "../../utils/convertion";
 import MatchesTable from "../../components/tables/matchesTable";
 
 const Matches = () => {
@@ -43,8 +47,10 @@ const Matches = () => {
     }
     const matches = matchesArr.map((item: any) => {
       return {
-        date: convertTimestamp(Number(item.date)),
+        date: convertTimestampToDate(Number(item.timestamp)),
+        time: convertTimestampToTime(Number(item.timestamp)),
         matchId: Number(item.matchId),
+        game: item.game,
         team1: item.team1,
         team2: item.team2,
         statusCode: Number(item.statusCode),

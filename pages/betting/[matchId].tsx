@@ -12,7 +12,11 @@ import { setTeam1, setTeam2 } from "../../redux/redux-toolkit/matchesSlice";
 // import { setMatch } from "../../redux/redux-toolkit/matchSlice";
 import { RootState } from "../../redux/store";
 import style from "../../styles/pages/matchDetails.module.css";
-import { convertStatus, convertTimestamp } from "../../utils/convertion";
+import {
+  convertStatus,
+  convertTimestampToDate,
+  convertTimestampToTime,
+} from "../../utils/convertion";
 
 const Match = () => {
   const { query } = useRouter();
@@ -27,8 +31,10 @@ const Match = () => {
   const getMatch = async () => {
     const res = await contract.matches(query.matchId);
     const matchDetails = {
-      date: convertTimestamp(Number(res.date)),
+      date: convertTimestampToDate(Number(res.timestamp)),
+      time: convertTimestampToTime(Number(res.timestamp)),
       matchId: Number(res.matchId),
+      game: res.game,
       team1: res.team1,
       team2: res.team2,
       statusCode: Number(res.statusCode),
@@ -94,18 +100,6 @@ const Match = () => {
     }
   }, [contract, query?.matchId]); //eslint-disable-line
 
-  const refreshPage = () => {
-    setTimeout(() => {
-      getMatch();
-    }, 15000);
-    setTimeout(() => {
-      getMatch();
-    }, 20000);
-    setTimeout(() => {
-      getMatch();
-    }, 25000);
-  };
-
   return (
     <>
       {loading ? (
@@ -138,7 +132,7 @@ const Match = () => {
             open={statusDialog}
             handleClose={() => setStatusDialog(false)}
             matchId={query.matchId}
-            refreshPage={refreshPage}
+            refreshPage={getMatch}
           />
           <MatchResultDialog
             open={resultDialog}

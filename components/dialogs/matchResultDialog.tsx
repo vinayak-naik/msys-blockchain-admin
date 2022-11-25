@@ -32,23 +32,15 @@ const MatchResultDialog = (props: any) => {
     teamWon: Yup.number().required("Please enter team name"),
   });
 
-  const checkEvents = () => {
-    contract.on("Transfer", () => {
-      refreshPage();
-      setLoading(false);
-      handleClose();
-    });
-  };
-
   const onSubmit = async (values: any) => {
     setLoading(true);
-    await contract.connect(signer).announceResult(matchId, values.teamWon);
-    checkEvents();
-    setTimeout(() => {
-      refreshPage();
-      setLoading(false);
-      handleClose();
-    }, 50000);
+    const res = await contract
+      .connect(signer)
+      .announceResult(matchId, values.teamWon);
+    await res.wait();
+    refreshPage();
+    setLoading(false);
+    handleClose();
   };
   return (
     <Dialog open={open} onClose={handleClose}>

@@ -15,6 +15,7 @@ import { RootState } from "../../redux/store";
 
 interface MatchIF {
   date: number;
+  time: number;
   lotteryId: number;
   amount: number;
   lotteryName: string;
@@ -40,6 +41,7 @@ export default function LotteriesTable() {
           <TableRow>
             <TableCell sx={sx.tableCell}>Lottery Id</TableCell>
             <TableCell sx={sx.tableCell}>Date</TableCell>
+            <TableCell sx={sx.tableCell}>Time</TableCell>
             <TableCell sx={sx.tableCell}>Name</TableCell>
             <TableCell sx={sx.tableCell}>Amount</TableCell>
             <TableCell sx={sx.tableCell}>Status</TableCell>
@@ -55,6 +57,7 @@ export default function LotteriesTable() {
             >
               <TableCell sx={sx.tableCell}>{item.lotteryId}</TableCell>
               <TableCell sx={sx.tableCell}>{item.date}</TableCell>
+              <TableCell sx={sx.tableCell}>{item.time}</TableCell>
               <TableCell sx={sx.tableCell}>{item.lotteryName}</TableCell>
               <TableCell sx={sx.tableCell}>{item.amount}&nbsp;MSCN</TableCell>
               <TableCell sx={sx.tableCell}>

@@ -18,6 +18,7 @@ interface AddUserFormIF {
   walletAddress: string;
   name: string;
   email: string;
+  token: string;
 }
 
 const AddUserDialog = (props: any) => {
@@ -31,6 +32,7 @@ const AddUserDialog = (props: any) => {
     walletAddress: "",
     name: "",
     email: "",
+    token: "",
   };
 
   const validationSchema = Yup.object({
@@ -57,7 +59,7 @@ const AddUserDialog = (props: any) => {
     setLoading(true);
     await contract
       .connect(signer)
-      .addUser(values.walletAddress, values.name, values.email);
+      .addUser(values.walletAddress, values.name, values.email, values.token);
     checkEvents();
   };
   return (

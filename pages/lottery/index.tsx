@@ -12,7 +12,11 @@ import AddLotteryDialog from "../../components/dialogs/addLotteryDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Refresh } from "@mui/icons-material";
-import { convertStatus, convertTimestamp } from "../../utils/convertion";
+import {
+  convertStatus,
+  convertTimestampToDate,
+  convertTimestampToTime,
+} from "../../utils/convertion";
 import { setLotteries } from "../../redux/redux-toolkit/lotteriesSlice";
 import LotteriesTable from "../../components/tables/lotteriesTable";
 import { LotteryLoadingComponent } from "../../molecules/pages/lotteryDetails.atom";
@@ -46,7 +50,8 @@ const Lotteries = () => {
     }
     const lotteries = lotteriesArr.map((item: any) => {
       return {
-        date: convertTimestamp(Number(item.date)),
+        date: convertTimestampToDate(Number(item.timestamp)),
+        time: convertTimestampToTime(Number(item.timestamp)),
         lotteryId: Number(item.lotteryId),
         lotteryName: item.lotteryName,
         amount: Number(item.amount),

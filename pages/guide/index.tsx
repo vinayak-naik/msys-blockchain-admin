@@ -13,7 +13,7 @@ import { getGuides } from "../../utils/api/next.api";
 import GuidesTable from "../../components/tables/guidesTable";
 import { setGuides } from "../../redux/redux-toolkit/guideSlice";
 import { useDispatch } from "react-redux";
-import { convertTimestamp } from "../../utils/convertion";
+import { convertTimestampToDate } from "../../utils/convertion";
 
 const LotteryLoadingComponent = (props: any) => {
   const { loading, children } = props;
@@ -51,7 +51,7 @@ const Guides = () => {
         return {
           title: item.title,
           fileName: item.fileName,
-          timestamp: convertTimestamp(Number(item.timestamp / 1000)),
+          timestamp: convertTimestampToDate(Number(item.timestamp / 1000)),
         };
       });
       dispatch(setGuides(list));
@@ -63,7 +63,7 @@ const Guides = () => {
     getGuidesList();
   }, []); //eslint-disable-line
 
-  // convertTimestamp
+  // convertTimestampToDate
 
   return (
     <LotteryLoadingComponent loading={loading}>

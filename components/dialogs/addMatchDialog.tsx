@@ -18,6 +18,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 interface AddMatchFormIF {
+  game: string;
   team1: string;
   team2: string;
 }
@@ -34,11 +35,13 @@ const AddMatchDialog = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const initialValues = {
+    game: "",
     team1: "",
     team2: "",
   };
 
   const validationSchema = Yup.object({
+    game: Yup.string().required("Please enter team game type"),
     team1: Yup.string().required("Please enter team name"),
     team2: Yup.string().required("Please enter team name"),
   });
@@ -59,7 +62,7 @@ const AddMatchDialog = (props: any) => {
       try {
         const res = await contract
           .connect(signer)
-          .addMatch(values.team1, values.team2, Number(timeStamp));
+          .addMatch(values.team1, values.team2, Number(timeStamp), values.game);
         await res.wait();
         refreshPage();
         setLoading(false);
@@ -88,6 +91,19 @@ const AddMatchDialog = (props: any) => {
               <Form method="post" style={{ width: "30vw" }}>
                 <div className={style.inputBox}>
                   <Typography variant="h5">Add Match</Typography>
+                </div>
+                <div className={style.inputBox}>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    id="game"
+                    label="Enter game type"
+                    variant="outlined"
+                    {...formik.getFieldProps("game")}
+                  />
+                  <div className={style.errorBox}>
+                    <ErrorMessage component={TextError} name="game" />
+                  </div>
                 </div>
                 <div className={style.inputBox}>
                   <TextField

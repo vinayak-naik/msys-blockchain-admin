@@ -13,7 +13,7 @@ import { getArticles } from "../../utils/api/next.api";
 import ArticlesTable from "../../components/tables/articlesTable";
 import { setArticles } from "../../redux/redux-toolkit/articleSlice";
 import { useDispatch } from "react-redux";
-import { convertTimestamp } from "../../utils/convertion";
+import { convertTimestampToDate } from "../../utils/convertion";
 
 const LotteryLoadingComponent = (props: any) => {
   const { loading, children } = props;
@@ -51,7 +51,7 @@ const Articles = () => {
         return {
           title: item.title,
           fileName: item.fileName,
-          timestamp: convertTimestamp(Number(item.timestamp / 1000)),
+          timestamp: convertTimestampToDate(Number(item.timestamp / 1000)),
         };
       });
       dispatch(setArticles(list));
@@ -63,7 +63,7 @@ const Articles = () => {
     getArticlesList();
   }, []); //eslint-disable-line
 
-  // convertTimestamp
+  // convertTimestampToDate
 
   return (
     <LotteryLoadingComponent loading={loading}>

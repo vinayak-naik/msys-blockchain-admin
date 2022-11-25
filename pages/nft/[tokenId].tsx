@@ -9,8 +9,8 @@ import {
   NftLoadingComponent,
   NftMetaData,
   NftName,
-  NftPrice,
   NftProperties,
+  NftSellButton,
   OwnerContainer,
 } from "../../molecules/pages/nftDetails.atom";
 import { setNft } from "../../redux/redux-toolkit/nftSlice";
@@ -18,7 +18,6 @@ import { RootState } from "../../redux/store";
 import style from "../../styles/pages/nftDetails.module.css";
 import { compressAddress } from "../../utils/convertion";
 import opensea from "../../public/img/opensea.png";
-import rarible from "../../public/img/rarible.jpeg";
 
 const NftDetails = () => {
   const { query } = useRouter();
@@ -26,10 +25,10 @@ const NftDetails = () => {
   const { nftContract } = useSelector((state: RootState) => state.contract);
   const { nft } = useSelector((state: RootState) => state.nfts);
   const [loading, setLoading] = useState(false);
+  const nftContractAddress = `${process.env.NEXT_PUBLIC_NFT_CONTRACT}`;
 
   const getNft = async () => {
     const res = await nftContract.nfts(query.tokenId);
-    console.log(res);
     const owner = await nftContract.ownerOf(query.tokenId);
     if (!res.tokenUri && !owner) return;
     try {
@@ -95,12 +94,17 @@ const NftDetails = () => {
           <NftName name={nft.name} />
           <NftMetaData link={nft.tokenUri} />
           <OwnerContainer creator={nft.creator} currentOwner={nft.owner} />
-          <NftPrice price={nft.price} forSale={nft.forSale} />
+          <NftSellButton
+            price={nft.price}
+            forSale={nft.forSale}
+            currentOwner={nft.owner}
+            refreshPage={getNft}
+          />
           <div className={style.openseaContainer}>
             <div className={style.openseaText}>Sell NFT</div>
             <a
               target="blank2"
-              href={`https://testnets.opensea.io/assets/mumbai/0x109d303837100a8b4ec861633138042edaa08a4f/${query.tokenId}`}
+              href={`https://testnets.opensea.io/assets/mumbai/${nftContractAddress}/${query.tokenId}`}
               className={style.imageBox}
             >
               <Image
@@ -114,13 +118,13 @@ const NftDetails = () => {
             </a>
             <a
               target="blank"
-              href={`https://testnet.rarible.com/token/polygon/0x109d303837100a8b4ec861633138042edaa08a4f:${query.tokenId}?tab=overview`}
+              href={`https://testnet.rarible.com/token/polygon/${nftContractAddress}:${query.tokenId}?tab=overview`}
               className={style.imageBox}
             >
               <Image
                 alt="img"
                 loader={({ src }: any) => src}
-                src={rarible}
+                src={opensea}
                 height="50px"
                 width="50px"
               />

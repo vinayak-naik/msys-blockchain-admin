@@ -15,12 +15,22 @@ export const MatchDetails = (props: any) => {
     <Paper className={style.matchDetails}>
       <div className={style.textBox}>
         <div className={style.textContainer}>
+          <div className={style.textHead}>Game:</div>
+          <div className={style.text}>{match.game}</div>
+        </div>
+        <div className={style.textContainer}>
           <div className={style.textHead}>Status:</div>
           <div className={style.text}>{match.statusString}</div>
         </div>
+      </div>
+      <div className={style.textBox}>
         <div className={style.textContainer}>
           <div className={style.textHead}>Date:</div>
           <div className={style.text}>{match.date}</div>
+        </div>
+        <div className={style.textContainer}>
+          <div className={style.textHead}>Time:</div>
+          <div className={style.text}>{match.time}</div>
         </div>
       </div>
       <div className={style.textBox}>

@@ -28,34 +28,18 @@ const UsersTable = (props: any) => {
   );
   const [loading, setLoading] = useState(false);
 
-  const callRefresh = () => {
-    setTimeout(() => {
-      refreshPage();
-    }, 10000);
-    setTimeout(() => {
-      refreshPage();
-    }, 14000);
-    setTimeout(() => {
-      refreshPage();
-    }, 18000);
-    setTimeout(() => {
-      refreshPage();
-    }, 22000);
-    setTimeout(() => {
-      refreshPage();
-    }, 26000);
-  };
-
   const disableUser = async (address: string) => {
     setLoading(true);
-    await contract.connect(signer).disableUser(address);
-    callRefresh();
+    const res = await contract.connect(signer).disableUser(address);
+    await res.wait();
+    refreshPage();
     setLoading(false);
   };
   const enableUser = async (address: string) => {
     setLoading(true);
-    await contract.connect(signer).enableUser(address);
-    callRefresh();
+    const res = await contract.connect(signer).enableUser(address);
+    await res.wait();
+    refreshPage();
     setLoading(false);
   };
   return (

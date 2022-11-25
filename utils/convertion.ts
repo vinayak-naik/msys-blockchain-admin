@@ -38,9 +38,15 @@ export const convertStatus = (statusCode: number) => {
     return "Somthing went wrong";
   }
 };
-export const convertTimestamp = (timestamp: number) => {
+export const convertTimestampToDate = (timestamp: number) => {
   const todate = new Date(Number(timestamp) * 1000).getDate();
   const tomonth = new Date(Number(timestamp) * 1000).getMonth() + 1;
   const toyear = new Date(Number(timestamp) * 1000).getFullYear();
   return `${todate}/${tomonth}/${toyear}`;
+};
+export const convertTimestampToTime = (timestamp: number) => {
+  const toHour = new Date(Number(timestamp) * 1000).getHours();
+  const toMinute = new Date(Number(timestamp) * 1000).getMinutes();
+  // const toSeconds = new Date(Number(timestamp) * 1000).getSeconds();
+  return `${toHour}:${toMinute < 10 ? "0" + toMinute : toMinute}`;
 };

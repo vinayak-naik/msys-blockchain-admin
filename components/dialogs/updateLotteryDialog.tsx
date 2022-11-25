@@ -34,9 +34,10 @@ const UpdateLotteryDialog = (props: any) => {
 
   const onSubmit = async (values: any) => {
     setLoading(true);
-    await contract
+    const res = await contract
       .connect(signer)
       .updateLotteryStatus(lotteryId, values.status);
+    await res.wait();
     refreshPage();
     setLoading(false);
     handleClose();

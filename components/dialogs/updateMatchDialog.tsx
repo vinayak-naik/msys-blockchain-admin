@@ -31,7 +31,10 @@ const UpdateMatchDialog = (props: any) => {
   });
 
   const onSubmit = async (values: any) => {
-    await contract.connect(signer).updateMatchStatus(matchId, values.status);
+    const res = await contract
+      .connect(signer)
+      .updateMatchStatus(matchId, values.status);
+    await res.wait();
     refreshPage();
     handleClose();
   };

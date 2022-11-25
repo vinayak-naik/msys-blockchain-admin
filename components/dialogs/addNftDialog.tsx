@@ -66,17 +66,19 @@ const AddNFTDialog = (props: any) => {
       attributes: formValues.attributes,
     };
     uploadJsonToPinata(JSON.stringify(metadata)).then((jsonData) => {
-      const { name, price, forSale } = formValues;
+      const { name, price, forSale, image } = formValues;
       if (jsonData?.IpfsHash) {
         setUploadImageMessage({
           uploadSuccess: true,
           message: "Metadata uploaded to IPFS successfully",
         });
+        console.log(name, price, forSale, jsonData.IpfsHash, image);
         nftContract
           .connect(signer)
-          .safeMint(name, price, forSale, jsonData.IpfsHash, formValues.image)
+          .safeMint(name, price, forSale, jsonData.IpfsHash, image)
           .then(() => checkEvents())
-          .catch(() => {
+          .catch((err: any) => {
+            console.log(err);
             setUploadImageMessage({
               uploadSuccess: false,
               message: "Error while Minting NFT",
@@ -103,13 +105,6 @@ const AddNFTDialog = (props: any) => {
         formData.append("file", blob);
         uploadImageToPinata(formData).then((imageData) => {
           if (imageData?.IpfsHash) {
-            // uploadNftImageToNext(formData).then((res) => {
-            //   setFormValues({
-            //     ...formValues,
-            //     image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,
-            //     altImage: res.url ? res.url : "",
-            //   });
-            // });
             setFormValues({
               ...formValues,
               image: `https://gateway.pinata.cloud/ipfs/${imageData.IpfsHash}`,

@@ -21,7 +21,7 @@ import {
 } from "../../redux/redux-toolkit/lotteriesSlice";
 import { RootState } from "../../redux/store";
 import style from "../../styles/pages/matchDetails.module.css";
-import { convertStatus, convertTimestamp } from "../../utils/convertion";
+import { convertStatus, convertTimestampToDate } from "../../utils/convertion";
 
 // const sx = {
 //   tableCell: {
@@ -46,27 +46,12 @@ const LotteryDetails = () => {
   const [lotteryWinners, setLotteryWinners] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const refreshPage = () => {
-    setTimeout(() => {
-      getLottery();
-    }, 15000);
-    setTimeout(() => {
-      getLottery();
-    }, 20000);
-    setTimeout(() => {
-      getLottery();
-    }, 25000);
-    setTimeout(() => {
-      getLottery();
-    }, 40000);
-  };
-
   const getLottery = async () => {
     const res = await contract.lotteries(query.lotteryId);
     const amount = Number(res.amount.toString()) * 0.99;
     const fees = Number(res.amount.toString()) * 0.01;
     const lottery = {
-      date: convertTimestamp(Number(res.date)),
+      date: convertTimestampToDate(Number(res.timestamp)),
       lotteryId: Number(res.lotteryId),
       lotteryName: res.lotteryName,
       wholeAmount: Number(res.amount),
@@ -100,8 +85,11 @@ const LotteryDetails = () => {
   };
 
   const announceResult = async () => {
-    await contract.connect(signer).announceLotteryResult(query.lotteryId);
-    refreshPage();
+    const res = await contract
+      .connect(signer)
+      .announceLotteryResult(query.lotteryId);
+    await res.wait();
+    getLottery();
   };
 
   useEffect(() => {
@@ -158,7 +146,7 @@ const LotteryDetails = () => {
           open={statusDialog}
           handleClose={() => setStatusDialog(false)}
           lotteryId={query.lotteryId}
-          refreshPage={refreshPage}
+          refreshPage={getLottery}
         />
         <LotteryWinnersDialog
           openWinners={openWinners}
