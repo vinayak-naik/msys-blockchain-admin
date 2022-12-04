@@ -5,13 +5,17 @@ import { useRouter } from "next/router";
 import { ethers } from "ethers";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  setContract,
+  setBettingContract,
+  setLotteryContract,
   setNftContract,
   setSigner,
+  setUserContract,
 } from "../redux/redux-toolkit/contractSlice";
 import { RootState } from "../redux/store";
-import ABI from "../public/abi.json";
-import nftABI from "../public/nftAbi.json";
+import userABI from "../web3-interface/ABI/user.abi.json";
+import bettingABI from "../web3-interface/ABI/betting.abi.json";
+import lotteryABI from "../web3-interface/ABI/lottery.abi.json";
+import nftABI from "../web3-interface/ABI/nft.abi.json";
 import { compressAddress } from "../utils/convertion";
 import { IconButton } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
@@ -27,21 +31,44 @@ const HeaderComponent = () => {
   const [shortWalletAddr, setShortWalletAddr] = useState("");
   const [showAddress, setShowAddress] = useState(false);
 
-  const contractAddress = `${process.env.NEXT_PUBLIC_ERC20_CONTRACT}`;
-  const nftContractAddress = `${process.env.NEXT_PUBLIC_NFT_CONTRACT}`;
+  const USER_CONTRACT_ADDRESS =
+    `${process.env.NEXT_PUBLIC_USER_CONTRACT_ADDRESS}` || "";
+  const BETTING_CONTRACT_ADDRESS =
+    `${process.env.NEXT_PUBLIC_BETTING_CONTRACT_ADDRESS}` || "";
+  const LOTTERY_CONTRACT_ADDRESS =
+    `${process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS}` || "";
+  const NFT_CONTRACT_ADDRESS =
+    `${process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS}` || "";
 
   const setSign = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const sign = provider.getSigner();
     dispatch(setSigner(sign));
-    const contract = new ethers.Contract(contractAddress, ABI, provider);
+    const userContract = new ethers.Contract(
+      USER_CONTRACT_ADDRESS,
+      userABI,
+      provider
+    );
+    const bettingContract = new ethers.Contract(
+      BETTING_CONTRACT_ADDRESS,
+      bettingABI,
+      provider
+    );
+    const lotteryContract = new ethers.Contract(
+      LOTTERY_CONTRACT_ADDRESS,
+      lotteryABI,
+      provider
+    );
     const nftContract = new ethers.Contract(
-      nftContractAddress,
+      NFT_CONTRACT_ADDRESS,
       nftABI,
       provider
     );
-    dispatch(setContract(contract));
+
+    dispatch(setUserContract(userContract));
+    dispatch(setBettingContract(bettingContract));
+    dispatch(setLotteryContract(lotteryContract));
     dispatch(setNftContract(nftContract));
   };
 

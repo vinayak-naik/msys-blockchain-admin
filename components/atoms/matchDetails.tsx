@@ -2,15 +2,10 @@ import React from "react";
 import { Paper } from "@mui/material";
 import style from "../../styles/pages/matchDetails.module.css";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 export const MatchDetails = (props: any) => {
-  const { setStatusDialog, setResultDialog } = props;
+  const { setStatusDialog, setResultDialog, match, team1, team2 } = props;
   const { query } = useRouter();
-  const { match, team1, team2 } = useSelector(
-    (state: RootState) => state.matches
-  );
   return (
     <Paper className={style.matchDetails}>
       <div className={style.textBox}>

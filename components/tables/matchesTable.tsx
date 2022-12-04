@@ -9,8 +9,6 @@ import Paper from "@mui/material/Paper";
 import { useRouter } from "next/router";
 import { IconButton, Tooltip } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 const sx = {
   tableCell: {
@@ -20,9 +18,9 @@ const sx = {
   },
 };
 
-export default function MatchesTable() {
+export default function MatchesTable(props: any) {
+  const { matches } = props;
   const { push } = useRouter();
-  const { matches } = useSelector((state: RootState) => state.matches);
 
   return (
     <TableContainer component={Paper}>

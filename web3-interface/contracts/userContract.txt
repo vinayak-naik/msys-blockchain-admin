@@ -1,0 +1,177 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+        import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+        contract UserContract is ERC20 {
+
+// ================================ CONSTRUCTOR ================================================
+
+        constructor() ERC20("MsysCoin", "MSCN"){
+                _mint(msg.sender, 10000);
+                admin=msg.sender;
+        }
+
+// ================================= STRUCTS ================================================
+
+        struct User{
+                uint id;
+                address walletAddress;
+                string name;
+                string email;
+                bool enabled;
+        }
+
+        struct History{
+                uint id;
+                uint category;
+                uint amount;
+                uint teamSelected;
+        }
+
+// ================================= VARIABLES ================================================
+        
+        User[] public users;
+        address public admin;
+        address[] public admins;
+        mapping(address => User) public userList;
+        mapping(string => address) public userWalletAddresses;
+        mapping(address => History[]) public participateHistory;
+
+// ================================== MODIFIERS ================================================
+
+        modifier onlyAdmin{
+                require(msg.sender == admin,"Only admin can call this function");
+                _;
+        }
+
+        modifier isAdmin{
+                bool validAdmin=false;
+                for (uint i=0; i<admins.length; i++) {
+                      if(admins[i]==msg.sender){
+                          validAdmin=true;
+                      }
+                }
+                require(validAdmin,"Only admins can can call this function");
+                _;
+        }
+
+// ============================== OVERRIDE DECIMALS ================================================
+
+        function decimals() override public pure returns (uint8) {
+                return 0;
+        }
+
+// ========================= GET BALANCE OF SMART CONTRACT ================================================
+
+         function getBalanceOfSM() public view returns(uint){
+                return balanceOf(address(this));
+        }
+
+// ================================ ADD-ADMIN ================================================
+
+        function addAdmin(address _address) public onlyAdmin returns (bool) {
+                admins.push(address(_address));
+                return false;
+        }
+
+// ================================ REMOVE ALL ADMINS ================================================
+
+        function removeAllAdmins() public onlyAdmin returns (bool) {
+                delete admins;
+                return false;
+        }
+
+// ================================ MINT MSCN ================================================
+
+        function mintMSCN(address _to, uint amount) public isAdmin returns (bool) {
+                _mint(_to, amount);
+                return false;
+        }
+
+// ================================ TRANSFER MSCN ================================================
+
+        function transferMSCN(address _to, uint amount) public isAdmin  returns (bool) {
+                transfer(_to, amount);
+                return false;
+        }
+
+// ================================ TRANSFER MSCN FROM ================================================
+
+        function transferMSCNFrom(address _from,address _to, uint amount) public isAdmin returns (bool) {
+                _transfer(_from,_to, amount);
+                return false;
+        }
+
+// ================================ BURN MSCN ================================================
+
+        function burnMSCN(address _from, uint amount) public isAdmin returns (bool) {
+                _burn(_from, amount);
+                return false;
+        }
+
+// =================================== ADD USER ================================================
+       
+        function addUser(address walletAddress,string memory name,string memory email) public onlyAdmin{
+                require(walletAddress!=admin,"Admin cannot be a User");
+                require(userList[walletAddress].walletAddress != walletAddress,"User already exist");
+                userList[walletAddress]=User(users.length,walletAddress,name,email,true);
+                users.push(User(users.length,walletAddress,name,email,true));
+                userWalletAddresses[email]=walletAddress;
+                _mint(walletAddress, 5000);
+        }
+
+// ==================================== IS-USER ==================================================
+
+        function isUser(address _address) public view returns (bool) {
+                User memory user=userList[_address];
+                if(user.enabled)return true;
+                return false;
+        }
+
+// ================================ GET USERS LENGTH =============================================
+
+        function getUsersLength() public view returns (uint) {
+                return users.length;
+        }
+
+// ==================================== GET USER ==================================================
+
+        function getUser(uint userId) public view returns (User memory) {
+                return users[userId];
+        }
+
+// ================================== DISABLE USERS ================================================
+
+        function disableUser(address userAddress) public onlyAdmin {
+                users[userList[userAddress].id].enabled=false;
+                userList[userAddress].enabled=false;
+        }
+
+// ================================== ENABLE USERS ================================================
+
+        function enableUser(address userAddress) public onlyAdmin {
+                users[userList[userAddress].id].enabled=true;
+                userList[userAddress].enabled=true;
+        }
+
+// ================================== ENABLE USERS ================================================
+
+        function addParticipateHistory(address _address, uint id, uint category,uint amount, uint teamSelected) public isAdmin {
+                participateHistory[_address].push(History(id,category,amount,teamSelected));
+        }
+
+// ================================ GET PARTICIPANTS HISTORY LENGTH =============================================
+
+        function getParticipanteHistoryLength(address _address) public view returns (uint) {
+                return participateHistory[_address].length;
+        }
+
+// ================================ GET PARTICIPANTS HISTORY LENGTH =============================================
+
+        function getParticipanteHistory(address _address, uint index) public view returns ( History memory) {
+                return participateHistory[_address][index];
+        }
+    }
+
+    

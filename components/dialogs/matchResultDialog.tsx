@@ -16,10 +16,11 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { callSetMatchApi, callSetMatchesApi } from "../../utils/api/cache";
 
 const MatchResultDialog = (props: any) => {
   const { open, handleClose, matchId, refreshPage, matchDetails } = props;
-  const { contract, signer } = useSelector(
+  const { bettingContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,21 +30,27 @@ const MatchResultDialog = (props: any) => {
   };
 
   const validationSchema = Yup.object({
-    teamWon: Yup.number().required("Please enter team name"),
+    teamWon: Yup.number().required("Please select team name"),
   });
 
   const onSubmit = async (values: any) => {
-    setLoading(true);
-    const res = await contract
-      .connect(signer)
-      .announceResult(matchId, values.teamWon);
-    await res.wait();
-    refreshPage();
-    setLoading(false);
-    handleClose();
+    try {
+      setLoading(true);
+      const res = await bettingContract
+        .connect(signer)
+        .announceResult(matchId, values.teamWon);
+      await res.wait();
+      refreshPage();
+      setLoading(false);
+      handleClose();
+      callSetMatchesApi();
+      callSetMatchApi(matchId);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
         <Formik
           initialValues={initialValues}

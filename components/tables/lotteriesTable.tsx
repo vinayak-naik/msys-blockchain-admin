@@ -10,8 +10,6 @@ import { useRouter } from "next/router";
 import { IconButton, Tooltip } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { convertStatus } from "../../utils/convertion";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 interface MatchIF {
   date: number;
@@ -31,9 +29,9 @@ const sx = {
   },
 };
 
-export default function LotteriesTable() {
+export default function LotteriesTable(props: any) {
+  const { lotteries } = props;
   const { push } = useRouter();
-  const { lotteries } = useSelector((state: RootState) => state.lotteries);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

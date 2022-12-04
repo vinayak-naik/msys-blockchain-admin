@@ -5,6 +5,7 @@ import BarChart from "../components/atoms/barChart";
 import { PageLoadingComponent } from "../components/reusable/pageLoading";
 import { RootState } from "../redux/store";
 import style from "../styles/pages/dashboard.module.css";
+import { callSetLotteriesApi, callSetMatchesApi } from "../utils/api/cache";
 
 const Dashboard = () => {
   const { contract, nftContract } = useSelector(
@@ -186,6 +187,9 @@ const Dashboard = () => {
                   :&nbsp;
                   {Math.abs(info.bettingProfit || 0) || 0} MSCN
                 </div>
+                <button onClick={callSetMatchesApi}>
+                  call-set-matches-api
+                </button>
               </div>
             </Paper>
           </div>
@@ -205,6 +209,9 @@ const Dashboard = () => {
                   :&nbsp;
                   {Math.abs(info.lotteryProfit || 0)} MSCN
                 </div>
+                <button onClick={callSetLotteriesApi}>
+                  call-set-lotteries-api
+                </button>
               </div>
             </Paper>
           </div>
@@ -220,7 +227,6 @@ const Dashboard = () => {
             </Paper>
           </div>
         </div>
-        {/* <button onClick={callSetMatchesApi}>call-set-matches-api</button> */}
       </div>
     </PageLoadingComponent>
   );

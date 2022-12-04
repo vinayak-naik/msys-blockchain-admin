@@ -11,8 +11,7 @@ import style from "../../styles/pages/user.module.css";
 import { LibraryAdd, Refresh } from "@mui/icons-material";
 import AddMatchDialog from "../../components/dialogs/addMatchDialog";
 import { RootState } from "../../redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { setMatches } from "../../redux/redux-toolkit/matchesSlice";
+import { useSelector } from "react-redux";
 import {
   convertStatus,
   convertTimestampToDate,
@@ -21,18 +20,18 @@ import {
 import MatchesTable from "../../components/tables/matchesTable";
 
 const Matches = () => {
-  const dispatch = useDispatch();
-  const { contract } = useSelector((state: RootState) => state.contract);
+  const { bettingContract } = useSelector((state: RootState) => state.contract);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [matches, setMatches] = useState<any>([]);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   const count = 8;
   const getAllMatches = async () => {
-    const length = await contract.getMatchesLength();
+    const length = await bettingContract.getMatchesLength();
     const pageCount = Math.ceil(Number(length) / count);
     setTotalPages(pageCount);
     const from = (page - 1) * count;
@@ -41,11 +40,11 @@ const Matches = () => {
 
     for (let i = from; i < to; i++) {
       if (i < length) {
-        const res = await contract.matches(i);
+        const res = await bettingContract.matches(i);
         matchesArr.push(res);
       }
     }
-    const matches = matchesArr.map((item: any) => {
+    const matchesList = matchesArr.map((item: any) => {
       return {
         date: convertTimestampToDate(Number(item.timestamp)),
         time: convertTimestampToTime(Number(item.timestamp)),
@@ -58,21 +57,21 @@ const Matches = () => {
         statusString: convertStatus(Number(item.statusCode)),
       };
     });
-    dispatch(setMatches(matches));
+    setMatches(matchesList);
     setLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
-    if (contract) {
+    if (bettingContract) {
       getAllMatches();
     }
-  }, [contract]); //eslint-disable-line
+  }, [bettingContract]); //eslint-disable-line
   useEffect(() => {
-    if (contract) {
+    if (bettingContract) {
       getAllMatches();
     }
-  }, [contract, page]); //eslint-disable-line
+  }, [bettingContract, page]); //eslint-disable-line
 
   const refreshPage = () => {
     setLoading(true);
@@ -101,7 +100,7 @@ const Matches = () => {
               </Typography>
             </div>
           </Paper>
-          <MatchesTable />
+          <MatchesTable matches={matches} />
           <Paper
             sx={{
               margin: "1px 0",

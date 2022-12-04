@@ -21,23 +21,22 @@ const sx = {
 };
 
 const UsersTable = (props: any) => {
-  const { refreshPage } = props;
-  const { users } = useSelector((state: RootState) => state.users);
-  const { contract, signer } = useSelector(
+  const { users, refreshPage } = props;
+  const { userContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [loading, setLoading] = useState(false);
 
   const disableUser = async (address: string) => {
     setLoading(true);
-    const res = await contract.connect(signer).disableUser(address);
+    const res = await userContract.connect(signer).disableUser(address);
     await res.wait();
     refreshPage();
     setLoading(false);
   };
   const enableUser = async (address: string) => {
     setLoading(true);
-    const res = await contract.connect(signer).enableUser(address);
+    const res = await userContract.connect(signer).enableUser(address);
     await res.wait();
     refreshPage();
     setLoading(false);
@@ -82,7 +81,7 @@ const UsersTable = (props: any) => {
                 <TableCell sx={sx.tableCell}>{item.name}</TableCell>
                 <TableCell sx={sx.tableCell}>{item.email}</TableCell>
                 <TableCell sx={sx.tableCell}>
-                  {item.disabled ? (
+                  {!item.enabled ? (
                     <Tooltip title="Disabled" placement="top">
                       <IconButton
                         disabled={loading}

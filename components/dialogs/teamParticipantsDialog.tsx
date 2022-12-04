@@ -7,8 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 // import style from "../../styles/components/dialog/dialog.module.css";
 import { Dialog, DialogTitle, Pagination, Typography } from "@mui/material";
-import { RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 
 const sx = {
   tableCell: {
@@ -19,9 +17,7 @@ const sx = {
 };
 
 export const TeamParticipantsDialog = (props: any) => {
-  const { match, team1, team2 } = useSelector(
-    (state: RootState) => state.matches
-  );
+  const { match, team1, team2 } = props;
   const [page, setPage] = React.useState(1);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

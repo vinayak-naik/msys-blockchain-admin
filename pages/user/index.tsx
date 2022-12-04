@@ -11,31 +11,27 @@ import style from "../../styles/pages/user.module.css";
 import AddUserDialog from "../../components/dialogs/addUserDialog";
 import { GroupAddOutlined, Refresh } from "@mui/icons-material";
 import { RootState } from "../../redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { setUsers } from "../../redux/redux-toolkit/userSlice";
+import { useSelector } from "react-redux";
 import UsersTable from "../../components/tables/usersTable";
 
-// interface changeUserStatusIF{
-//   status:boolean;
-//   address:string;
-
-// }
-
 const Users = () => {
-  const dispatch = useDispatch();
-  const { contract } = useSelector((state: RootState) => state.contract);
+  const { userContract } = useSelector((state: RootState) => state.contract);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<any>([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
   const count = 7;
+  let ignore = false;
+
+  console.log(users);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const getAllUsers = async () => {
-    const length = await contract.getUsersLength();
+    const length = await userContract.getUsersLength();
     const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;
@@ -44,7 +40,7 @@ const Users = () => {
 
     for (let i = from; i < to; i++) {
       if (i < Number(length)) {
-        const res = await contract.users(i);
+        const res = await userContract.users(i);
         usersArr.push(res);
       }
     }
@@ -54,28 +50,29 @@ const Users = () => {
         name: item.name,
         email: item.email,
         walletAddress: item.walletAddress,
-        disabled: item.disabled,
+        enabled: item.enabled,
       };
     });
-    dispatch(setUsers(users));
+    setUsers(users);
     setLoading(false);
   };
 
   useEffect(() => {
-    setLoading(true);
-    if (contract) {
-      getAllUsers();
-    }
-  }, [contract]); //eslint-disable-line
-  useEffect(() => {
-    if (contract) {
-      getAllUsers();
-    }
-  }, [contract, page]); //eslint-disable-line
+    if (!ignore && userContract) getAllUsers();
+    ignore = true; // eslint-disable-line
+  }, [userContract]); // eslint-disable-line
 
-  const refreshPage = () => {
-    getAllUsers();
-  };
+  useEffect(() => {
+    setLoading(true);
+    if (!ignore && userContract) {
+      getAllUsers();
+    }
+  }, [userContract]); //eslint-disable-line
+  useEffect(() => {
+    if (!ignore && userContract) {
+      getAllUsers();
+    }
+  }, [userContract, page]); //eslint-disable-line
 
   return (
     <>
@@ -100,10 +97,10 @@ const Users = () => {
               </Typography>
             </div>
           </Paper>
-          <UsersTable refreshPage={refreshPage} />
+          <UsersTable users={users} refreshPage={getAllUsers} />
           <Paper
             sx={{
-              margin: "0.5px 0",
+              margin: "1px 0 0",
               padding: "10px 20px",
               display: "flex",
               justifyContent: "space-between",

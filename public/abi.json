@@ -2,9 +2,38 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "lotteryName",
-				"type": "string"
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "addAdmin",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "category",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -13,39 +42,11 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "timeStamp",
+				"name": "teamSelected",
 				"type": "uint256"
 			}
 		],
-		"name": "addLottery",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "team1",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "team2",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timeStamp",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "game",
-				"type": "string"
-			}
-		],
-		"name": "addMatch",
+		"name": "addParticipateHistory",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -66,70 +67,10 @@
 				"internalType": "string",
 				"name": "email",
 				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "token",
-				"type": "string"
 			}
 		],
 		"name": "addUser",
 		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			}
-		],
-		"name": "announceLotteryResult",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "teamWon",
-				"type": "uint256"
-			}
-		],
-		"name": "announceResult",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -162,6 +103,54 @@
 		],
 		"name": "Approval",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "burnMSCN",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [
@@ -240,14 +229,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "teamSelected",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_to",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
@@ -255,24 +239,24 @@
 				"type": "uint256"
 			}
 		],
-		"name": "participate",
-		"outputs": [],
+		"name": "mintMSCN",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			}
-		],
-		"name": "participateLottery",
+		"inputs": [],
+		"name": "removeAllAdmins",
 		"outputs": [
 			{
 				"internalType": "bool",
-				"name": "success",
+				"name": "",
 				"type": "bool"
 			}
 		],
@@ -360,42 +344,78 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_to",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "statusCode",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"name": "updateLotteryStatus",
-		"outputs": [],
+		"name": "transferMSCN",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_to",
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "statusCode",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"name": "updateMatchStatus",
-		"outputs": [],
+		"name": "transferMSCNFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
 		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "admins",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -450,30 +470,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "bettingAmount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "decimals",
 		"outputs": [
@@ -484,137 +480,6 @@
 			}
 		],
 		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllLotteries",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "lotteryId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "lotteryName",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "statusCode",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "timestamp",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct MSysERC20.Lottery[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllMatches",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "matchId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "team1",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "team2",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "won",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "statusCode",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "timestamp",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "game",
-						"type": "string"
-					}
-				],
-				"internalType": "struct MSysERC20.Match[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "teamSelected",
-				"type": "uint256"
-			}
-		],
-		"name": "getAllParticipants",
-		"outputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "participantAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "selectedTeam",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct MSysERC20.Participant[]",
-				"name": "",
-				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -631,104 +496,11 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "getLotteriesLength",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "index",
-				"type": "uint256"
-			}
-		],
-		"name": "getLotteryParticipant",
-		"outputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "_address",
 				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			}
-		],
-		"name": "getLotteryParticipants",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			}
-		],
-		"name": "getLotteryParticipantsLength",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getMatchesLength",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "teamSelected",
-				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
@@ -736,27 +508,32 @@
 				"type": "uint256"
 			}
 		],
-		"name": "getParticipant",
+		"name": "getParticipanteHistory",
 		"outputs": [
 			{
 				"components": [
 					{
-						"internalType": "address",
-						"name": "participantAddress",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
-						"name": "selectedTeam",
+						"name": "category",
 						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "teamSelected",
+						"type": "uint256"
 					}
 				],
-				"internalType": "struct MSysERC20.Participant",
+				"internalType": "struct UserContract.History",
 				"name": "",
 				"type": "tuple"
 			}
@@ -767,22 +544,63 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "teamSelected",
-				"type": "uint256"
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
 			}
 		],
-		"name": "getParticipantsLength",
+		"name": "getParticipanteHistoryLength",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "userId",
+				"type": "uint256"
+			}
+		],
+		"name": "getUser",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "walletAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "email",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "enabled",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct UserContract.User",
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",
@@ -804,158 +622,17 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "lotteries",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "lotteryId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "lotteryName",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "statusCode",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "lotteryAmount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "lotteryParticipants",
-		"outputs": [
-			{
 				"internalType": "address",
-				"name": "",
+				"name": "_address",
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "lotteryWinners",
+		"name": "isUser",
 		"outputs": [
 			{
-				"internalType": "address",
-				"name": "first",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "second",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "third",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
+				"internalType": "bool",
 				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "matches",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "matchId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "team1",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "team2",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "won",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "statusCode",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "timestamp",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "game",
-				"type": "string"
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -977,14 +654,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "address",
 				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
+				"type": "address"
 			},
 			{
 				"internalType": "uint256",
@@ -992,41 +664,27 @@
 				"type": "uint256"
 			}
 		],
-		"name": "participants",
+		"name": "participateHistory",
 		"outputs": [
 			{
-				"internalType": "address",
-				"name": "participantAddress",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "selectedTeam",
+				"name": "category",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
+			},
 			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"name": "privateKey",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "teamSelected",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -1090,7 +748,7 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "disabled",
+				"name": "enabled",
 				"type": "bool"
 			}
 		],
@@ -1129,7 +787,7 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "disabled",
+				"name": "enabled",
 				"type": "bool"
 			}
 		],
@@ -1137,9 +795,21 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "validUser",
-		"outputs": [],
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "userWalletAddresses",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
 		"stateMutability": "view",
 		"type": "function"
 	}

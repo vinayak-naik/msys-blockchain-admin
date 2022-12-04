@@ -21,6 +21,7 @@ import {
 } from "../../redux/redux-toolkit/lotteriesSlice";
 import { RootState } from "../../redux/store";
 import style from "../../styles/pages/matchDetails.module.css";
+import { callSetLotteriesApi, callSetLotteryApi } from "../../utils/api/cache";
 import { convertStatus, convertTimestampToDate } from "../../utils/convertion";
 
 // const sx = {
@@ -34,7 +35,7 @@ import { convertStatus, convertTimestampToDate } from "../../utils/convertion";
 const LotteryDetails = () => {
   const { query } = useRouter();
   const dispatch = useDispatch();
-  const { contract, signer } = useSelector(
+  const { lotteryContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const { lottery, participants } = useSelector(
@@ -47,7 +48,7 @@ const LotteryDetails = () => {
   const [loading, setLoading] = useState(false);
 
   const getLottery = async () => {
-    const res = await contract.lotteries(query.lotteryId);
+    const res = await lotteryContract.lotteries(query.lotteryId);
     const amount = Number(res.amount.toString()) * 0.99;
     const fees = Number(res.amount.toString()) * 0.01;
     const lottery = {
@@ -65,12 +66,12 @@ const LotteryDetails = () => {
     dispatch(setLottery(lottery));
     setLoading(false);
     if (Number(res.statusCode) === 3) {
-      const winners = await contract.lotteryWinners(query.lotteryId);
+      const winners = await lotteryContract.lotteryWinners(query.lotteryId);
       setLotteryWinners(winners);
     }
   };
   const getParticipants = async () => {
-    const res = await contract.getLotteryParticipants(query.lotteryId);
+    const res = await lotteryContract.getLotteryParticipants(query.lotteryId);
     const totalParticipants = res.length;
     const arr: any = [];
     res.forEach((item: any) => {
@@ -85,25 +86,31 @@ const LotteryDetails = () => {
   };
 
   const announceResult = async () => {
-    const res = await contract
-      .connect(signer)
-      .announceLotteryResult(query.lotteryId);
-    await res.wait();
-    getLottery();
+    try {
+      const res = await lotteryContract
+        .connect(signer)
+        .announceLotteryResult(query.lotteryId);
+      await res.wait();
+      getLottery();
+      callSetLotteriesApi();
+      callSetLotteryApi(query.lotteryId);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     setLoading(true);
-    if (contract && Number(query?.lotteryId) >= 0) {
+    if (lotteryContract && Number(query?.lotteryId) >= 0) {
       getParticipants();
     }
-  }, [contract, query?.lotteryId]); //eslint-disable-line
+  }, [lotteryContract, query?.lotteryId]); //eslint-disable-line
   useEffect(() => {
     setLoading(true);
-    if (contract && Number(query?.lotteryId) >= 0) {
+    if (lotteryContract && Number(query?.lotteryId) >= 0) {
       getLottery();
     }
-  }, [contract, query?.lotteryId, participants]); //eslint-disable-line
+  }, [lotteryContract, query?.lotteryId, participants]); //eslint-disable-line
 
   return (
     <LotteryLoadingComponent loading={loading}>

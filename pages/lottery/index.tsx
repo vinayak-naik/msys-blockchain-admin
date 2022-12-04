@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import style from "../../styles/pages/user.module.css";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import AddLotteryDialog from "../../components/dialogs/addLotteryDialog";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { Refresh } from "@mui/icons-material";
 import {
@@ -17,16 +17,15 @@ import {
   convertTimestampToDate,
   convertTimestampToTime,
 } from "../../utils/convertion";
-import { setLotteries } from "../../redux/redux-toolkit/lotteriesSlice";
 import LotteriesTable from "../../components/tables/lotteriesTable";
 import { LotteryLoadingComponent } from "../../molecules/pages/lotteryDetails.atom";
 
 const Lotteries = () => {
-  const dispatch = useDispatch();
-  const { contract } = useSelector((state: RootState) => state.contract);
+  const { lotteryContract } = useSelector((state: RootState) => state.contract);
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [lotteries, setLotteries] = useState<any>([]);
   const [totalPages, setTotalPages] = useState(1);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -35,7 +34,7 @@ const Lotteries = () => {
   const count = 8;
 
   const getAllLotteries = async () => {
-    const length = await contract.getLotteriesLength();
+    const length = await lotteryContract.getLotteriesLength();
     const pageNo = Math.ceil(Number(length) / count);
     setTotalPages(pageNo);
     const from = (page - 1) * count;
@@ -44,7 +43,7 @@ const Lotteries = () => {
 
     for (let i = from; i < to; i++) {
       if (i < Number(length)) {
-        const res = await contract.lotteries(i);
+        const res = await lotteryContract.lotteries(i);
         lotteriesArr.push(res);
       }
     }
@@ -59,21 +58,21 @@ const Lotteries = () => {
         statusString: convertStatus(Number(item.statusCode)),
       };
     });
-    dispatch(setLotteries(lotteries));
+    setLotteries(lotteries);
     setLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
-    if (contract) {
+    if (lotteryContract) {
       getAllLotteries();
     }
-  }, [contract]); //eslint-disable-line
+  }, [lotteryContract]); //eslint-disable-line
   useEffect(() => {
-    if (contract) {
+    if (lotteryContract) {
       getAllLotteries();
     }
-  }, [contract, page]); //eslint-disable-line
+  }, [lotteryContract, page]); //eslint-disable-line
 
   const refreshPage = () => {
     setLoading(true);
@@ -95,7 +94,7 @@ const Lotteries = () => {
             </Tooltip>
           </div>
         </Paper>
-        <LotteriesTable />
+        <LotteriesTable lotteries={lotteries} />
         <Paper
           sx={{
             margin: "1px 0",

@@ -16,10 +16,11 @@ import { RootState } from "../../redux/store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { callSetLotteriesApi } from "../../utils/api/cache";
 
 const AddLotteryDialog = (props: any) => {
   const { open, handleClose, refreshPage } = props;
-  const { contract, signer } = useSelector(
+  const { lotteryContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [timeError, setTimeError] = useState("");
@@ -43,25 +44,21 @@ const AddLotteryDialog = (props: any) => {
       .max(1000, "Max amount is 1000 MSCN"),
   });
 
-  const checkEvents = () => {
-    contract.on("Transfer", () => {
-      refreshPage();
-      setLoading(false);
-      handleClose();
-    });
-  };
-
   const onSubmit = async (values: any) => {
     setLoading(true);
     const timeStamp = Date.parse(`${datePickerValue}`) / 1000;
     const timeStampNow = Date.parse(`${new Date()}`) / 1000;
     if (timeStamp > timeStampNow) {
+      setTimeError("");
       try {
-        await contract
+        const res = await lotteryContract
           .connect(signer)
           .addLottery(values.name, values.amount, Number(timeStamp));
-        checkEvents();
-        setTimeError("");
+        await res.wait();
+        refreshPage();
+        setLoading(false);
+        handleClose();
+        callSetLotteriesApi();
       } catch (error) {
         console.log(error);
       }
@@ -71,7 +68,7 @@ const AddLotteryDialog = (props: any) => {
     }
   }; //test
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
         <Formik
           initialValues={initialValues}

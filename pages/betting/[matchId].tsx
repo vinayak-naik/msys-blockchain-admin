@@ -1,15 +1,12 @@
 import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { MatchDetails } from "../../components/atoms/matchDetails";
 import { Team1Details, Team2Details } from "../../components/atoms/teamDetails";
 import MatchResultDialog from "../../components/dialogs/matchResultDialog";
 import { TeamParticipantsDialog } from "../../components/dialogs/teamParticipantsDialog";
 import UpdateMatchDialog from "../../components/dialogs/updateMatchDialog";
-import { setMatch } from "../../redux/redux-toolkit/matchesSlice";
-import { setTeam1, setTeam2 } from "../../redux/redux-toolkit/matchesSlice";
-// import { setMatch } from "../../redux/redux-toolkit/matchSlice";
 import { RootState } from "../../redux/store";
 import style from "../../styles/pages/matchDetails.module.css";
 import {
@@ -20,16 +17,17 @@ import {
 
 const Match = () => {
   const { query } = useRouter();
-  const dispatch = useDispatch();
-  const { match } = useSelector((state: RootState) => state.matches);
-  const { contract } = useSelector((state: RootState) => state.contract);
+  const { bettingContract } = useSelector((state: RootState) => state.contract);
   const [participantsDialog, setParticipantsDialog] = useState(0);
   const [statusDialog, setStatusDialog] = useState(false);
   const [resultDialog, setResultDialog] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [match, setMatch] = useState<any>([]);
+  const [team1, setTeam1] = useState<any>([]);
+  const [team2, setTeam2] = useState<any>([]);
 
   const getMatch = async () => {
-    const res = await contract.matches(query.matchId);
+    const res = await bettingContract.matches(query.matchId);
     const matchDetails = {
       date: convertTimestampToDate(Number(res.timestamp)),
       time: convertTimestampToTime(Number(res.timestamp)),
@@ -41,12 +39,12 @@ const Match = () => {
       won: Number(res.won),
       statusString: convertStatus(Number(res.statusCode)),
     };
-    dispatch(setMatch(matchDetails));
+    setMatch(matchDetails);
   };
 
   const getAllParticipants = async () => {
-    const team1 = await contract.getAllParticipants(query.matchId, 1);
-    const team2 = await contract.getAllParticipants(query.matchId, 2);
+    const team1 = await bettingContract.getAllParticipants(query.matchId, 1);
+    const team2 = await bettingContract.getAllParticipants(query.matchId, 2);
     let team1Total = 0;
     let team2Total = 0;
     if (team1) {
@@ -87,18 +85,21 @@ const Match = () => {
       amountPercent: team2AmountPercent,
       participantsPercent: team2ParticipantsPercent,
     };
-    dispatch(setTeam1(team1Details));
-    dispatch(setTeam2(team2Details));
+    setTeam1(team1Details);
+    setTeam2(team2Details);
     setLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
-    if (contract && Number(query?.matchId) >= 0) {
+    if (bettingContract && Number(query?.matchId) >= 0) {
       getMatch();
       getAllParticipants();
     }
-  }, [contract, query?.matchId]); //eslint-disable-line
+  }, [bettingContract, query?.matchId]); //eslint-disable-line
+
+  console.log("team1=========", team1);
+  console.log("team2=========", team2);
 
   return (
     <>
@@ -109,22 +110,32 @@ const Match = () => {
       ) : (
         <div className={style.container}>
           <MatchDetails
+            match={match}
+            team1={team1}
+            team2={team2}
             setStatusDialog={() => setStatusDialog(true)}
             setResultDialog={() => setResultDialog(true)}
           />
           <div className={style.teamsContainer}>
             <div className={style.teamContainer}>
               <Team1Details
+                match={match}
+                team1={team1}
                 setParticipantsDialog={() => setParticipantsDialog(1)}
               />
             </div>
             <div className={style.teamContainer}>
               <Team2Details
+                match={match}
+                team2={team2}
                 setParticipantsDialog={() => setParticipantsDialog(2)}
               />
             </div>
           </div>
           <TeamParticipantsDialog
+            match={match}
+            team1={team1}
+            team2={team2}
             participantsDialog={participantsDialog}
             handleClose={() => setParticipantsDialog(0)}
           />

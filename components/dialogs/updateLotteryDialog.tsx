@@ -16,10 +16,11 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { callSetLotteriesApi, callSetLotteryApi } from "../../utils/api/cache";
 
 const UpdateLotteryDialog = (props: any) => {
   const { open, handleClose, lotteryId, refreshPage } = props;
-  const { contract, signer } = useSelector(
+  const { lotteryContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [loading, setLoading] = useState(false);
@@ -33,17 +34,23 @@ const UpdateLotteryDialog = (props: any) => {
   });
 
   const onSubmit = async (values: any) => {
-    setLoading(true);
-    const res = await contract
-      .connect(signer)
-      .updateLotteryStatus(lotteryId, values.status);
-    await res.wait();
-    refreshPage();
-    setLoading(false);
-    handleClose();
+    try {
+      setLoading(true);
+      const res = await lotteryContract
+        .connect(signer)
+        .updateLotteryStatus(lotteryId, values.status);
+      await res.wait();
+      refreshPage();
+      setLoading(false);
+      handleClose();
+      callSetLotteriesApi();
+      callSetLotteryApi(lotteryId);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
         <Formik
           initialValues={initialValues}

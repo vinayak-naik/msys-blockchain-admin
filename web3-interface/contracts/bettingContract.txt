@@ -1,0 +1,169 @@
+// SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.0;
+
+
+// =================================== IMPORTS ================================================
+
+    import "./UserContract.sol";
+
+// =================================== CONTRACT ================================================
+
+    contract BettingContract {
+
+// ================================= CONSTRUCTOR ==============================================
+
+        constructor(){
+            admin=msg.sender;
+        }
+
+// =================================== STRUCTS =================================================
+
+        struct Match{
+            uint matchId;
+            string team1;
+            string team2;
+            uint won;
+            uint statusCode;
+            uint timestamp;
+            string game;
+        }
+
+        struct Participant{
+            address participantAddress;
+            uint selectedTeam;
+            uint amount;
+        }
+         
+// =================================== VARIABLES ================================================
+        
+        UserContract public userContractAddress;
+        Match[] public matches;
+        uint[] public bettingAmountArray;
+        address public admin;
+        mapping(uint =>mapping(uint => Participant[])) public participants;
+        mapping(uint =>mapping(uint => uint)) public bettingAmount;
+
+////////////////////////////////////////MODIFIERS////////////////////////////////////////////////
+
+// =================================== ONLY ADMIN ================================================
+
+        modifier onlyAdmin{
+            require(msg.sender == admin,"Only admin can call this function");
+            _;
+        }
+
+// =================================== VALID USER ================================================
+
+        modifier validUser{
+            require(userContractAddress.isUser(msg.sender),"Invalid user");
+            _;
+        }
+
+// ================================== VALID MATCH ===============================================
+
+        function validMatch(uint matchId) private view{
+            require(matchId < matches.length,"Invalid matchId");
+            require(matches[matchId].statusCode==2,"Match is not active");
+            require(matches[matchId].timestamp>(block.timestamp-760),"Match is expired");
+        }
+
+// ============================ SET USER CONTRACT ADDRESS ==========================================
+
+        function setUserContractAddress(address _userContractAddress) public  onlyAdmin {
+            UserContract _UserContract=UserContract(_userContractAddress);
+            userContractAddress=_UserContract;
+    }
+
+// ==================================  ADD MATCH =================================================
+
+        function addMatch(string memory team1,string memory team2, uint timeStamp,string memory game) public onlyAdmin{
+            userContractAddress.mintMSCN(address(this), 1000);
+            matches.push(Match(matches.length,team1,team2,0,1,timeStamp,game));
+            bettingAmountArray.push(0);
+        }
+
+// =============================== GET MATCHES LENGTH =============================================
+
+       function getMatchesLength() public view returns(uint){
+            return matches.length;
+        }
+
+// ================================= GET ALL MATCHES ==============================================
+
+        function getAllMatches() public view returns (Match[] memory) {
+            return matches;
+        }
+
+// ============================== GET BETTING AMOUNT ARRAY ===========================================
+
+        function getBettingAmountArray() public view returns (uint[] memory) {
+            return bettingAmountArray;
+        }
+
+// =============================== UPDATE MATCH STATUS =============================================
+
+        function updateMatchStatus(uint matchId, uint statusCode) public onlyAdmin {
+            matches[matchId].statusCode=statusCode;
+        }
+
+// ================================ PARTICIPATE MATCH ==============================================
+
+        function participate(uint matchId,uint teamSelected,uint amount) public validUser {
+            validMatch(matchId);
+            
+                uint feesAmount=amount/100;
+                uint finalBetAmount=amount-feesAmount;
+                userContractAddress.transferMSCNFrom(msg.sender,address(this), finalBetAmount);
+                userContractAddress.burnMSCN(msg.sender, feesAmount);
+                participants[matchId][teamSelected].push(Participant(msg.sender,teamSelected,finalBetAmount));
+                bettingAmount[matchId][teamSelected]+=finalBetAmount;
+            }
+
+// ============================== GET PARTICIPANTS LENGTH =============================================
+
+        function getParticipantsLength(uint matchId,uint teamSelected) public view returns(uint){
+            return participants[matchId][teamSelected].length;
+        }
+
+// ================================== GET PARTICIPANT =================================================
+
+        function getParticipant(uint matchId,uint teamSelected, uint index) public view returns (Participant memory) {
+        return participants[matchId][teamSelected][index];
+        }
+
+// ================================ ANNOUNCE MATCH RESULT ============================================
+
+        function announceResult(uint matchId, uint teamWon)public onlyAdmin {
+            validMatch(matchId);
+            require(teamWon==1 || teamWon==2 || teamWon==3,"Wrong Input");
+            uint totalAmount=1000;
+            uint teamWonTotalAmount=0;
+             for(uint i=1;i<3 ;i++){
+                 for(uint j=0;j<participants[matchId][i].length;j++){
+                    totalAmount += participants[matchId][i][j].amount;
+                }
+            }
+            if(teamWon==3){
+            for(uint i=1;i<3 ;i++){
+                 for(uint j=0;j<participants[matchId][i].length;j++){
+                    uint betAmount= (participants[matchId][i][j].amount*100)/99;
+                userContractAddress.transferMSCN( participants[matchId][i][j].participantAddress, betAmount);
+                    bettingAmountArray[matchId]=totalAmount;
+                }
+            }
+            matches[matchId].statusCode=3;
+            }else{
+            for(uint i=0;i<participants[matchId][teamWon].length;i++){
+                    teamWonTotalAmount += participants[matchId][teamWon][i].amount;
+                }
+            for(uint i=0;i<participants[matchId][teamWon].length;i++){
+                    uint betAmount= participants[matchId][teamWon][i].amount;
+                    uint WonAmount=totalAmount*betAmount/teamWonTotalAmount;
+                userContractAddress.transferMSCN( participants[matchId][teamWon][i].participantAddress, WonAmount);
+                }
+                matches[matchId].statusCode=3;
+                matches[matchId].won=teamWon;
+                bettingAmountArray[matchId]=totalAmount;
+            }
+        }
+    }

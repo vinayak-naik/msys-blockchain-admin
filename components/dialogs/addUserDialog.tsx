@@ -18,12 +18,11 @@ interface AddUserFormIF {
   walletAddress: string;
   name: string;
   email: string;
-  token: string;
 }
 
 const AddUserDialog = (props: any) => {
   const { open, handleClose, refreshPage } = props;
-  const { contract, signer } = useSelector(
+  const { userContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +31,6 @@ const AddUserDialog = (props: any) => {
     walletAddress: "",
     name: "",
     email: "",
-    token: "",
   };
 
   const validationSchema = Yup.object({
@@ -47,23 +45,18 @@ const AddUserDialog = (props: any) => {
       .required("Please enter user's Email"),
   });
 
-  const checkEvents = () => {
-    contract.on("Transfer", () => {
-      refreshPage();
-      setLoading(false);
-      handleClose();
-    });
-  };
-
   const onSubmit = async (values: AddUserFormIF) => {
     setLoading(true);
-    await contract
+    const res = await userContract
       .connect(signer)
-      .addUser(values.walletAddress, values.name, values.email, values.token);
-    checkEvents();
+      .addUser(values.walletAddress, values.name, values.email);
+    await res.wait();
+    refreshPage();
+    setLoading(false);
+    handleClose();
   };
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
         <Formik
           initialValues={initialValues}

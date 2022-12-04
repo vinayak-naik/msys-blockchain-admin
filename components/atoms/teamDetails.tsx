@@ -2,12 +2,9 @@ import { Paper } from "@mui/material";
 import React from "react";
 import CircularProgressBar from "../reusable/circularProgressBar";
 import style from "../../styles/pages/matchDetails.module.css";
-import { RootState } from "../../redux/store";
-import { useSelector } from "react-redux";
 
 export const Team1Details = (props: any) => {
-  const { setParticipantsDialog } = props;
-  const { match, team1 } = useSelector((state: RootState) => state.matches);
+  const { setParticipantsDialog, match, team1 } = props;
   const titleBoxStyle =
     match.won === 1
       ? style.titleBoxWon
@@ -55,8 +52,7 @@ export const Team1Details = (props: any) => {
   );
 };
 export const Team2Details = (props: any) => {
-  const { setParticipantsDialog } = props;
-  const { match, team2 } = useSelector((state: RootState) => state.matches);
+  const { setParticipantsDialog, match, team2 } = props;
   const titleBoxStyle =
     match.won === 2
       ? style.titleBoxWon

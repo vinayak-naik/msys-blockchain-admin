@@ -1,0 +1,481 @@
+[
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "team1",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "team2",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timeStamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "game",
+        "type": "string"
+      }
+    ],
+    "name": "addMatch",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamWon",
+        "type": "uint256"
+      }
+    ],
+    "name": "announceResult",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "bettingAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "bettingAmountArray",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllMatches",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "matchId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "team1",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "team2",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "won",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "statusCode",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "timestamp",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "game",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BettingContract.Match[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamSelected",
+        "type": "uint256"
+      }
+    ],
+    "name": "getAllParticipants",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "participantAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "selectedTeam",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BettingContract.Participant[]",
+        "name": "",
+        "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBettingAmountArray",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getMatchesLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamSelected",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "index",
+        "type": "uint256"
+      }
+    ],
+    "name": "getParticipant",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "participantAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "selectedTeam",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct BettingContract.Participant",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamSelected",
+        "type": "uint256"
+      }
+    ],
+    "name": "getParticipantsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "matches",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "team1",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "team2",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "won",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "statusCode",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "game",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "participants",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "participantAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "selectedTeam",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "teamSelected",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "participate",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_userContractAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setUserContractAddress",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "matchId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "statusCode",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateMatchStatus",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "userContractAddress",
+    "outputs": [
+      {
+        "internalType": "contract UserContract",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

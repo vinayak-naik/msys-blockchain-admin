@@ -16,6 +16,7 @@ import { RootState } from "../../redux/store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { callSetMatchesApi } from "../../utils/api/cache";
 
 interface AddMatchFormIF {
   game: string;
@@ -25,7 +26,7 @@ interface AddMatchFormIF {
 
 const AddMatchDialog = (props: any) => {
   const { open, handleClose, refreshPage } = props;
-  const { contract, signer } = useSelector(
+  const { bettingContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
   const [datePickerValue, setDatePickerValue] = useState<Date | null>(
@@ -46,28 +47,21 @@ const AddMatchDialog = (props: any) => {
     team2: Yup.string().required("Please enter team name"),
   });
 
-  // const checkEvents = () => {
-  //   contract.on("Transfer", () => {
-  //     refreshPage();
-  //     setLoading(false);
-  //     handleClose();
-  //   });
-  // };
-
   const onSubmit = async (values: AddMatchFormIF) => {
     setLoading(true);
     const timeStamp = Date.parse(`${datePickerValue}`) / 1000;
     const timeStampNow = Date.parse(`${new Date()}`) / 1000;
     if (timeStamp > timeStampNow) {
+      setTimeError("");
       try {
-        const res = await contract
+        const res = await bettingContract
           .connect(signer)
           .addMatch(values.team1, values.team2, Number(timeStamp), values.game);
         await res.wait();
         refreshPage();
         setLoading(false);
         handleClose();
-        setTimeError("");
+        callSetMatchesApi();
       } catch (error) {
         console.log("error:", error);
         setLoading(false);
@@ -79,7 +73,7 @@ const AddMatchDialog = (props: any) => {
     }
   };
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
         <Formik
           initialValues={initialValues}
