@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: any = { contract: null, signer: null };
+const initialState: any = {
+  userContract: null,
+  bettingContract: null,
+  lotteryContract: null,
+  nftContract: null,
+  gameContract: null,
+  signer: null,
+};
 
 export const contractSlice = createSlice({
   name: "contract",
@@ -18,6 +25,9 @@ export const contractSlice = createSlice({
     setNftContract: (state: any, action: PayloadAction<any>) => {
       state.nftContract = action.payload;
     },
+    setGameContract: (state: any, action: PayloadAction<any>) => {
+      state.gameContract = action.payload;
+    },
     setSigner: (state: any, action: PayloadAction<any>) => {
       state.signer = action.payload;
     },
@@ -30,6 +40,7 @@ export const {
   setBettingContract,
   setLotteryContract,
   setNftContract,
+  setGameContract,
   setSigner,
 } = contractSlice.actions;
 

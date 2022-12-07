@@ -85,7 +85,7 @@ const Lotteries = () => {
           <div className={style.titleBox}>
             <Typography></Typography>
             <Typography variant="h5" textAlign="center">
-              Lotteries
+              MSys Lottery
             </Typography>
             <Tooltip title="Add Lottery" placement="top">
               <IconButton onClick={() => setOpen(true)}>

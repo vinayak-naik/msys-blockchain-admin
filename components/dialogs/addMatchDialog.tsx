@@ -16,7 +16,7 @@ import { RootState } from "../../redux/store";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { callSetMatchesApi } from "../../utils/api/cache";
+// import { callSetMatchesApi } from "../../utils/api/cache";
 
 interface AddMatchFormIF {
   game: string;
@@ -61,7 +61,7 @@ const AddMatchDialog = (props: any) => {
         refreshPage();
         setLoading(false);
         handleClose();
-        callSetMatchesApi();
+        // callSetMatchesApi();
       } catch (error) {
         console.log("error:", error);
         setLoading(false);

@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.0;
+
+// =================================== CONTRACT ================================================
+
+    contract gameContract {
+
+// ================================= CONSTRUCTOR ==============================================
+
+        constructor(){
+            admin=msg.sender;
+        }
+
+// =================================== STRUCTS =================================================
+
+         struct Game{
+            uint id;
+            string name;
+            string route;
+            string internalUrl;
+            string externalUrl;
+            bool active;
+            bool visibility;
+            bool exists;
+        }
+         
+// =================================== VARIABLES ================================================
+
+        Game[] public games;
+        address public admin;
+
+////////////////////////////////////////MODIFIERS////////////////////////////////////////////////
+
+// =================================== ONLY ADMIN ================================================
+
+        modifier onlyAdmin{
+            require(msg.sender == admin,"Only admin can call this function");
+            _;
+        }
+
+// ================================== VALID GAME ===============================================
+
+        function validGame(uint gameId) private view{
+            require(games[gameId].exists,"Invalid gameId");
+        }
+
+// ==================================  ADD GAME =================================================
+
+        function addGame(string memory name,string memory route,string memory internalUrl,string memory externalUrl) public onlyAdmin returns(bool){
+            games.push(Game(games.length, name, route, internalUrl, externalUrl, true, true, true));
+            return true;
+        }
+
+// ================================= GET ALL GAMES ==============================================
+
+        function getAllGames() public view returns (Game[] memory) {
+            return games;
+        }
+    }

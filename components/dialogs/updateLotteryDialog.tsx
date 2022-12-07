@@ -16,7 +16,7 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { callSetLotteriesApi, callSetLotteryApi } from "../../utils/api/cache";
+// import { callSetLotteriesApi, callSetLotteryApi } from "../../utils/api/cache";
 
 const UpdateLotteryDialog = (props: any) => {
   const { open, handleClose, lotteryId, refreshPage } = props;
@@ -43,8 +43,8 @@ const UpdateLotteryDialog = (props: any) => {
       refreshPage();
       setLoading(false);
       handleClose();
-      callSetLotteriesApi();
-      callSetLotteryApi(lotteryId);
+      // callSetLotteriesApi();
+      // callSetLotteryApi(lotteryId);
     } catch (error) {
       console.log(error);
     }

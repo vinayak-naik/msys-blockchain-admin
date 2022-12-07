@@ -89,7 +89,7 @@ const Matches = () => {
             <div className={style.titleBox}>
               <Typography variant="h5" textAlign="center"></Typography>
               <Typography variant="h5" textAlign="center">
-                IPL Matches
+                MSys Betting
               </Typography>
               <Typography variant="h5" textAlign="center">
                 <Tooltip title="Add Match" placement="top">

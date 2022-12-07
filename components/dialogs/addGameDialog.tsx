@@ -13,60 +13,54 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-// import { callSetLotteriesApi } from "../../utils/api/cache";
+// import { callSetGameesApi } from "../../utils/api/cache";
 
-const AddLotteryDialog = (props: any) => {
+const AddGameDialog = (props: any) => {
   const { open, handleClose, refreshPage } = props;
-  const { lotteryContract, signer } = useSelector(
+  const { gameContract, signer } = useSelector(
     (state: RootState) => state.contract
   );
-  const [timeError, setTimeError] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [datePickerValue, setDatePickerValue] = useState<Date | null>(
-    new Date()
-  );
 
   const initialValues = {
     name: "",
-    amount: "",
+    route: "",
+    internalUrl: "",
+    externalUrl: "",
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string()
-      .required("Please enter lottery name")
-      .max(20, "Max 20 characters"),
-    amount: Yup.number()
-      .required("Please enter lottery amount")
-      .min(1, "Please enter minimun 1 MSCN")
-      .max(1000, "Max amount is 1000 MSCN"),
+    name: Yup.string().required("Please enter name"),
+    route: Yup.string().required("Please enter route"),
+    internalUrl: Yup.string().required("Please enter internal URL"),
+    externalUrl: Yup.string().required("Please enter external URL"),
   });
 
   const onSubmit = async (values: any) => {
+    console.log(values);
+
     setLoading(true);
-    const timeStamp = Date.parse(`${datePickerValue}`) / 1000;
-    const timeStampNow = Date.parse(`${new Date()}`) / 1000;
-    if (timeStamp > timeStampNow) {
-      setTimeError("");
-      try {
-        const res = await lotteryContract
-          .connect(signer)
-          .addLottery(values.name, values.amount, Number(timeStamp));
-        await res.wait();
-        refreshPage();
-        setLoading(false);
-        handleClose();
-        // callSetLotteriesApi();
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      setTimeError("Please select correct time");
+
+    try {
+      const res = await gameContract
+        .connect(signer)
+        .addGame(
+          values.name,
+          values.route,
+          values.internalUrl,
+          values.externalUrl
+        );
+      await res.wait();
+      refreshPage();
       setLoading(false);
+      handleClose();
+      // callSetGameesApi();
+    } catch (error) {
+      console.log("error:", error);
+      setLoading(false);
+      handleClose();
     }
-  }; //test
+  };
   return (
     <Dialog open={open} onClose={!loading ? handleClose : false}>
       <DialogTitle>
@@ -79,14 +73,14 @@ const AddLotteryDialog = (props: any) => {
             return (
               <Form method="post" style={{ width: "30vw" }}>
                 <div className={style.inputBox}>
-                  <Typography variant="h5">Add Lottery</Typography>
+                  <Typography variant="h5">Add Game</Typography>
                 </div>
                 <div className={style.inputBox}>
                   <TextField
                     fullWidth
                     type="text"
                     id="name"
-                    label="Enter lottery name"
+                    label="Enter name"
                     variant="outlined"
                     {...formik.getFieldProps("name")}
                   />
@@ -97,33 +91,43 @@ const AddLotteryDialog = (props: any) => {
                 <div className={style.inputBox}>
                   <TextField
                     fullWidth
-                    type="number"
-                    id="amount"
-                    label="Enter lottery amount"
+                    type="text"
+                    id="route"
+                    label="Enter route"
                     variant="outlined"
-                    {...formik.getFieldProps("amount")}
+                    {...formik.getFieldProps("route")}
                   />
                   <div className={style.errorBox}>
-                    <ErrorMessage component={TextError} name="amount" />
+                    <ErrorMessage component={TextError} name="route" />
                   </div>
                 </div>
                 <div className={style.inputBox}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => (
-                        <TextField fullWidth {...props} />
-                      )}
-                      label="DateTimePicker"
-                      value={datePickerValue}
-                      onChange={(newValue) => {
-                        setDatePickerValue(newValue);
-                      }}
-                    />
-                  </LocalizationProvider>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    id="internalUrl"
+                    label="Enter internal image URL"
+                    variant="outlined"
+                    {...formik.getFieldProps("internalUrl")}
+                  />
                   <div className={style.errorBox}>
-                    {timeError && <TextError>{timeError}</TextError>}
+                    <ErrorMessage component={TextError} name="internalUrl" />
                   </div>
                 </div>
+                <div className={style.inputBox}>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    id="externalUrl"
+                    label="Enter external image URL"
+                    variant="outlined"
+                    {...formik.getFieldProps("externalUrl")}
+                  />
+                  <div className={style.errorBox}>
+                    <ErrorMessage component={TextError} name="externalUrl" />
+                  </div>
+                </div>
+
                 <div className={style.inputButtonBox}>
                   <Button
                     disabled={loading}
@@ -148,4 +152,4 @@ const AddLotteryDialog = (props: any) => {
   );
 };
 
-export default AddLotteryDialog;
+export default AddGameDialog;

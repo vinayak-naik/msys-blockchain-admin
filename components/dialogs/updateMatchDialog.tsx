@@ -16,7 +16,7 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { callSetMatchesApi } from "../../utils/api/cache";
+// import { callSetMatchApi, callSetMatchesApi } from "../../utils/api/cache";
 
 const UpdateMatchDialog = (props: any) => {
   const { open, handleClose, matchId, refreshPage } = props;
@@ -43,7 +43,8 @@ const UpdateMatchDialog = (props: any) => {
       refreshPage();
       setLoading(false);
       handleClose();
-      callSetMatchesApi();
+      // callSetMatchesApi();
+      // callSetMatchApi(matchId);
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +93,7 @@ const UpdateMatchDialog = (props: any) => {
 
                 <div className={style.inputButtonBox}>
                   <Button
+                    disabled={loading}
                     type="submit"
                     variant="contained"
                     color="success"

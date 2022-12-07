@@ -1,4 +1,4 @@
-const USER_APP_URL = process.env.USER_APP_URL || "http://localhost:3000";
+const USER_APP_URL = process.env.NEXT_PUBLIC_USER_PANEL_URL || "";
 
 export const callSetMatchesApi = () => {
   console.log("setMatches api is calling");

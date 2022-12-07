@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setBettingContract,
+  setGameContract,
   setLotteryContract,
   setNftContract,
   setSigner,
@@ -16,6 +17,7 @@ import userABI from "../web3-interface/ABI/user.abi.json";
 import bettingABI from "../web3-interface/ABI/betting.abi.json";
 import lotteryABI from "../web3-interface/ABI/lottery.abi.json";
 import nftABI from "../web3-interface/ABI/nft.abi.json";
+import gameABI from "../web3-interface/ABI/game.abi.json";
 import { compressAddress } from "../utils/convertion";
 import { IconButton } from "@mui/material";
 import { ArrowBackOutlined } from "@mui/icons-material";
@@ -39,6 +41,8 @@ const HeaderComponent = () => {
     `${process.env.NEXT_PUBLIC_LOTTERY_CONTRACT_ADDRESS}` || "";
   const NFT_CONTRACT_ADDRESS =
     `${process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS}` || "";
+  const GAME_CONTRACT_ADDRESS =
+    `${process.env.NEXT_PUBLIC_GAME_CONTRACT_ADDRESS}` || "";
 
   const setSign = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -65,11 +69,17 @@ const HeaderComponent = () => {
       nftABI,
       provider
     );
+    const gameContract = new ethers.Contract(
+      GAME_CONTRACT_ADDRESS,
+      gameABI,
+      provider
+    );
 
     dispatch(setUserContract(userContract));
     dispatch(setBettingContract(bettingContract));
     dispatch(setLotteryContract(lotteryContract));
     dispatch(setNftContract(nftContract));
+    dispatch(setGameContract(gameContract));
   };
 
   useEffect(() => {

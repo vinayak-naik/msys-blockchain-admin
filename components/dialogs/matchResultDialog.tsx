@@ -16,7 +16,7 @@ import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { callSetMatchApi, callSetMatchesApi } from "../../utils/api/cache";
+// import { callSetMatchApi, callSetMatchesApi } from "../../utils/api/cache";
 
 const MatchResultDialog = (props: any) => {
   const { open, handleClose, matchId, refreshPage, matchDetails } = props;
@@ -43,8 +43,8 @@ const MatchResultDialog = (props: any) => {
       refreshPage();
       setLoading(false);
       handleClose();
-      callSetMatchesApi();
-      callSetMatchApi(matchId);
+      // callSetMatchesApi();
+      // callSetMatchApi(matchId);
     } catch (error) {
       console.log(error);
     }

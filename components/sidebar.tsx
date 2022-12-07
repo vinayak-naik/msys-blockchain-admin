@@ -39,6 +39,10 @@ const Sidebar = () => {
       route: "/user",
     },
     {
+      name: "Games",
+      route: "/games",
+    },
+    {
       name: "Betting",
       route: "/betting",
     },
@@ -60,9 +64,6 @@ const Sidebar = () => {
     },
   ];
   const clickHandler = (route: string) => {
-    // setParam(route);
-    // if (param !== route) {
-    // }
     push(`${route}`);
   };
   return (

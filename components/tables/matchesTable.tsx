@@ -35,7 +35,7 @@ export default function MatchesTable(props: any) {
             <TableCell sx={sx.tableCell}>Team B</TableCell>
             <TableCell sx={sx.tableCell}>Status</TableCell>
             <TableCell sx={sx.tableCell}>Result</TableCell>
-            <TableCell sx={sx.tableCell}></TableCell>
+            <TableCell sx={sx.tableCell}>Visibility</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

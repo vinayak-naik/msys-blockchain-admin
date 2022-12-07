@@ -75,7 +75,7 @@ const NFTs = () => {
           <div className={style.titleBox}>
             <Typography variant="h5" textAlign="center"></Typography>
             <Typography variant="h5" textAlign="center">
-              NFTs
+              MSys NFT
             </Typography>
             <Typography variant="h5" textAlign="center">
               <IconButton onClick={() => setOpen(true)}>
