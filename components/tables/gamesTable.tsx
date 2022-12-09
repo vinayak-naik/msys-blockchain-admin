@@ -55,7 +55,9 @@ export default function GamesTable(props: any) {
               <TableCell sx={sx.tableCell}>{item.route}</TableCell>
               <TableCell sx={sx.tableCell}>{item.internalUrl}</TableCell>
               <TableCell sx={sx.tableCell}>{item.externalUrl}</TableCell>
-              <TableCell sx={sx.tableCell}>{item.active}</TableCell>
+              <TableCell sx={sx.tableCell}>
+                {item.active ? "Active" : "Disabled"}
+              </TableCell>
 
               <TableCell sx={sx.tableCell}>
                 {!item.visibility ? (

@@ -44,8 +44,8 @@ const Games = () => {
         route: item.route,
         internalUrl: item.internalUrl,
         externalUrl: item.externalUrl ? "https://..." : "--",
-        active: item.active ? "true" : "false",
-        visibility: item.visibility ? "true" : "false",
+        active: item.active,
+        visibility: item.visibility,
       };
     });
     setGames(gamesList);
