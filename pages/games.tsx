@@ -42,8 +42,7 @@ const Games = () => {
         gameId: Number(item.id),
         name: item.name,
         route: item.route,
-        internalUrl: item.internalUrl,
-        externalUrl: item.externalUrl ? "https://..." : "--",
+        externalUrl: item.externalUrl,
         active: item.active,
         visibility: item.visibility,
       };

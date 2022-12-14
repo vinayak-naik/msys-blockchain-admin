@@ -30,7 +30,6 @@ const UpdateGameDialog = (props: any) => {
     gameId: game?.gameId,
     name: game?.name,
     route: game?.route,
-    internalUrl: game?.internalUrl,
     externalUrl: game?.externalUrl,
     active: game?.active === true ? 1 : 0,
     visibility: game?.visibility === true ? 1 : 0,
@@ -39,7 +38,6 @@ const UpdateGameDialog = (props: any) => {
   const validationSchema = Yup.object({
     name: Yup.string().required("Please enter name"),
     route: Yup.string().required("Please enter route"),
-    internalUrl: Yup.string().required("Please enter internal URL"),
     externalUrl: Yup.string().required("Please enter external URL"),
   });
 
@@ -53,7 +51,6 @@ const UpdateGameDialog = (props: any) => {
           values.gameId,
           values.name,
           values.route,
-          values.internalUrl,
           values.externalUrl,
           Boolean(values.active),
           Boolean(values.visibility)
@@ -97,29 +94,29 @@ const UpdateGameDialog = (props: any) => {
                   </div>
                 </div>
                 <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="route"
-                    label="Enter route"
-                    variant="outlined"
-                    {...formik.getFieldProps("route")}
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Redirect to
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Redirect to"
+                      {...formik.getFieldProps("route")}
+                    >
+                      <MenuItem className={style.menuItem} value="betting">
+                        Betting
+                      </MenuItem>
+                      <MenuItem className={style.menuItem} value="lottery">
+                        Lottery
+                      </MenuItem>
+                      <MenuItem className={style.menuItem} value="nft">
+                        NFT
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
                   <div className={style.errorBox}>
                     <ErrorMessage component={TextError} name="route" />
-                  </div>
-                </div>
-                <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="internalUrl"
-                    label="Enter internal image URL"
-                    variant="outlined"
-                    {...formik.getFieldProps("internalUrl")}
-                  />
-                  <div className={style.errorBox}>
-                    <ErrorMessage component={TextError} name="internalUrl" />
                   </div>
                 </div>
                 <div className={style.inputBox}>

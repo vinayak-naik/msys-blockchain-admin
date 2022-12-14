@@ -3,6 +3,10 @@ import {
   CircularProgress,
   Dialog,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -25,14 +29,12 @@ const AddGameDialog = (props: any) => {
   const initialValues = {
     name: "",
     route: "",
-    internalUrl: "",
     externalUrl: "",
   };
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Please enter name"),
     route: Yup.string().required("Please enter route"),
-    internalUrl: Yup.string().required("Please enter internal URL"),
     externalUrl: Yup.string().required("Please enter external URL"),
   });
 
@@ -44,12 +46,7 @@ const AddGameDialog = (props: any) => {
     try {
       const res = await gameContract
         .connect(signer)
-        .addGame(
-          values.name,
-          values.route,
-          values.internalUrl,
-          values.externalUrl
-        );
+        .addGame(values.name, values.route, values.externalUrl);
       await res.wait();
       refreshPage();
       setLoading(false);
@@ -89,31 +86,32 @@ const AddGameDialog = (props: any) => {
                   </div>
                 </div>
                 <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="route"
-                    label="Enter route"
-                    variant="outlined"
-                    {...formik.getFieldProps("route")}
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      Redirect to
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Redirect to"
+                      {...formik.getFieldProps("route")}
+                    >
+                      <MenuItem className={style.menuItem} value="betting">
+                        Betting
+                      </MenuItem>
+                      <MenuItem className={style.menuItem} value="lottery">
+                        Lottery
+                      </MenuItem>
+                      <MenuItem className={style.menuItem} value="nft">
+                        NFT
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
                   <div className={style.errorBox}>
                     <ErrorMessage component={TextError} name="route" />
                   </div>
                 </div>
-                <div className={style.inputBox}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    id="internalUrl"
-                    label="Enter internal image URL"
-                    variant="outlined"
-                    {...formik.getFieldProps("internalUrl")}
-                  />
-                  <div className={style.errorBox}>
-                    <ErrorMessage component={TextError} name="internalUrl" />
-                  </div>
-                </div>
+
                 <div className={style.inputBox}>
                   <TextField
                     fullWidth

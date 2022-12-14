@@ -35,9 +35,8 @@ export default function GamesTable(props: any) {
             <TableCell sx={sx.tableCell}>Game Id</TableCell>
             <TableCell sx={sx.tableCell}>Name</TableCell>
             <TableCell sx={sx.tableCell}>Route</TableCell>
-            <TableCell sx={sx.tableCell}>Internal Image Name</TableCell>
-            <TableCell sx={sx.tableCell}>External URL</TableCell>
-            <TableCell sx={sx.tableCell}>Active</TableCell>
+            <TableCell sx={sx.tableCell}>Image URL</TableCell>
+            <TableCell sx={sx.tableCell}>Status</TableCell>
             <TableCell sx={sx.tableCell}>Visibility</TableCell>
             <TableCell sx={sx.tableCell}>Edit</TableCell>
           </TableRow>
@@ -53,8 +52,9 @@ export default function GamesTable(props: any) {
               </TableCell>
               <TableCell sx={sx.tableCell}>{item.name}</TableCell>
               <TableCell sx={sx.tableCell}>{item.route}</TableCell>
-              <TableCell sx={sx.tableCell}>{item.internalUrl}</TableCell>
-              <TableCell sx={sx.tableCell}>{item.externalUrl}</TableCell>
+              <TableCell sx={sx.tableCell}>
+                {item.externalUrl ? "https://..." : "--"}
+              </TableCell>
               <TableCell sx={sx.tableCell}>
                 {item.active ? "Active" : "Disabled"}
               </TableCell>
@@ -79,7 +79,7 @@ export default function GamesTable(props: any) {
                   <IconButton
                     onClick={() => updateHandler(item.gameId)}
                     color="default"
-                    sx={{ cursor: "default" }}
+                    sx={{ cursor: "pointer" }}
                   >
                     <Edit />
                   </IconButton>

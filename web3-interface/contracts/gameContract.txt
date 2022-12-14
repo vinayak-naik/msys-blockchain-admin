@@ -17,7 +17,6 @@
             uint id;
             string name;
             string route;
-            string internalUrl;
             string externalUrl;
             bool active;
             bool visibility;
@@ -46,9 +45,40 @@
 
 // ==================================  ADD GAME =================================================
 
-        function addGame(string memory name,string memory route,string memory internalUrl,string memory externalUrl) public onlyAdmin returns(bool){
-            games.push(Game(games.length, name, route, internalUrl, externalUrl, true, true, true));
+        function addGame(string memory name,string memory route,string memory externalUrl) public onlyAdmin returns(bool){
+            games.push(Game(games.length, name, route,externalUrl, true, true, true));
             return true;
+        }
+
+// ==================================  ADD GAME =================================================
+
+        function updateGame(uint gameId, string memory name,string memory route,string memory externalUrl, bool active, bool visibility) public onlyAdmin returns(bool){
+            games[gameId].name=name;
+            games[gameId].route=route;
+            games[gameId].externalUrl=externalUrl;
+            games[gameId].active=active;
+            games[gameId].visibility=visibility;
+            return true;
+        }
+
+// ================================ DELETE GAME ====================================================
+
+        function deleteGame(uint gameId) public onlyAdmin returns (bool) {
+                delete games[gameId];
+                return true;
+        }
+
+// ================================ DELETE ALL GAMES ================================================
+
+        function removeAllGames() public onlyAdmin returns (bool) {
+                delete games;
+                return true;
+        }
+
+// ================================= GET GAME ==============================================
+
+        function getGame(uint gameId) public view returns (Game memory) {
+            return games[gameId];
         }
 
 // ================================= GET ALL GAMES ==============================================
