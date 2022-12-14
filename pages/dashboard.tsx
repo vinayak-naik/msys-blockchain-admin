@@ -49,7 +49,6 @@ const Dashboard = () => {
     const lotteryArr = await lotteryContract.getLotteryAmountArray();
     const SC_bal = await userContract.getBalanceOfSM();
     const usersLength = await userContract.getUsersLength();
-    console.log("SC_bal==============", Number(usersLength));
     const nftLength = await nftContract.countAllNfts();
 
     details.totalMatches = bettingArr.length;
@@ -85,19 +84,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (nftContract && showStatistics) {
-      ////////////////////////Paused///////////////////////////////
       setLoading(true);
       getParticipantsArray();
       getAmountArray();
     }
   }, [nftContract, showStatistics]); //eslint-disable-line
-
-  // const callSetMatchesApi = () => {
-  //   fetch("http://localhost:3000/api/betting/set-matches")
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((err) => console.log(err));
-  // };
 
   return (
     <div className={style.container}>

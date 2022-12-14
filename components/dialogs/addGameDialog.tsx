@@ -39,8 +39,6 @@ const AddGameDialog = (props: any) => {
   });
 
   const onSubmit = async (values: any) => {
-    console.log(values);
-
     setLoading(true);
 
     try {

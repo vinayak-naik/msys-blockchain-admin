@@ -98,9 +98,6 @@ const Match = () => {
     }
   }, [bettingContract, query?.matchId]); //eslint-disable-line
 
-  console.log("team1=========", team1);
-  console.log("team2=========", team2);
-
   return (
     <>
       {loading ? (

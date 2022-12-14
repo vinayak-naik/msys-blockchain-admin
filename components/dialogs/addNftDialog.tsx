@@ -72,7 +72,6 @@ const AddNFTDialog = (props: any) => {
           uploadSuccess: true,
           message: "Metadata uploaded to IPFS successfully",
         });
-        console.log(name, price, forSale, jsonData.IpfsHash, image);
         nftContract
           .connect(signer)
           .safeMint(name, price, forSale, jsonData.IpfsHash, image)

@@ -2,7 +2,6 @@ import fs from "fs";
 
 export default function addArticle(req: any, res: any) {
   const body = JSON.parse(req.body);
-  console.log(body);
 
   const timestamp = new Date().getTime();
   let url = "http://" + req.headers.host;
@@ -27,7 +26,6 @@ export default function addArticle(req: any, res: any) {
           stringifiedList,
           (err) => {
             if (err) throw err;
-            console.log("Article added");
           }
         );
       });

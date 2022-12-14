@@ -2,6 +2,7 @@ import { Paper, Table, TableContainer } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import AlertDialog from "../../components/dialogs/alert-dialog";
 import { LotteryWinnersDialog } from "../../components/dialogs/lotteryWinnersDialog";
 import UpdateLotteryDialog from "../../components/dialogs/updateLotteryDialog";
 import {
@@ -41,6 +42,10 @@ const LotteryDetails = () => {
   const { lottery, participants } = useSelector(
     (state: RootState) => state.lotteries
   );
+  const [alertDialog, setAlertDialog] = useState({
+    open: false,
+    message: "",
+  });
 
   const [statusDialog, setStatusDialog] = useState(false);
   const [openWinners, setOpenWinners] = useState(false);
@@ -86,6 +91,14 @@ const LotteryDetails = () => {
   };
 
   const announceResult = async () => {
+    if (participants.length < 8) {
+      setAlertDialog({
+        open: true,
+        message: "Minimum participants length is 8",
+      });
+      return;
+    }
+
     try {
       const res = await lotteryContract
         .connect(signer)
@@ -160,6 +173,10 @@ const LotteryDetails = () => {
           handleClose={() => setOpenWinners(false)}
           lotteryWinners={lotteryWinners}
           lottery={lottery}
+        />
+        <AlertDialog
+          alertDialog={alertDialog}
+          setAlertDialog={(e: any) => setAlertDialog(e)}
         />
       </div>
     </LotteryLoadingComponent>

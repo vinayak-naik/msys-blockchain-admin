@@ -24,8 +24,6 @@ const Users = () => {
   const count = 7;
   let ignore = false;
 
-  console.log(users);
-
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };

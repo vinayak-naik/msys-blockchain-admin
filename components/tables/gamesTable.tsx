@@ -61,13 +61,13 @@ export default function GamesTable(props: any) {
 
               <TableCell sx={sx.tableCell}>
                 {!item.visibility ? (
-                  <Tooltip title="Hidden" placement="top">
+                  <Tooltip title="Hidden" placement="right">
                     <IconButton color="error" sx={{ cursor: "default" }}>
                       <VisibilityOff sx={{ fontSize: "16px" }} />
                     </IconButton>
                   </Tooltip>
                 ) : (
-                  <Tooltip title="Visible" placement="top">
+                  <Tooltip title="Visible" placement="right">
                     <IconButton color="success" sx={{ cursor: "default" }}>
                       <Visibility sx={{ fontSize: "16px" }} />
                     </IconButton>
