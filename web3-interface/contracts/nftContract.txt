@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: MIT
+    pragma solidity ^0.8.0;
+
+// =================================== IMPORTS ===================================================
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+
+// =================================== INTERFACE =================================================
+
+interface IUserContract  {
+    function transferMSCNFrom(address messageSender,address owner, uint price) external;
+    function burnMSCN(address messageSender, uint fees) external;
+}
+
+// =================================== CONTRACT ===================================================
+
+contract NftContract is ERC721, ERC721URIStorage {
+
+// =================================== COUNTER ====================================================
+
+    using Counters for Counters.Counter;
+
+    Counters.Counter private _tokenIdCounter;
+
+// =================================== CONSTRUCTOR ================================================
+
+    constructor() ERC721("MSysNFT", "MNFT") {
+        admin=msg.sender;
+    }
+
+// =================================== STRUCTS ====================================================
+
+     struct nft{
+            string name;
+            uint tokenId;
+            string tokenUri;
+            uint price;
+            address owner;
+            bool forSale;
+            string imageUrl;
+        }
+
+        IUserContract public userContractAddress;
+        address public ERC20Address;
+        address public admin;
+        nft[] public nfts;
+
+// =================================== MODIFIERS ===================================================
+
+    modifier onlyAdmin{
+        require(msg.sender == admin,"Only admin can call this function");
+        _;
+        }
+
+    modifier onlyOwner(uint tokenId){
+        require(msg.sender == nfts[tokenId].owner,"Only admin can call this function");
+        _;
+        }
+
+    modifier forSale(uint tokenId){
+        require(nfts[tokenId].forSale,"NFT is not for sale");
+        _;
+        }
+
+// ================================ UPDATE-NFT-ADMIN ================================================
+
+        function updateNftAdmin(address _address) public onlyAdmin returns (bool) {
+                admin=_address;
+                return true;
+        }
+
+// ============================ SET USER CONTRACT ADDRESS ============================================
+
+    function setUserContractAddress(address _userContractAddress) public  onlyAdmin returns(bool){
+            IUserContract _UserContract=IUserContract(_userContractAddress);
+            userContractAddress=_UserContract;
+            return true;
+    }
+
+// ============================ BASE URI =============================================================
+
+    function _baseURI() internal pure override returns (string memory) {
+        return "https://gateway.pinata.cloud/ipfs/";
+    }
+
+// =================================== COUNT ALL NFTs ================================================
+
+    function countAllNfts() public view returns (uint count) {
+        return _tokenIdCounter.current();
+    }
+
+// =================================== GET ALL NFTs ==================================================
+
+    function getAllNfts() public view returns (nft[] memory) {
+        return nfts;
+    }
+
+// =================================== GET NFT =======================================================
+
+    function getNft(uint tokenId) public view returns (nft memory) {
+        return nfts[tokenId];
+    }
+
+// =================================== UPDATE NFT FOR SALE ===========================================
+
+    function updateNftForSale(uint tokenId, bool _forSale) public onlyOwner(tokenId) returns(bool) {
+        
+        nfts[tokenId].forSale=_forSale;
+        return true;
+    }
+
+// ========================== MINT NFT ================================================================
+
+    function safeMint(string memory name,uint price,bool _forSale,string memory tokenUri,string memory imageUrl) public {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(tokenId, tokenUri);
+        nfts.push(nft(name,tokenId,tokenUri,price,msg.sender,_forSale, imageUrl));
+    }
+
+// ============================= BUY NFT =============================================================
+
+    function buyNft(uint tokenId) public returns(bool){
+        require(msg.sender != nfts[tokenId].owner, "You are the owner of this NFT");
+        userContractAddress.transferMSCNFrom(msg.sender,nfts[tokenId].owner, nfts[tokenId].price);
+       _transfer(nfts[tokenId].owner,msg.sender, tokenId);
+            nfts[tokenId].owner=msg.sender;
+            return true;
+    }
+
+// ========================== TRANSFER NFT ===========================================================
+
+    function transferNft(address to, uint tokenId) public onlyOwner(tokenId) returns(bool){
+            userContractAddress.burnMSCN(msg.sender, 5);
+            _transfer(msg.sender,to, tokenId);
+            nfts[tokenId].owner=to;
+            return true;
+    }
+
+// =================================== BURN NFT ======================================================
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+// =================================== TOKEN URI =====================================================
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        override(ERC721, ERC721URIStorage)
+        returns (string memory)
+    {
+        return super.tokenURI(tokenId);
+    }
+ 
+}

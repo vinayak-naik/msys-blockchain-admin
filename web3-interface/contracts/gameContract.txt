@@ -43,6 +43,12 @@
             require(games[gameId].exists,"Invalid gameId");
         }
 
+// ================================ UPDATE-GAME-ADMIN ================================================
+
+        function updateGameAdmin(address _address) public onlyAdmin returns (bool) {
+                admin=_address;
+                return true;
+        }
 // ==================================  ADD GAME =================================================
 
         function addGame(string memory name,string memory route,string memory externalUrl) public onlyAdmin returns(bool){

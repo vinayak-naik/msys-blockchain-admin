@@ -88,7 +88,8 @@ export const TeamParticipantsDialog = (props: any) => {
                         ? (
                             ((team1.totalAmount + team2.totalAmount + 1000) *
                               ((Number(item.amount) * 100) / 99)) /
-                            team.totalAmount
+                              team.totalAmount -
+                            item.amount
                           ).toFixed(2)
                         : 0}
                       &nbsp;MSCN
@@ -107,7 +108,7 @@ export const TeamParticipantsDialog = (props: any) => {
                   <TableCell sx={sx.tableCell}>
                     {(
                       (Number(Number(item.amount)) * 100) /
-                      (team1.totalAmount + team2.totalAmount)
+                      team.totalAmount
                     ).toFixed(2)}
                     &nbsp;%
                   </TableCell>

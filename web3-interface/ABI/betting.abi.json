@@ -444,6 +444,25 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_address",
+        "type": "address"
+      }
+    ],
+    "name": "updateBettingAdmin",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "matchId",
         "type": "uint256"
@@ -470,7 +489,7 @@
     "name": "userContractAddress",
     "outputs": [
       {
-        "internalType": "contract UserContract",
+        "internalType": "contract IUserContract",
         "name": "",
         "type": "address"
       }

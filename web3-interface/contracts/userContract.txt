@@ -22,11 +22,12 @@ pragma solidity ^0.8.0;
                 bool enabled;
         }
 
-        struct History{
+        struct Record{
                 uint id;
-                uint category;
                 uint amount;
-                uint teamSelected;
+                uint timeStamp;
+                string category;
+                string teamSelected;
         }
 
 // ================================= VARIABLES ================================================
@@ -36,7 +37,7 @@ pragma solidity ^0.8.0;
         address[] public admins;
         mapping(address => User) public userList;
         mapping(string => address) public userWalletAddresses;
-        mapping(address => History[]) public participateHistory;
+        mapping(address => Record[]) public records;
 
 // ================================== MODIFIERS ================================================
 
@@ -55,6 +56,13 @@ pragma solidity ^0.8.0;
                 require(validAdmin,"Only admins can can call this function");
                 _;
         }
+        
+// ================================ UPDATE-USER-ADMIN ================================================
+
+        function updateUserAdmin(address _address) public onlyAdmin returns (bool) {
+                admin=_address;
+                return true;
+        }
 
 // ============================== OVERRIDE DECIMALS ================================================
 
@@ -72,53 +80,54 @@ pragma solidity ^0.8.0;
 
         function addAdmin(address _address) public onlyAdmin returns (bool) {
                 admins.push(address(_address));
-                return false;
+                return true;
         }
 
 // ================================ REMOVE ALL ADMINS ================================================
 
         function removeAllAdmins() public onlyAdmin returns (bool) {
                 delete admins;
-                return false;
+                return true;
         }
 
 // ================================ MINT MSCN ================================================
 
         function mintMSCN(address _to, uint amount) public isAdmin returns (bool) {
                 _mint(_to, amount);
-                return false;
+                return true;
         }
 
 // ================================ TRANSFER MSCN ================================================
 
         function transferMSCN(address _to, uint amount) public isAdmin  returns (bool) {
                 transfer(_to, amount);
-                return false;
+                return true;
         }
 
 // ================================ TRANSFER MSCN FROM ================================================
 
         function transferMSCNFrom(address _from,address _to, uint amount) public isAdmin returns (bool) {
                 _transfer(_from,_to, amount);
-                return false;
+                return true;
         }
 
 // ================================ BURN MSCN ================================================
 
         function burnMSCN(address _from, uint amount) public isAdmin returns (bool) {
                 _burn(_from, amount);
-                return false;
+                return true;
         }
 
 // =================================== ADD USER ================================================
        
-        function addUser(address walletAddress,string memory name,string memory email) public onlyAdmin{
+        function addUser(address walletAddress,string memory name,string memory email) public onlyAdmin returns(bool){
                 require(walletAddress!=admin,"Admin cannot be a User");
                 require(userList[walletAddress].walletAddress != walletAddress,"User already exist");
                 userList[walletAddress]=User(users.length,walletAddress,name,email,true);
                 users.push(User(users.length,walletAddress,name,email,true));
                 userWalletAddresses[email]=walletAddress;
                 _mint(walletAddress, 5000);
+                return true;
         }
 
 // ==================================== IS-USER ==================================================
@@ -141,36 +150,45 @@ pragma solidity ^0.8.0;
                 return users[userId];
         }
 
+// ==================================== GET USER BY EMAIL ==================================================
+
+        function getUserByEmail(string memory email) public view returns (address) {
+                 return userWalletAddresses[email];
+        }
+
 // ================================== DISABLE USERS ================================================
 
-        function disableUser(address userAddress) public onlyAdmin {
+        function disableUser(address userAddress) public onlyAdmin returns(bool){
                 users[userList[userAddress].id].enabled=false;
                 userList[userAddress].enabled=false;
+                return true;
         }
 
 // ================================== ENABLE USERS ================================================
 
-        function enableUser(address userAddress) public onlyAdmin {
+        function enableUser(address userAddress) public onlyAdmin returns(bool){
                 users[userList[userAddress].id].enabled=true;
                 userList[userAddress].enabled=true;
+                return true;
         }
 
 // ================================== ENABLE USERS ================================================
 
-        function addParticipateHistory(address _address, uint id, uint category,uint amount, uint teamSelected) public isAdmin {
-                participateHistory[_address].push(History(id,category,amount,teamSelected));
+        function addRecords(address _address, uint id,uint amount,string memory category, string memory teamSelected) public isAdmin returns(bool){
+                records[_address].push(Record(id,amount,block.timestamp,category,teamSelected));
+                return true;
         }
 
-// ================================ GET PARTICIPANTS HISTORY LENGTH =============================================
+// ================================ GET PARTICIPANTS RECORDS LENGTH =============================================
 
-        function getParticipanteHistoryLength(address _address) public view returns (uint) {
-                return participateHistory[_address].length;
+        function getRecordsLength(address _address) public view returns (uint) {
+                return records[_address].length;
         }
 
-// ================================ GET PARTICIPANTS HISTORY LENGTH =============================================
+// ================================ GET PARTICIPANTS RECORDS LENGTH =============================================
 
-        function getParticipanteHistory(address _address, uint index) public view returns ( History memory) {
-                return participateHistory[_address][index];
+        function getRecords(address _address, uint index) public view returns ( Record memory) {
+                return records[_address][index];
         }
     }
 

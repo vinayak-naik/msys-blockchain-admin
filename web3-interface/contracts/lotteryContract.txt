@@ -1,11 +1,16 @@
 // SPDX-License-Identifier: MIT
     pragma solidity ^0.8.0;
 
+// =================================== INTERFACE ================================================
 
-// =================================== IMPORTS ================================================
-
-    import "./UserContract.sol";
-
+    interface IUserContract  {
+    function transferMSCNFrom(address messageSender,address owner, uint price) external;
+    function transferMSCN(address participantAddress,uint amount) external;
+    function burnMSCN(address messageSender, uint fees) external;
+    function isUser(address messageSender)  external returns(bool);
+    function mintMSCN(address messageSender, uint amount) external;
+    function addRecords(address sender,uint matchId,uint amount,string memory game,string memory team) external;
+}
 // =================================== CONTRACT ================================================
 
     contract LotteryContract {
@@ -33,7 +38,7 @@
          
 // =================================== VARIABLES ================================================
 
-        UserContract public userContractAddress;
+        IUserContract public userContractAddress;
         Lottery[] public lotteries;
         uint[] public lotteryAmountArray;
         address public admin;
@@ -62,22 +67,30 @@
         function validLottery(uint lotteryId) private view{
             require(lotteryId < lotteries.length,"Invalid lotteryId");
             require(lotteries[lotteryId].statusCode==2,"Lottery is not active");
-            require(lotteries[lotteryId].timestamp>(block.timestamp-760),"lottery is expired");
         }
 
 // ============================ SET USER CONTRACT ADDRESS ==========================================
 
-        function setUserContractAddress(address _userContractAddress) public  onlyAdmin {
-            UserContract _UserContract=UserContract(_userContractAddress);
+        function setUserContractAddress(address _userContractAddress) public  onlyAdmin returns(bool){
+            IUserContract _UserContract=IUserContract(_userContractAddress);
             userContractAddress=_UserContract;
+            return true;
     }
+
+// ================================ UPDATE-LOTTERY-ADMIN ================================================
+
+        function updateLotteryAdmin(address _address) public onlyAdmin returns (bool) {
+                admin=_address;
+                return true;
+        }
 
 // ==================================  ADD LOTTERY =================================================
 
-        function addLottery(string memory lotteryName, uint amount, uint timeStamp) public onlyAdmin {
+        function addLottery(string memory lotteryName, uint amount, uint timeStamp) public onlyAdmin returns(bool){
             userContractAddress.mintMSCN(address(this), 1000);
             lotteries.push(Lottery(lotteries.length, lotteryName, amount, 1, timeStamp));
             lotteryAmountArray.push(0);
+            return true;
         }
 
 // =============================== GET LOTTERIES LENGTH =============================================
@@ -100,13 +113,14 @@
 
 // =============================== UPDATE LOTTERY STATUS =============================================
 
-        function updateLotteryStatus(uint lotteryId, uint statusCode) public onlyAdmin {
+        function updateLotteryStatus(uint lotteryId, uint statusCode) public onlyAdmin returns(bool){
             lotteries[lotteryId].statusCode=statusCode;
+            return true;
         }
 
 // ================================ PARTICIPATE LOTTERY ==============================================
 
-        function participateLottery(uint lotteryId) public validUser  returns(bool success){
+        function participateLottery(uint lotteryId) public validUser  returns(bool){
             validLottery(lotteryId);
             uint amount=lotteries[lotteryId].amount;
             uint feesAmount=amount/100;
@@ -115,6 +129,7 @@
             userContractAddress.burnMSCN(msg.sender, feesAmount);
             lotteryParticipants[lotteryId].push(msg.sender);
             lotteryAmount[lotteryId]+=finalLotteryAmount;
+            userContractAddress.addRecords(msg.sender,lotteryId,amount,"lottery","--");
             return true;
         }
 
@@ -122,6 +137,12 @@
 
         function getLotteryParticipantsLength(uint lotteryId) public view returns(uint){
             return lotteryParticipants[lotteryId].length;
+        }
+
+// ================================== GET PARTICIPANT =================================================
+
+        function getLotteryParticipants(uint lotteryId) public view returns (address[] memory) {
+            return lotteryParticipants[lotteryId];
         }
 
 // ================================== GET PARTICIPANT =================================================
@@ -138,7 +159,7 @@
 
 // =============================== ANNOUNCE LOTTERY RESULT ============================================
 
-        function announceLotteryResult(uint lotteryId) public onlyAdmin {
+        function announceLotteryResult(uint lotteryId) public onlyAdmin returns(bool){
             validLottery(lotteryId);
             require(lotteryParticipants[lotteryId].length > 6,"Minimum 10 participants required");
             uint participantsLength=lotteryParticipants[lotteryId].length;
@@ -156,7 +177,7 @@
             }while(index0==index1); 
             do{
                 randomNumber2++;
-                index2= randomNumber2 % participantsLength; 
+                index2= randomNumber2 % participantsLength;
             }while(index0==index2 || index1==index2);
 
             //-------------------Save Winners Addresses------------------------
@@ -171,5 +192,6 @@
 
             lotteries[lotteryId].statusCode=3;
             lotteryAmountArray[lotteryId]=totalAmount;
+            return true;
         }
     }
