@@ -12,7 +12,7 @@ import TextError from "../reusable/textError";
 import style from "../../styles/components/dialog/dialog.module.css";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState } from "../../redux/store"; // test
 
 interface AddUserFormIF {
   walletAddress: string;
